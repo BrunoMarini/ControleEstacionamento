@@ -117,6 +117,7 @@ public class TelaConfiguracoes extends JFrame
         
         tempoBonus = new JTextField(15);
         tempoBonus.setEditable(false);
+        tempoBonus.setText("");
         aux[1][0].add(tempoBonus);
         
         bonus.add(aux[0][0]);
@@ -195,6 +196,7 @@ public class TelaConfiguracoes extends JFrame
         public void itemStateChanged(ItemEvent e)
         {
            tempoBonus.setEditable(x);
+           tempoBonus.setText("");
         }
     }
 }

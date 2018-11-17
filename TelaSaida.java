@@ -15,6 +15,7 @@ import javax.swing.border.LineBorder;
 public class TelaSaida extends JFrame
 {
     private JLabel titulo;
+    private JTextField praca;
     private JLabel msgPlaca;
     private JTextField placa;
     private JButton verifica;
@@ -42,16 +43,20 @@ public class TelaSaida extends JFrame
             add(p[i][0]);
         }
         
-        p[0][0].setLayout(new GridLayout(1,1));
+        p[0][0].setLayout(new GridLayout(1, 2));
         titulo = new JLabel("Retirada de veiculo", (int)CENTER_ALIGNMENT);
         titulo.setFont(new Font("Century", Font.PLAIN, 35));
+        praca = new JTextField("Placa do veículo");
+        praca.setEditable(false);
+        praca.setHorizontalAlignment(JTextField.CENTER);
         p[0][0].add(titulo);
+        p[0][0].add(praca);
         
         p[1][0].setLayout(new GridLayout(2, 3));
         p[1][0].add(new JPanel());
         p[1][0].add(new JPanel());
         p[1][0].add(new JPanel());
-        msgPlaca = new JLabel("Digite a placa", (int)CENTER_ALIGNMENT);
+        msgPlaca = new JLabel("Digite o codigo", (int)CENTER_ALIGNMENT);
         msgPlaca.setFont(new Font("Arial", Font.PLAIN, 16));
         placa = new JTextField();
         placa.setHorizontalAlignment(JTextField.CENTER);

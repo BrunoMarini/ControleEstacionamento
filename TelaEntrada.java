@@ -45,6 +45,8 @@ public class TelaEntrada extends JFrame{
         setLayout(new GridLayout(6, 1));
         JPanel[][] p = new JPanel[6][1];
         
+  
+        
         Icon parada      = new ImageIcon(getClass().getResource("p.png"));
         Icon moto        = new ImageIcon(getClass().getResource("moto.png"));
         Icon carro       = new ImageIcon(getClass().getResource("carro.png"));
@@ -164,6 +166,8 @@ public class TelaEntrada extends JFrame{
         cadastrar = new JButton("Cadastrar");
         cancelar = new JButton("Cancelar");
         
+        cancelar.addActionListener(list);
+        cadastrar.addActionListener(list);
         
         p[5][0].add(cancelar);
         p[5][0].add(cadastrar);
@@ -190,6 +194,8 @@ public class TelaEntrada extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e)
         {
+            if(e.getSource() == cancelar)
+                dispose();
         }
     }
 }
