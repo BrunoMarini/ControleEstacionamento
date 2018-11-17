@@ -1,7 +1,11 @@
 package estacionamento;
 
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -45,6 +49,8 @@ public class TelaStatus extends JFrame
         TitledBorder tituloEstacionados = new TitledBorder("Estacionados");
         TitledBorder tituloPacotes = new TitledBorder("Pacotes Selecionados");
         
+        Listener list = new Listener();
+        
         Icon parada      = new ImageIcon(getClass().getResource("p.png"));
         
         p[0][0].setLayout(new GridLayout(1, 1));
@@ -80,6 +86,7 @@ public class TelaStatus extends JFrame
         estacionados.add(new JPanel());
         estacionados.setBorder(tituloEstacionados);
         checar = new JButton("Verificar veiculos estacionados");
+        checar.addActionListener(list);
         estacionados.add(checar);
         estacionados.add(new JPanel());
         
@@ -111,8 +118,24 @@ public class TelaStatus extends JFrame
         icone.setIcon(parada);
         
         p[2][0].add(icone);
-        
-        
-        
     }
+    
+    private class Listener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            if(e.getSource() == checar)
+            {
+                TelaTable telaTable = new TelaTable();
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                int height = screenSize.height;
+                int width = screenSize.width;
+                telaTable.setSize(width/2, height/2);
+                telaTable.setVisible(true);
+                telaTable.setLocationRelativeTo(null);
+            }
+        }
+    }
+    
 }

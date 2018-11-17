@@ -47,8 +47,6 @@ public class TelaEntrada extends JFrame{
         setLayout(new GridLayout(6, 1));
         JPanel[][] p = new JPanel[6][1];
         
-  
-        
         Icon parada      = new ImageIcon(getClass().getResource("p.png"));
         Icon moto        = new ImageIcon(getClass().getResource("moto.png"));
         Icon carro       = new ImageIcon(getClass().getResource("carro.png"));
