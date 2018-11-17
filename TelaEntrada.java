@@ -56,7 +56,7 @@ public class TelaEntrada extends JFrame{
         }
         
         p[0][0].setLayout(new GridLayout(1, 2));
-        titulo = new JLabel("Entrada de Veiculos", (int)CENTER_ALIGNMENT);
+        titulo = new JLabel("Entrada de Veículos", (int)CENTER_ALIGNMENT);
         titulo.setFont(new Font("Century", Font.PLAIN, 35));
         imagem = new JLabel("", (int)CENTER_ALIGNMENT);
         imagem.setIcon(parada);
