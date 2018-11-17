@@ -15,9 +15,10 @@ import javax.swing.border.LineBorder;
 public class TelaSaida extends JFrame
 {
     private JLabel titulo;
-    private JTextField praca;
+    private JTextField placaVeiculo;
+    private JTextField modeloVeiculo;
     private JLabel msgPlaca;
-    private JTextField placa;
+    private JTextField codigo;
     private JButton verifica;
     private JLabel msgEntrada;
     private JLabel msgSaida;
@@ -29,28 +30,26 @@ public class TelaSaida extends JFrame
     private JTextField custo;
     private JButton cancelar;
     private JButton confirmar;
+    private JLabel placa;
+    private JLabel modelo;
     
     int i;
     
     public TelaSaida()
     {
         super("Saida");
-        setLayout(new GridLayout(7, 1));
-        JPanel[][] p = new JPanel[7][1];
+        setLayout(new GridLayout(9, 1));
+        JPanel[][] p = new JPanel[9][1];
         
-        for(i = 0; i < 7; i++){
+        for(i = 0; i < 9; i++){
             p[i][0] = new JPanel();
             add(p[i][0]);
         }
         
-        p[0][0].setLayout(new GridLayout(1, 2));
+        p[0][0].setLayout(new GridLayout(1, 1));
         titulo = new JLabel("Retirada de veiculo", (int)CENTER_ALIGNMENT);
         titulo.setFont(new Font("Century", Font.PLAIN, 35));
-        praca = new JTextField("Placa do veículo");
-        praca.setEditable(false);
-        praca.setHorizontalAlignment(JTextField.CENTER);
         p[0][0].add(titulo);
-        p[0][0].add(praca);
         
         p[1][0].setLayout(new GridLayout(2, 3));
         p[1][0].add(new JPanel());
@@ -58,11 +57,11 @@ public class TelaSaida extends JFrame
         p[1][0].add(new JPanel());
         msgPlaca = new JLabel("Digite o codigo", (int)CENTER_ALIGNMENT);
         msgPlaca.setFont(new Font("Arial", Font.PLAIN, 16));
-        placa = new JTextField();
-        placa.setHorizontalAlignment(JTextField.CENTER);
+        codigo = new JTextField();
+        codigo.setHorizontalAlignment(JTextField.CENTER);
         verifica = new JButton("Verificar");
         p[1][0].add(msgPlaca);
-        p[1][0].add(placa);
+        p[1][0].add(codigo);
         p[1][0].add(verifica);
         
         p[2][0].setLayout(new GridLayout(1, 2));
@@ -102,16 +101,26 @@ public class TelaSaida extends JFrame
         p[5][0].add(custo);
         
         p[6][0].setLayout(new GridLayout(1, 2));
+        placa = new JLabel("Placa", (int)CENTER_ALIGNMENT);
+        modelo = new JLabel("Modelo", (int)CENTER_ALIGNMENT);
+        p[6][0].add(placa);
+        p[6][0].add(modelo);
+        
+        p[7][0].setLayout(new GridLayout(1, 2));
+        placaVeiculo = new JTextField();
+        placaVeiculo.setEditable(false);
+        placaVeiculo.setHorizontalAlignment(JTextField.CENTER);
+        modeloVeiculo = new JTextField();
+        modeloVeiculo.setEditable(false);
+        modeloVeiculo.setHorizontalAlignment(JTextField.CENTER);
+        
+        p[7][0].add(placaVeiculo);
+        p[7][0].add(modeloVeiculo);
+        
+        p[8][0].setLayout(new GridLayout(1, 2));
         cancelar = new JButton("Cancelar");
         confirmar = new JButton("Confirmar");
-        p[6][0].add(cancelar);
-        p[6][0].add(confirmar);
-        
-        
-        
-        
-        
-        
-        
+        p[8][0].add(cancelar);
+        p[8][0].add(confirmar);
     }
 }

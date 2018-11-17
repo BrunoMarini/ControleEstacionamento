@@ -572,18 +572,24 @@ public class FrameEstacionamento extends JFrame{
 			
 			else if (event.getSource() == vsaida)
 			{
-                                TelaSaida telaSaida = new TelaSaida();
-                                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                                int height = screenSize.height;
-                                int width = screenSize.width;
-                                telaSaida.setSize(width/2, height/2);
-                                telaSaida.setVisible(true);
-                                telaSaida.setLocationRelativeTo(null);
+                            TelaSaida telaSaida = new TelaSaida();
+                            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                            int height = screenSize.height;
+                            int width = screenSize.width;
+                            telaSaida.setSize(width/2, height/2);
+                            telaSaida.setVisible(true);
+                            telaSaida.setLocationRelativeTo(null);
 			}
 			else if (event.getSource() == status || event.getSource() == statusIn) 			
 			{
-				JOptionPane.showMessageDialog(null, "TESTE DO MENUZIN HUMILDE", "STATUS", JOptionPane.INFORMATION_MESSAGE);
-			}
+                            TelaStatus telaStatus = new TelaStatus();
+                            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                            int height = screenSize.height;
+                            int width = screenSize.width;
+                            telaStatus.setSize(width/2, height/2);
+                            telaStatus.setVisible(true);
+                            telaStatus.setLocationRelativeTo(null);
+                        }
 			else if (event.getSource() == config || event.getSource() == configIn)
 			{
                             TelaConfiguracoes telaConfig = new TelaConfiguracoes();

@@ -24,6 +24,8 @@ public class TelaEntrada extends JFrame{
     private JLabel imagem;
     private JLabel msgPlaca;
     private JTextField placa;
+    private JLabel msgModelo;
+    private JTextField modelo;
     private JLabel msgTipo;
     private JComboBox tipo;
     private JLabel pacote;
@@ -67,16 +69,13 @@ public class TelaEntrada extends JFrame{
         p[0][0].add(imagem);
         
         p[1][0].setLayout(new GridLayout(2, 4));
-              
-        p[1][0].add(new JPanel());
-        p[1][0].add(new JPanel());
-        p[1][0].add(new JPanel());
-        p[1][0].add(new JPanel());
-        p[1][0].add(new JPanel());
         
-        msgPlaca = new JLabel("Digite a placa do veiculo:", (int) CENTER_ALIGNMENT);
+        msgPlaca = new JLabel("Placa", (int) CENTER_ALIGNMENT);
         msgPlaca.setFont(new Font("Arial", Font.PLAIN, 15));
         placa = new JTextField();
+        msgModelo = new JLabel("Modelo", (int)CENTER_ALIGNMENT);
+        msgModelo.setFont(new Font("Arial", Font.PLAIN, 15));
+        modelo = new JTextField();
         msgTipo = new JLabel("Tipo de veiculo:", (int) CENTER_ALIGNMENT);
         msgTipo.setFont(new Font("Arial", Font.PLAIN, 15));
         tipo = new JComboBox(tipos);
@@ -107,10 +106,17 @@ public class TelaEntrada extends JFrame{
                     }
                 });
         
-        p[1][0].add(msgPlaca);
-        p[1][0].add(placa);
+        p[1][0].add(new JPanel());//
+        
+        p[1][0].add(msgPlaca);//
+        p[1][0].add(msgModelo);//
+        p[1][0].add(new JPanel());//
+        
         p[1][0].add(new JPanel());
-       
+        p[1][0].add(placa);
+        p[1][0].add(modelo);
+        p[1][0].add(new JPanel());
+        
         p[2][0].setLayout(new GridLayout(2, 4));
         
         p[2][0].add(new JPanel());
