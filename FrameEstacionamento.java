@@ -105,7 +105,7 @@ public class FrameEstacionamento extends JFrame{
 
     void exibePiso1()
     {
-            int cont = 0;
+            int cont = 100;
             panelPrincipal.setLayout(new GridBagLayout());
             panel1.setLayout(new GridLayout(2, 10, -1, -1));
             panel2.setLayout(new GridLayout(2, 10, -1, -1));
@@ -118,12 +118,12 @@ public class FrameEstacionamento extends JFrame{
             labelPiso = new JLabel("Piso 1");
             labelPiso.setFont(new Font("Cloud", Font.PLAIN, 25));
 
-            // TESTE OCUPADOS
-            ocupadosPiso1[1][7] = 1;
-            ocupadosPiso1[3][9] = 1;
-            ocupadosPiso1[2][1] = 1;
-            ocupadosPiso1[6][8] = 1;
-            // FIM TESTE OCUPADOS
+//            // TESTE OCUPADOS
+//            ocupadosPiso1[1][7] = 1;
+//            ocupadosPiso1[3][9] = 1;
+//            ocupadosPiso1[2][1] = 1;
+//            ocupadosPiso1[6][8] = 1;
+//            // FIM TESTE OCUPADOS
 
 
             JLabel[][] espacosBranco = new JLabel[2][10];
@@ -330,12 +330,12 @@ public class FrameEstacionamento extends JFrame{
 		labelPiso = new JLabel("Térreo");
 		labelPiso.setFont(new Font("Cloud", Font.PLAIN, 25));
 		
-		// TESTE OCUPADOS
-		ocupadosTerreo[1][7] = 0;
-		ocupadosTerreo[3][9] = 0;
-		ocupadosTerreo[4][8] = 1;
-		ocupadosTerreo[0][2] = 1;
-		// FIM TESTE OCUPADOS
+//		// TESTE OCUPADOS
+//		ocupadosTerreo[1][7] = 0;
+//		ocupadosTerreo[3][9] = 0;
+//		ocupadosTerreo[4][8] = 1;
+//		ocupadosTerreo[0][2] = 1;
+//		// FIM TESTE OCUPADOS
 		
 		
 		JLabel[][] espacosBranco = new JLabel[2][10];
@@ -345,7 +345,7 @@ public class FrameEstacionamento extends JFrame{
 		{
 			for(int j = 0; j < 10; j++)
 			{
-				vagasCarro[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+				vagasCarro[i][j] = new JLabel((String.valueOf(cont) + " M"), JLabel.CENTER);
 				if (ocupadosTerreo[i][j] == 0)
 				{
 					vagasCarro[i][j].setBackground(Color.GREEN);
@@ -365,7 +365,7 @@ public class FrameEstacionamento extends JFrame{
 		{
 			for(int j = 0; j < 10; j++)
 			{
-				vagasCarro[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+				vagasCarro[i][j] = new JLabel((String.valueOf(cont) + " C"), JLabel.CENTER);
 				if (ocupadosTerreo[i][j] == 0)
 				{
 					vagasCarro[i][j].setBackground(Color.GREEN);
@@ -601,7 +601,6 @@ public class FrameEstacionamento extends JFrame{
                             telaConfig.setLocationRelativeTo(null);
                         }
 			// FIM OPCOES DO MENU SUPERIOR
-			
 		}
 	}
 }

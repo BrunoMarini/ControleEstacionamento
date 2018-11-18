@@ -37,7 +37,8 @@ public class TelaEntrada extends JFrame{
     private JButton cancelar;
     
     private static final String[] tipos = {"", "Moto", "Carro", "Caminhonete"}; 
-    int i, tipoVeiculo;
+    int i, x;
+    String tipoPacote, tipoVeiculo;
     
     public TelaEntrada()
     {
@@ -85,20 +86,23 @@ public class TelaEntrada extends JFrame{
                     public void itemStateChanged(ItemEvent e)
                     {
                         if(e.getStateChange() == ItemEvent.SELECTED)
-                            tipoVeiculo = tipo.getSelectedIndex();
+                            x = tipo.getSelectedIndex();
                         
-                        switch(tipoVeiculo){
+                        switch(x){
                             case 0:
                                 imagem.setIcon(parada);
                             break;
                             case 1:
                                 imagem.setIcon(moto);
+                                tipoVeiculo = "Moto";
                             break;
                             case 2:
                                 imagem.setIcon(carro);
+                                tipoVeiculo = "Carro";
                             break;
                             case 3:
                                 imagem.setIcon(caminhonete);
+                                tipoVeiculo = "Caminhonete";
                             break;
                         }
                     }
@@ -160,11 +164,11 @@ public class TelaEntrada extends JFrame{
         radioGroup.add(pernoite);
         
         hora.addItemListener(
-            new RadioButtonHandler(moto));
+            new RadioButtonHandler(0));
         mensalista.addItemListener(
-            new RadioButtonHandler(carro));
+            new RadioButtonHandler(1));
         pernoite.addItemListener(
-            new RadioButtonHandler(caminhonete));
+            new RadioButtonHandler(2));
         
         p[5][0].setLayout(new GridLayout(1,4));
         cadastrar = new JButton("Cadastrar");
@@ -179,17 +183,25 @@ public class TelaEntrada extends JFrame{
     }
     
     private class RadioButtonHandler implements ItemListener
-    {
-        private Icon icone;
-        
-        public RadioButtonHandler(Icon i)
+    {        
+        public RadioButtonHandler(int i)
         {
-           // icone = i;
+            switch(i)
+            {
+                case 0:
+                   tipoPacote = "Hora";
+                break;
+                case 1:
+                    tipoPacote = "Mensalista";
+                break;
+                case 2:
+                    tipoPacote = "Pernoite";
+                break;
+            }
         }
         
         public void itemStateChanged(ItemEvent e)
         {
-           // imagem.setIcon(icone);
         }
     }
     
@@ -200,6 +212,11 @@ public class TelaEntrada extends JFrame{
         {
             if(e.getSource() == cancelar)
                 dispose();
+            else if(e.getSource() == cadastrar)
+            {
+//                Programa pro = Programa.getInstance();
+//                pro.EntradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote);
+            }
         }
     }
 }
