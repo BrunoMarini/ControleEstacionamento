@@ -214,8 +214,8 @@ public class TelaEntrada extends JFrame{
                 dispose();
             else if(e.getSource() == cadastrar)
             {
-//                Programa pro = Programa.getInstance();
-//                pro.EntradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote);
+                Programa pro = Programa.getInstance();
+                pro.EntradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote);
             }
         }
     }

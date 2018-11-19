@@ -6,9 +6,10 @@ import java.awt.Toolkit;
 public class Programa
 {   
 	private static Programa instance = null;
-        private VeiculoEstacionado[] caminhonete  = new VeiculoEstacionado[20];
-        private VeiculoEstacionado[] carros       = new VeiculoEstacionado[100];
-        private VeiculoEstacionado[] motos        = new VeiculoEstacionado[20];
+        private VeiculoEstacionado[] estacionados = new VeiculoEstacionado[200];
+        
+        int removeu = 0;
+        int count = 0;
         
         public static Programa getInstance()
         {
@@ -27,4 +28,26 @@ public class Programa
             telaEstacionamento.setVisible(true);
             telaEstacionamento.setLocationRelativeTo(null);
         }
+        
+        public void EntradaVeiculo(String placa, String modelo, String tipo, String pacote)
+        {
+            int i;
+            
+            if(removeu == 0)
+            {
+                estacionados[count] = new VeiculoEstacionado(placa, modelo, pacote);                
+            }
+            else
+            {
+                for(i = 0; i < count; i++)
+                {
+                    if(!estacionados[i].getOcupado())
+                    {
+                        estacionados[count] = new VeiculoEstacionado(placa, modelo, pacote);
+                    }
+                }
+            }
+        }
+        
+        
 }
