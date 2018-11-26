@@ -35,9 +35,9 @@ public class SistemaEstacionamento extends BaseDeDados
         //base.openFile();
     }
 
-    public void EntradaVeiculo(String placa, String modelo, String tipo, String pacote)
+    public void EntradaVeiculo(String placa, String modelo, String tipo, String pacote, int entrada)
     {
-        VeiculoEstacionado veiculo = new VeiculoEstacionado(placa, modelo, pacote, 1);
+        VeiculoEstacionado veiculo = new VeiculoEstacionado(placa, modelo, pacote, 1, entrada);
         lista.add(veiculo);
     }
     

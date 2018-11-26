@@ -47,7 +47,7 @@ public class TelaConfiguracoes extends JFrame
     
     public TelaConfiguracoes()
     {
-        super("Configurações");
+        super("Configuracoes");
         
         setLayout(new GridLayout(4, 1));
         JPanel[][] p = new JPanel[4][1];
@@ -58,14 +58,14 @@ public class TelaConfiguracoes extends JFrame
         }
         
         p[0][0].setLayout(new GridLayout(1, 1));
-        titulo = new JLabel("Configurações", (int)CENTER_ALIGNMENT);
+        titulo = new JLabel("Configuracoes", (int)CENTER_ALIGNMENT);
         p[0][0].add(titulo);
         
-        TitledBorder tituloHora = new TitledBorder("Configurações Hora");
-        TitledBorder tituloPernoite = new TitledBorder("Configurações Pernoite");
-        TitledBorder tituloMensalista = new TitledBorder("Configurações Mensalista");
+        TitledBorder tituloHora = new TitledBorder("Configuracoes Hora");
+        TitledBorder tituloPernoite = new TitledBorder("Configuracoes Pernoite");
+        TitledBorder tituloMensalista = new TitledBorder("Configuracoes Mensalista");
         TitledBorder tituloBonus = new TitledBorder("Tempo Bonus");
-        TitledBorder tituloDesconto = new TitledBorder("Promoções");
+        TitledBorder tituloDesconto = new TitledBorder("Promocoes");
         TitledBorder tituloSave = new TitledBorder("Confirmar/Cancelar");
         
         //Configurações preco hora
@@ -73,9 +73,9 @@ public class TelaConfiguracoes extends JFrame
         JPanel hora = new JPanel();
         hora.setBorder(tituloHora);
         hora.setLayout(new GridLayout(3, 2));
-        horaMoto = new JLabel("Preço moto", (int)CENTER_ALIGNMENT);
-        horaCarro = new JLabel("Preço carro", (int)CENTER_ALIGNMENT);
-        horaCaminhonete = new JLabel("Preço caminhonete", (int)CENTER_ALIGNMENT);
+        horaMoto = new JLabel("Preco moto", (int)CENTER_ALIGNMENT);
+        horaCarro = new JLabel("Preco carro", (int)CENTER_ALIGNMENT);
+        horaCaminhonete = new JLabel("Preco caminhonete", (int)CENTER_ALIGNMENT);
         precoHoraMoto = new JTextField(10);
         precoHoraCarro = new JTextField(10);
         precoHoraCaminhonete = new JTextField(10);
@@ -131,9 +131,9 @@ public class TelaConfiguracoes extends JFrame
         JPanel pernoite = new JPanel();
         pernoite.setBorder(tituloPernoite);
         pernoite.setLayout(new GridLayout(3, 2));
-        pernoiteMoto = new JLabel("Preço moto", (int)CENTER_ALIGNMENT);
-        pernoiteCarro = new JLabel("Preço carro", (int)CENTER_ALIGNMENT);
-        pernoiteCaminhonete = new JLabel("Preço caminhonete", (int)CENTER_ALIGNMENT);
+        pernoiteMoto = new JLabel("Preco moto", (int)CENTER_ALIGNMENT);
+        pernoiteCarro = new JLabel("Preco carro", (int)CENTER_ALIGNMENT);
+        pernoiteCaminhonete = new JLabel("Preco caminhonete", (int)CENTER_ALIGNMENT);
         precoPernoiteMoto = new JTextField(10);
         precoPernoiteCarro = new JTextField(10);
         precoPernoiteCaminhonete = new JTextField(10);
@@ -157,9 +157,9 @@ public class TelaConfiguracoes extends JFrame
         JPanel mensalista = new JPanel();
         mensalista.setBorder(tituloMensalista);
         mensalista.setLayout(new GridLayout(3, 2));
-        mensalistaMoto = new JLabel("Preço moto", (int)CENTER_ALIGNMENT);
-        mensalistaCarro = new JLabel("Preço carro", (int)CENTER_ALIGNMENT);
-        mensalistaCaminhonete = new JLabel("Preço caminhonete", (int)CENTER_ALIGNMENT);
+        mensalistaMoto = new JLabel("Preco moto", (int)CENTER_ALIGNMENT);
+        mensalistaCarro = new JLabel("Preco carro", (int)CENTER_ALIGNMENT);
+        mensalistaCaminhonete = new JLabel("Preco caminhonete", (int)CENTER_ALIGNMENT);
         precoMensalistaMoto = new JTextField(10);
         precoMensalistaCarro = new JTextField(10);
         precoMensalistaCaminhonete = new JTextField(10);

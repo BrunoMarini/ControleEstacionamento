@@ -71,13 +71,13 @@ public class FrameEstacionamento extends JFrame
 
             menuBar = new JMenuBar();
 
-            veiculos = new JMenu("Veículos");
+            veiculos = new JMenu("Veiculos");
             menuBar.add(veiculos);
                     // SUB ITENS DE VEICULOS
                     ventrada = new JMenuItem("Entrada", KeyEvent.VK_E);
                     veiculos.add(ventrada);
 
-                    vsaida = new JMenuItem("Saída", KeyEvent.VK_S);
+                    vsaida = new JMenuItem("Saida", KeyEvent.VK_S);
                     veiculos.add(vsaida);
                     // FIM SUB ITENS DE VEICULOS
 
@@ -87,9 +87,9 @@ public class FrameEstacionamento extends JFrame
                     status.add(statusIn);
                     
 
-            config = new JMenu("Configurações");
+            config = new JMenu("Configuracoes");
             menuBar.add(config);
-                    configIn = new JMenuItem("Configurações", KeyEvent.VK_C);
+                    configIn = new JMenuItem("Configuracoes", KeyEvent.VK_C);
                     config.add(configIn);
 
             // FIM CRIANDO MENU
@@ -234,7 +234,7 @@ public class FrameEstacionamento extends JFrame
                     }
             }
 
-            // COLOCANDO ESPA�OS EM BRANCO
+            // COLOCANDO ESPACOSS EM BRANCO
             for (int j = 0; j < 10; j++)
             {
                     espacosBrancoP[0][j] = new JLabel("", JLabel.CENTER);
@@ -332,7 +332,7 @@ public class FrameEstacionamento extends JFrame
 		panel6.setLayout(new GridLayout(2, 10, -1, -1));
 		
 		int[][] ocupadosTerreo = new int[10][10];
-		labelPiso = new JLabel("Térreo");
+		labelPiso = new JLabel("Terreo");
 		labelPiso.setFont(new Font("Cloud", Font.PLAIN, 25));
 		
 //		// TESTE OCUPADOS

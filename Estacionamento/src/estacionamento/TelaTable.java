@@ -7,7 +7,7 @@ import javax.swing.JTable;
 
 public class TelaTable extends JFrame
 {
-    private String[] colunas = {"Vaga", "Placa do Veículo", "Modelo", "Pacote"};
+    private String[] colunas = {"Vaga", "Placa do Veiculo", "Modelo", "Pacote"};
     private String[][] data;
     private JTable table;
     private JScrollPane js;
