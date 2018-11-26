@@ -2,8 +2,12 @@
 package estacionamento;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -41,7 +45,8 @@ public class TelaEstacionamento extends JFrame
         super("Primeiro Andar");
         setLayout(new GridLayout(15, 6));
         JPanel[][] p = new JPanel[15][6];
-         
+        Listener list = new Listener();
+        
         for(i = 0; i < 15; i++){
             for(j = 0; j < 6; j++){
                 p[i][j] = new JPanel();
@@ -129,8 +134,10 @@ public class TelaEstacionamento extends JFrame
         p[8][5].add(qtdMotos);
                
         entrada = new JButton("Entrada");
+        entrada.addActionListener(list);
         p[9][5].add(entrada);
         saida = new JButton("Saida");
+        saida.addActionListener(list);
         p[10][5].add(saida);
         status = new JButton("Status");
         p[11][5].add(status);
@@ -139,5 +146,41 @@ public class TelaEstacionamento extends JFrame
         trocaAndar = new JButton("Trocar Andar");
         p[14][5].add(trocaAndar);
                
+    }
+    
+        private class Listener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            if(e.getSource() == entrada)
+            {
+               TelaEntrada telaEntrada = new TelaEntrada();
+               telaEntrada.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+               Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+               int height = screenSize.height;
+               int width = screenSize.width;
+
+               telaEntrada.setSize(width/2, height/2);
+               telaEntrada.setLocationRelativeTo(null);
+
+               telaEntrada.setVisible(true); 
+            }
+            else if(e.getSource() == saida)
+            {
+               TelaSaida telaSaida = new TelaSaida();
+               telaSaida.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+               Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+               int height = screenSize.height;
+               int width = screenSize.width;
+
+               telaSaida.setSize(width/2, height/2);
+               telaSaida.setLocationRelativeTo(null);
+
+               telaSaida.setVisible(true); 
+            }
+        }
     }
 }

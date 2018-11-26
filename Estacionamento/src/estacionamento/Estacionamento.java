@@ -4,7 +4,7 @@ public class Estacionamento {
 
     public static void main(String[] args) 
     {
-       ControleEstacionamento control =  new ControleEstacionamento(); 
-       control.inicializar();
+       SistemaEstacionamento sistema = new SistemaEstacionamento();
+       sistema.inicializar();
     }
 }
