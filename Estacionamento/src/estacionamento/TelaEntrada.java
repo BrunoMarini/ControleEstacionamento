@@ -6,10 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.TimeZone;
 
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
@@ -57,6 +57,15 @@ public class TelaEntrada extends JFrame
         Listener list = new Listener();
         setLayout(new GridLayout(6, 1));
         JPanel[][] p = new JPanel[6][1];
+        
+        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try {
+			Date date = isoFormat.parse("2010-05-23T09:01:02");
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			//e1.printStackTrace();
+		}
         
         Icon parada      = new ImageIcon(getClass().getResource("p.png"));
         Icon moto        = new ImageIcon(getClass().getResource("moto.png"));
@@ -175,14 +184,6 @@ public class TelaEntrada extends JFrame
         
         p[4][0].setLayout(new GridLayout(1, 3));
         
-        /*hora.addItemListener(
-            new RadioButtonHandler(0));
-        mensalista.addItemListener(
-            new RadioButtonHandler(1));
-        pernoite.addItemListener(
-            new RadioButtonHandler(2));*/
-        
-        
         p[4][0].add(horaB);
         p[4][0].add(mensalista);
         p[4][0].add(pernoite);
@@ -217,14 +218,15 @@ public class TelaEntrada extends JFrame
                 dispose();
             else if(e.getSource() == cadastrar)
             {
-            	int dia, mes, ano, hora, min, seg;
+            	int dia, mes, ano, hor, min, seg;
             	
-            	ano = Integer.parseInt(data.getText().substring(6, 10)); //AQUIIIIIIIIIII
-            	System.out.println(ano);
+            	ano = Integer.parseInt(data.getText().substring(6, 10));
+            	mes = Integer.parseInt(data.getText().substring(3, 5));
+            	dia = Integer.parseInt(data.getText().substring(0, 2));
             	
-            	//LocalDateTime d = new Date();
-            	
-            	//System.out.println(d);
+            	hor = Integer.parseInt(hora.getText().substring(0, 2));
+            	min = Integer.parseInt(hora.getText().substring(3, 5));
+            	seg = Integer.parseInt(hora.getText().substring(6, 8)); 	
             	
                 SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
                 //sis.EntradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote);
