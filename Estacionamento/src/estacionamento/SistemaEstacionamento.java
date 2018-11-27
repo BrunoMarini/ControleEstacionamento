@@ -2,6 +2,7 @@ package estacionamento;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Date;
 import java.util.ArrayList;
 
 public class SistemaEstacionamento extends BaseDeDados
@@ -35,15 +36,13 @@ public class SistemaEstacionamento extends BaseDeDados
         //base.openFile();
     }
 
-    public void EntradaVeiculo(String placa, String modelo, String tipo, String pacote, int entrada)
+    public void EntradaVeiculo(String placa, String modelo, String tipo, String pacote, Date d)
     {
-        VeiculoEstacionado veiculo = new VeiculoEstacionado(placa, modelo, pacote, 1, entrada);
+        VeiculoEstacionado veiculo = new VeiculoEstacionado(placa, modelo, pacote, 1, d);
         lista.add(veiculo);
     }
     
     public int getNumeroCarros(){
         return (lista.size());
-    }
-    
-    
+    }    
 }

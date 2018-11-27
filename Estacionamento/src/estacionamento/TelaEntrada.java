@@ -227,9 +227,21 @@ public class TelaEntrada extends JFrame
             	hor = Integer.parseInt(hora.getText().substring(0, 2));
             	min = Integer.parseInt(hora.getText().substring(3, 5));
             	seg = Integer.parseInt(hora.getText().substring(6, 8)); 	
+          
+//            	Parameters:
+//            		year the year minus 1900.
+//            		month the month between 0-11.
+//            		date the day of the month between 1-31.
+//            		hrs the hours between 0-23.
+//            		min the minutes between 0-59.
+//            		sec the seconds between 0-59.
+//            	
+            	Date d = new Date(ano - 1900, mes - 1, dia, hor, min, seg);
             	
                 SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
-                //sis.EntradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote);
+                sis.EntradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote, d);
+                
+                dispose();
             }
 
             
