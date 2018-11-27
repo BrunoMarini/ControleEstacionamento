@@ -1,4 +1,8 @@
+package estacionamento;
+
+import java.awt.event.KeyEvent;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -6,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Menu;
 import java.awt.MenuBar;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,241 +24,255 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class FrameEstacionamento extends JFrame{
+public class FrameEstacionamento extends JFrame
+{
 	private JPanel panel1, panel2, panel3, panel4, panel5, panel6, panelPrincipal;
 	private JLabel vagasCarro, labelPiso;
 	private JButton buttonTrocaAndar;
 	private static int ocupadosPiso1[][];
 	private static int ocupadosTerreo[][];
-	private static int andarAtual = 0; // 0 Térreo e 1 Piso1
+	private static int andarAtual = 0; // 0 Tï¿½rreo e 1 Piso1
 	GridBagConstraints gbc = null;
 	
 	JMenuBar menuBar;
 	JMenu veiculos, status, config;
 	JMenuItem ventrada, vsaida;
+        JMenuItem statusIn, configIn;
 	
-	
+	JLabel[][] espacosBrancoT = new JLabel[2][10];
+        JLabel[][] vagasCarroT = new JLabel[10][10];
 
+        JLabel[][] espacosBrancoP = new JLabel[2][10];
+        JLabel[][] vagasCarroP = new JLabel[10][10];
+        
 	public FrameEstacionamento() 
 	{
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		gbc = new GridBagConstraints();
-		
-		setTitle("Controle de Estacionamento");
-		panel1 = new JPanel();
-		panel2 = new JPanel();
-		panel3 = new JPanel();
-		panel4 = new JPanel();
-		panel5 = new JPanel();
-		panel6 = new JPanel();
-		
-		buttonTrocaAndar = new JButton("Trocar Andar");
-		panelPrincipal = new JPanel();
-	
-		exibeTerreo();
-	
-		// CRIANDO MENU
-		
-		menuBar = new JMenuBar();
-		
-		veiculos = new JMenu("Veículos");
-		menuBar.add(veiculos);
-			// SUB ITENS DE VEICULOS
-			ventrada = new JMenuItem("Entrada");
-			veiculos.add(ventrada);
-			
-			vsaida = new JMenuItem("Saída");
-			veiculos.add(vsaida);
-			// FIM SUB ITENS DE VEICULOS
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		status = new JMenu("Status");
-		menuBar.add(status);
-		
-		config = new JMenu("Configurações");
-		menuBar.add(config);
-		
-		// FIM CRIANDO MENU
-		setJMenuBar(menuBar);
-		add(panelPrincipal);	
-		
-		// HANDLERS
-		ButtonHandler handler = new ButtonHandler();
-		buttonTrocaAndar.addActionListener(handler);
-		ventrada.addActionListener(handler);
-		vsaida.addActionListener(handler);
-		status.addActionListener(handler);
-		config.addActionListener(handler);
-		
-		// FIM HANDLERS
-		
-	}
-	
-	void exibePiso1()
-	{
-		int cont = 0;
-		panelPrincipal.setLayout(new GridBagLayout());
-		panel1.setLayout(new GridLayout(2, 10, -1, -1));
-		panel2.setLayout(new GridLayout(2, 10, -1, -1));
-		panel3.setLayout(new GridLayout(2, 10, -1, -1));
-		panel4.setLayout(new GridLayout(2, 10, -1, -1));
-		panel5.setLayout(new GridLayout(2, 10, -1, -1));
-		panel6.setLayout(new GridLayout(2, 10, -1, -1));
-		
-		int[][] ocupadosPiso1 = new int[10][10];
-		labelPiso = new JLabel("Piso 1");
-		labelPiso.setFont(new Font("Cloud", Font.PLAIN, 25));
-		
-		// TESTE OCUPADOS
-		ocupadosPiso1[1][7] = 1;
-		ocupadosPiso1[3][9] = 1;
-		ocupadosPiso1[2][1] = 1;
-		ocupadosPiso1[6][8] = 1;
-		// FIM TESTE OCUPADOS
-		
-		
-		JLabel[][] espacosBranco = new JLabel[2][10];
-		JLabel[][] vagasCarro = new JLabel[10][10];
-		
-		for(int i = 0; i < 2; i++)
-		{
-			for(int j = 0; j < 10; j++)
-			{
-				vagasCarro[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-				if (ocupadosPiso1[i][j] == 0)
-				{
-					vagasCarro[i][j].setBackground(Color.GREEN);
-				}
-				else
-				{
-					vagasCarro[i][j].setBackground(Color.RED);
-				}
-				vagasCarro[i][j].setOpaque(true);
-				vagasCarro[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				panel1.add(vagasCarro[i][j]);
-				cont++;
-			}
-		}
-		
-		for(int i = 2; i < 4; i++)
-		{
-			for(int j = 0; j < 10; j++)
-			{
-				vagasCarro[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-				if (ocupadosPiso1[i][j] == 0)
-				{
-					vagasCarro[i][j].setBackground(Color.GREEN);
-				}
-				else
-				{
-					vagasCarro[i][j].setBackground(Color.RED);
-				}
-				vagasCarro[i][j].setOpaque(true);
-				vagasCarro[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				panel2.add(vagasCarro[i][j]);
-				cont++;
-			}
-		}
-		
-		for(int i = 4; i < 6; i++)
-		{
-			for(int j = 0; j < 10; j++)
-			{
-				vagasCarro[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-				if (ocupadosPiso1[i][j] == 0)
-				{
-					vagasCarro[i][j].setBackground(Color.GREEN);
-				}
-				else
-				{
-					vagasCarro[i][j].setBackground(Color.RED);
-				}
-				vagasCarro[i][j].setOpaque(true);
-				vagasCarro[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				panel3.add(vagasCarro[i][j]);
-				cont++;
-			}
-		}
-		
-		for(int i = 6; i < 8; i++)
-		{
-			for(int j = 0; j < 10; j++)
-			{
-				vagasCarro[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-				if (ocupadosPiso1[i][j] == 0)
-				{
-					vagasCarro[i][j].setBackground(Color.GREEN);
-				}
-				else
-				{
-					vagasCarro[i][j].setBackground(Color.RED);
-				}
-				vagasCarro[i][j].setOpaque(true);
-				vagasCarro[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				panel4.add(vagasCarro[i][j]);
-				cont++;
-			}
-		}
-		
-		for(int i = 7; i < 8; i++)
-		{
-			for(int j = 0; j < 10; j++)
-			{
-				vagasCarro[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-				if (ocupadosPiso1[i][j] == 0)
-				{
-					vagasCarro[i][j].setBackground(Color.GREEN);
-				}
-				else
-				{
-					vagasCarro[i][j].setBackground(Color.RED);
-				}
-				vagasCarro[i][j].setOpaque(true);
-				vagasCarro[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				panel5.add(vagasCarro[i][j]);
-				cont++;
-			}
-		}
-		
-		// COLOCANDO ESPAÇOS EM BRANCO
-		for (int j = 0; j < 10; j++)
-		{
-			espacosBranco[0][j] = new JLabel("", JLabel.CENTER);
-			panel5.add(espacosBranco[0][j]);
-		}
-		
-		
-		for(int i = 9; i < 10; i++)
-		{
-			for(int j = 0; j < 10; j++)
-			{
-				vagasCarro[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-				if (ocupadosPiso1[i][j] == 0)
-				{
-					vagasCarro[i][j].setBackground(Color.GREEN);
-				}
-				else
-				{
-					vagasCarro[i][j].setBackground(Color.RED);
-				}
-				vagasCarro[i][j].setOpaque(true);
-				vagasCarro[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				panel6.add(vagasCarro[i][j]);
-				cont++;
-			}
-		}
-		
-		// COLOCANDO ESPAÇOS EM BRANCO
-		for (int j = 0; j < 10; j++)
-		{
-			espacosBranco[1][j] = new JLabel("", JLabel.CENTER);
-			panel6.add(espacosBranco[1][j]);
-		}
-				
-	 	GridBagConstraints gbc = new GridBagConstraints();
-	 	
-	 	gbc.insets = new Insets(10, 20, 5, 0);
-	 	gbc.gridx = 0;
+            gbc = new GridBagConstraints();
+            
+            //ButtonHandler handler = new ButtonHandler();
+            Listener handler = new Listener();
+            
+            setTitle("Controle de Estacionamento");
+            panel1 = new JPanel();
+            panel2 = new JPanel();
+            panel3 = new JPanel();
+            panel4 = new JPanel();
+            panel5 = new JPanel();
+            panel6 = new JPanel();
+
+            buttonTrocaAndar = new JButton("Trocar Andar");
+            panelPrincipal = new JPanel();
+
+            exibeTerreo();
+
+            // CRIANDO MENU
+
+            menuBar = new JMenuBar();
+
+            veiculos = new JMenu("Veiculos");
+            menuBar.add(veiculos);
+                    // SUB ITENS DE VEICULOS
+                    ventrada = new JMenuItem("Entrada", KeyEvent.VK_E);
+                    veiculos.add(ventrada);
+
+                    vsaida = new JMenuItem("Saida", KeyEvent.VK_S);
+                    veiculos.add(vsaida);
+                    // FIM SUB ITENS DE VEICULOS
+
+            status = new JMenu("Status");
+            menuBar.add(status);
+                    statusIn = new JMenuItem("Status", KeyEvent.VK_P);
+                    status.add(statusIn);
+                    
+
+            config = new JMenu("Configuracoes");
+            menuBar.add(config);
+                    configIn = new JMenuItem("Configuracoes", KeyEvent.VK_C);
+                    config.add(configIn);
+
+            // FIM CRIANDO MENU
+            setJMenuBar(menuBar);
+            add(panelPrincipal);	
+
+            // HANDLERS
+            
+            buttonTrocaAndar.addActionListener(handler);
+            ventrada.addActionListener(handler);
+            vsaida.addActionListener(handler);
+            status.addActionListener(handler);
+            config.addActionListener(handler);
+            statusIn.addActionListener(handler);
+            configIn.addActionListener(handler);
+            // FIM HANDLERS
+    }
+
+    void exibePiso1()
+    {
+            int cont = 100;
+            panelPrincipal.setLayout(new GridBagLayout());
+            panel1.setLayout(new GridLayout(2, 10, -1, -1));
+            panel2.setLayout(new GridLayout(2, 10, -1, -1));
+            panel3.setLayout(new GridLayout(2, 10, -1, -1));
+            panel4.setLayout(new GridLayout(2, 10, -1, -1));
+            panel5.setLayout(new GridLayout(2, 10, -1, -1));
+            panel6.setLayout(new GridLayout(2, 10, -1, -1));
+
+            int[][] ocupadosPiso1 = new int[10][10];
+            labelPiso = new JLabel("Piso 1");
+            labelPiso.setFont(new Font("Cloud", Font.PLAIN, 25));
+
+//            // TESTE OCUPADOS
+//            ocupadosPiso1[1][7] = 1;
+//            ocupadosPiso1[3][9] = 1;
+//            ocupadosPiso1[2][1] = 1;
+//            ocupadosPiso1[6][8] = 1;
+//            // FIM TESTE OCUPADOS
+
+
+//            JLabel[][] espacosBranco = new JLabel[2][10];
+//            JLabel[][] vagasCarro = new JLabel[10][10];
+
+            for(int i = 0; i < 2; i++)
+            {
+                    for(int j = 0; j < 10; j++)
+                    {
+                            vagasCarroP[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+                            if (ocupadosPiso1[i][j] == 0)
+                            {
+                                    vagasCarroP[i][j].setBackground(Color.GREEN);
+                            }
+                            else
+                            {
+                                    vagasCarroP[i][j].setBackground(Color.RED);
+                            }
+                            vagasCarroP[i][j].setOpaque(true);
+                            vagasCarroP[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                            panel1.add(vagasCarroP[i][j]);
+                            cont++;
+                    }
+            }
+
+            for(int i = 2; i < 4; i++)
+            {
+                    for(int j = 0; j < 10; j++)
+                    {
+                            vagasCarroP[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+                            if (ocupadosPiso1[i][j] == 0)
+                            {
+                                    vagasCarroP[i][j].setBackground(Color.GREEN);
+                            }
+                            else
+                            {
+                                    vagasCarroP[i][j].setBackground(Color.RED);
+                            }
+                            vagasCarroP[i][j].setOpaque(true);
+                            vagasCarroP[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                            panel2.add(vagasCarroP[i][j]);
+                            cont++;
+                    }
+            }
+
+            for(int i = 4; i < 6; i++)
+            {
+                    for(int j = 0; j < 10; j++)
+                    {
+                            vagasCarroP[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+                            if (ocupadosPiso1[i][j] == 0)
+                            {
+                                    vagasCarroP[i][j].setBackground(Color.GREEN);
+                            }
+                            else
+                            {
+                                    vagasCarroP[i][j].setBackground(Color.RED);
+                            }
+                            vagasCarroP[i][j].setOpaque(true);
+                            vagasCarroP[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                            panel3.add(vagasCarroP[i][j]);
+                            cont++;
+                    }
+            }
+
+            for(int i = 6; i < 8; i++)
+            {
+                    for(int j = 0; j < 10; j++)
+                    {
+                            vagasCarroP[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+                            if (ocupadosPiso1[i][j] == 0)
+                            {
+                                    vagasCarroP[i][j].setBackground(Color.GREEN);
+                            }
+                            else
+                            {
+                                    vagasCarroP[i][j].setBackground(Color.RED);
+                            }
+                            vagasCarroP[i][j].setOpaque(true);
+                            vagasCarroP[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                            panel4.add(vagasCarroP[i][j]);
+                            cont++;
+                    }
+            }
+
+            for(int i = 7; i < 8; i++)
+            {
+                    for(int j = 0; j < 10; j++)
+                    {
+                            vagasCarroP[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+                            if (ocupadosPiso1[i][j] == 0)
+                            {
+                                    vagasCarroP[i][j].setBackground(Color.GREEN);
+                            }
+                            else
+                            {
+                                    vagasCarroP[i][j].setBackground(Color.RED);
+                            }
+                            vagasCarroP[i][j].setOpaque(true);
+                            vagasCarroP[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                            panel5.add(vagasCarroP[i][j]);
+                            cont++;
+                    }
+            }
+
+            // COLOCANDO ESPACOSS EM BRANCO
+            for (int j = 0; j < 10; j++)
+            {
+                    espacosBrancoP[0][j] = new JLabel("", JLabel.CENTER);
+                    panel5.add(espacosBrancoP[0][j]);
+            }
+
+
+            for(int i = 9; i < 10; i++)
+            {
+                    for(int j = 0; j < 10; j++)
+                    {
+                            vagasCarroP[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+                            if (ocupadosPiso1[i][j] == 0)
+                            {
+                                    vagasCarroP[i][j].setBackground(Color.GREEN);
+                            }
+                            else
+                            {
+                                    vagasCarroP[i][j].setBackground(Color.RED);
+                            }
+                            vagasCarroP[i][j].setOpaque(true);
+                            vagasCarroP[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                            panel6.add(vagasCarroP[i][j]);
+                            cont++;
+                    }
+            }
+
+            // COLOCANDO ESPAï¿½OS EM BRANCO
+            for (int j = 0; j < 10; j++)
+            {
+                    espacosBrancoP[1][j] = new JLabel("", JLabel.CENTER);
+                    panel6.add(espacosBrancoP[1][j]);
+            }
+
+            GridBagConstraints gbc = new GridBagConstraints();
+
+            gbc.insets = new Insets(10, 20, 5, 0);
+            gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         panelPrincipal.add(labelPiso, gbc);
@@ -313,36 +332,36 @@ public class FrameEstacionamento extends JFrame{
 		panel6.setLayout(new GridLayout(2, 10, -1, -1));
 		
 		int[][] ocupadosTerreo = new int[10][10];
-		labelPiso = new JLabel("Térreo");
+		labelPiso = new JLabel("Terreo");
 		labelPiso.setFont(new Font("Cloud", Font.PLAIN, 25));
 		
-		// TESTE OCUPADOS
-		ocupadosTerreo[1][7] = 0;
-		ocupadosTerreo[3][9] = 0;
-		ocupadosTerreo[4][8] = 1;
-		ocupadosTerreo[0][2] = 1;
-		// FIM TESTE OCUPADOS
+//		// TESTE OCUPADOS
+//		ocupadosTerreo[1][7] = 1;
+//		ocupadosTerreo[3][9] = 1;
+//		ocupadosTerreo[4][8] = 1;
+//		ocupadosTerreo[0][2] = 1;
+//		// FIM TESTE OCUPADOS
 		
 		
-		JLabel[][] espacosBranco = new JLabel[2][10];
-		JLabel[][] vagasCarro = new JLabel[10][10];
+//		JLabel[][] espacosBranco = new JLabel[2][10];
+//		JLabel[][] vagasCarro = new JLabel[10][10];
 		
 		for(int i = 0; i < 2; i++)
 		{
 			for(int j = 0; j < 10; j++)
 			{
-				vagasCarro[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+				vagasCarroT[i][j] = new JLabel((String.valueOf(cont) + " M"), JLabel.CENTER);
 				if (ocupadosTerreo[i][j] == 0)
 				{
-					vagasCarro[i][j].setBackground(Color.GREEN);
+					vagasCarroT[i][j].setBackground(Color.GREEN);
 				}
 				else
 				{
-					vagasCarro[i][j].setBackground(Color.RED);
+					vagasCarroT[i][j].setBackground(Color.RED);
 				}
-				vagasCarro[i][j].setOpaque(true);
-				vagasCarro[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				panel1.add(vagasCarro[i][j]);
+				vagasCarroT[i][j].setOpaque(true);
+				vagasCarroT[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				panel1.add(vagasCarroT[i][j]);
 				cont++;
 			}
 		}
@@ -351,18 +370,18 @@ public class FrameEstacionamento extends JFrame{
 		{
 			for(int j = 0; j < 10; j++)
 			{
-				vagasCarro[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+				vagasCarroT[i][j] = new JLabel((String.valueOf(cont) + " C"), JLabel.CENTER);
 				if (ocupadosTerreo[i][j] == 0)
 				{
-					vagasCarro[i][j].setBackground(Color.GREEN);
+					vagasCarroT[i][j].setBackground(Color.GREEN);
 				}
 				else
 				{
-					vagasCarro[i][j].setBackground(Color.RED);
+					vagasCarroT[i][j].setBackground(Color.RED);
 				}
-				vagasCarro[i][j].setOpaque(true);
-				vagasCarro[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				panel2.add(vagasCarro[i][j]);
+				vagasCarroT[i][j].setOpaque(true);
+				vagasCarroT[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				panel2.add(vagasCarroT[i][j]);
 				cont++;
 			}
 		}
@@ -371,18 +390,18 @@ public class FrameEstacionamento extends JFrame{
 		{
 			for(int j = 0; j < 10; j++)
 			{
-				vagasCarro[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+				vagasCarroT[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
 				if (ocupadosTerreo[i][j] == 0)
 				{
-					vagasCarro[i][j].setBackground(Color.GREEN);
+					vagasCarroT[i][j].setBackground(Color.GREEN);
 				}
 				else
 				{
-					vagasCarro[i][j].setBackground(Color.RED);
+					vagasCarroT[i][j].setBackground(Color.RED);
 				}
-				vagasCarro[i][j].setOpaque(true);
-				vagasCarro[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				panel3.add(vagasCarro[i][j]);
+				vagasCarroT[i][j].setOpaque(true);
+				vagasCarroT[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				panel3.add(vagasCarroT[i][j]);
 				cont++;
 			}
 		}
@@ -391,18 +410,18 @@ public class FrameEstacionamento extends JFrame{
 		{
 			for(int j = 0; j < 10; j++)
 			{
-				vagasCarro[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+				vagasCarroT[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
 				if (ocupadosTerreo[i][j] == 0)
 				{
-					vagasCarro[i][j].setBackground(Color.GREEN);
+					vagasCarroT[i][j].setBackground(Color.GREEN);
 				}
 				else
 				{
-					vagasCarro[i][j].setBackground(Color.RED);
+					vagasCarroT[i][j].setBackground(Color.RED);
 				}
-				vagasCarro[i][j].setOpaque(true);
-				vagasCarro[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				panel4.add(vagasCarro[i][j]);
+				vagasCarroT[i][j].setOpaque(true);
+				vagasCarroT[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				panel4.add(vagasCarroT[i][j]);
 				cont++;
 			}
 		}
@@ -411,27 +430,27 @@ public class FrameEstacionamento extends JFrame{
 		{
 			for(int j = 0; j < 10; j++)
 			{
-				vagasCarro[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+				vagasCarroT[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
 				if (ocupadosTerreo[i][j] == 0)
 				{
-					vagasCarro[i][j].setBackground(Color.GREEN);
+					vagasCarroT[i][j].setBackground(Color.GREEN);
 				}
 				else
 				{
-					vagasCarro[i][j].setBackground(Color.RED);
+					vagasCarroT[i][j].setBackground(Color.RED);
 				}
-				vagasCarro[i][j].setOpaque(true);
-				vagasCarro[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				panel5.add(vagasCarro[i][j]);
+				vagasCarroT[i][j].setOpaque(true);
+				vagasCarroT[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				panel5.add(vagasCarroT[i][j]);
 				cont++;
 			}
 		}
 		
-		// COLOCANDO ESPAÇOS EM BRANCO
+		// COLOCANDO ESPAï¿½OS EM BRANCO
 		for (int j = 0; j < 10; j++)
 		{
-			espacosBranco[0][j] = new JLabel("", JLabel.CENTER);
-			panel5.add(espacosBranco[0][j]);
+			espacosBrancoT[0][j] = new JLabel("", JLabel.CENTER);
+			panel5.add(espacosBrancoT[0][j]);
 		}
 		
 		
@@ -439,27 +458,27 @@ public class FrameEstacionamento extends JFrame{
 		{
 			for(int j = 0; j < 10; j++)
 			{
-				vagasCarro[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+				vagasCarroT[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
 				if (ocupadosTerreo[i][j] == 0)
 				{
-					vagasCarro[i][j].setBackground(Color.GREEN);
+					vagasCarroT[i][j].setBackground(Color.GREEN);
 				}
 				else
 				{
-					vagasCarro[i][j].setBackground(Color.RED);
+					vagasCarroT[i][j].setBackground(Color.RED);
 				}
-				vagasCarro[i][j].setOpaque(true);
-				vagasCarro[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				panel6.add(vagasCarro[i][j]);
+				vagasCarroT[i][j].setOpaque(true);
+				vagasCarroT[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				panel6.add(vagasCarroT[i][j]);
 				cont++;
 			}
 		}
 		
-		// COLOCANDO ESPAÇOS EM BRANCO
+		// COLOCANDO ESPAï¿½OS EM BRANCO
 		for (int j = 0; j < 10; j++)
 		{
-			espacosBranco[1][j] = new JLabel("", JLabel.CENTER);
-			panel6.add(espacosBranco[1][j]);
+			espacosBrancoT[1][j] = new JLabel("", JLabel.CENTER);
+			panel6.add(espacosBrancoT[1][j]);
 		}
 				
 	 	GridBagConstraints gbc = new GridBagConstraints();
@@ -513,9 +532,8 @@ public class FrameEstacionamento extends JFrame{
         panelPrincipal.add(panel6, gbc);
 	}
 	
-	private class ButtonHandler implements ActionListener
+	private class Listener implements ActionListener
 	{
-
 		public void actionPerformed(ActionEvent event) 
 		{
 			if(event.getSource() == buttonTrocaAndar )
@@ -545,30 +563,70 @@ public class FrameEstacionamento extends JFrame{
 				panelPrincipal.setVisible(false); // REFRESH DO PAINEL
 				panelPrincipal.setVisible(true);
 			}
-			
 			// OPCOES DO MENU SUPERIOR
 			else if (event.getSource() == ventrada)
 			{
-				JOptionPane.showMessageDialog(null, "TESTE DO MENUZIN HUMILDE", "ENTRADA", JOptionPane.INFORMATION_MESSAGE);
+				TelaEntrada telaEntrada = new TelaEntrada();
+                                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                                int height = screenSize.height;
+                                int width = screenSize.width;
+                                telaEntrada.setSize(width/2, height/2);
+                                telaEntrada.setVisible(true);
+                                telaEntrada.setLocationRelativeTo(null);
 			}
 			
 			else if (event.getSource() == vsaida)
 			{
-				JOptionPane.showMessageDialog(null, "TESTE DO MENUZIN HUMILDE", "SAIDA", JOptionPane.INFORMATION_MESSAGE);
+                            TelaSaida telaSaida = new TelaSaida();
+                            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                            int height = screenSize.height;
+                            int width = screenSize.width;
+                            telaSaida.setSize(width/2, height/2);
+                            telaSaida.setVisible(true);
+                            telaSaida.setLocationRelativeTo(null);
 			}
-			
-			// NÃO FUNCIONAM !!!!!!
-			/*else if (event.getSource() == status) 			
+			else if (event.getSource() == status || event.getSource() == statusIn) 			
 			{
-				JOptionPane.showMessageDialog(null, "TESTE DO MENUZIN HUMILDE", "STATUS", JOptionPane.INFORMATION_MESSAGE);
-			}
-			
-			else if (event.getSource() == config)
+                            TelaStatus telaStatus = new TelaStatus();
+                            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                            int height = screenSize.height;
+                            int width = screenSize.width;
+                            telaStatus.setSize(width/2, height/2);
+                            telaStatus.setVisible(true);
+                            telaStatus.setLocationRelativeTo(null);
+                        }
+			else if (event.getSource() == config || event.getSource() == configIn)
 			{
-				JOptionPane.showMessageDialog(null, "TESTE DO MENUZIN HUMILDE", "CONFIGURAÇÕES", JOptionPane.INFORMATION_MESSAGE);
-			}*/
+                            TelaConfiguracoes telaConfig = new TelaConfiguracoes();
+                            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                            int height = screenSize.height;
+                            int width = screenSize.width;
+                            telaConfig.setSize(width/2, height/2);
+                            telaConfig.setVisible(true);
+                            telaConfig.setLocationRelativeTo(null);
+                        }
 			// FIM OPCOES DO MENU SUPERIOR
-			
 		}
 	}
+        
+        public boolean Disponibilidade(String tipo){
+            //Fazer funÃ§Ã£o que retorna a disponibilidade de vaga de acordo com o tipo de veiculo
+            return(false);
+        }
+                
+        public int OcuparVagaCarro()
+        {
+            //Fazer funÃ§Ã£o que ocupe a vaga para o carro e retorne a posiÃ§Ã£o a deixando vermelha
+            return(1);
+        }
+        public int OcuparVagaMoto()
+        {
+            //Fazer funÃ§Ã£o que ocupe a vaga para a moto e retorne a posiÃ§Ã£o a deixando vermelha
+            return(1);
+        } 
+        public int OcuparVagaCaminhonete()
+        {
+            //Fazer funÃ§Ã£o que ocupe a vaga para a caminhonete e retorne a posiÃ§Ã£o a deixando vermelha
+            return(1);
+        } 
 }
