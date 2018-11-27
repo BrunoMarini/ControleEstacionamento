@@ -4,10 +4,9 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
-public class SistemaEstacionamento extends BancoDados
+public class SistemaEstacionamento
 {   
 	private static SistemaEstacionamento instance = null;
-	private BancoDados bancoDados = new BancoDados();
     public ArrayList<VeiculoEstacionado> lista = new ArrayList<VeiculoEstacionado>();
     
     private SistemaEstacionamento()
@@ -22,9 +21,16 @@ public class SistemaEstacionamento extends BancoDados
         return(instance);
     }
 
+    public BancoDados setBanco()
+    {
+    	BancoDados bancoDados = new BancoDados();
+    	return bancoDados;
+    }
+    
+    
     public void inicializar()
     {
-    	
+    	BancoDados bancoDados = setBanco();	
     	bancoDados.openReadFile();
     	bancoDados.readFile();
     	bancoDados.closeFile();
@@ -41,14 +47,76 @@ public class SistemaEstacionamento extends BancoDados
         
     }
 
-    public void EntradaVeiculo(String placa, String modelo, String tipo, String pacote, int entrada)
+    public int EntradaVeiculo(String placa, String modelo, String tipo, String pacote, int entrada)
     {
-        VeiculoEstacionado veiculo = new VeiculoEstacionado(placa, modelo, pacote, 1, entrada);
-        lista.add(veiculo);
+    	int contCarro = 0, contMoto = 0, contCaminhonete = 0, vagaOcupada = -1;
+    	String tipoAtual;
+    	
+        // ACHAR VAGA DISPONIVEL PARA O TIPO DE VEICULO
+    	for(VeiculoEstacionado veiculoAtual : lista)
+    	{
+    		tipoAtual = veiculoAtual.getModelo();
+    		
+    		if(tipoAtual.equals("Carro"))
+    		{
+    			contCarro++;
+    		}
+    		
+    		else if(tipoAtual.equals("Moto"))
+    		{
+    			contMoto++;
+    		}
+    		
+    		else if(tipoAtual.equals("Caminhonete"))
+    		{
+    			contCaminhonete++;
+    		}
+    		
+    	}
+    	
+    	if (tipo.equals("Carro") && contCarro < 160)
+    	{
+    		vagaOcupada = 40 + contCarro;
+    	}
+    	else if(tipo.equals("Moto") && contCarro < 20)
+		{
+    		vagaOcupada = contMoto;
+		}
+		
+		else if(tipo.equals("Caminhonete") && contCarro < 20)
+		{
+			vagaOcupada = 20 + contCaminhonete;
+		}
+		else
+		{
+			return -1;
+		}
+    	 
+        VeiculoEstacionado veiculo = new VeiculoEstacionado(placa, modelo, pacote, vagaOcupada, entrada);
+        lista.add(veiculo);  
         
+        BancoDados bancoDados = setBanco();
         bancoDados.openWriteFile();
         bancoDados.adicionarArquivo(veiculo);
         bancoDados.closeFile();
+        
+        return vagaOcupada;
+        
+    }
+
+    public boolean isOcupado(int vagaTeste)
+    {
+    	
+    	for(VeiculoEstacionado veiculoAtual : lista)
+    	{
+    		if(vagaTeste == veiculoAtual.getVagaOcupada())
+    		{
+    			return (true);
+    		}
+    		
+    	}
+    	
+    	return false;
     }
     
     public int getNumeroCarros(){
