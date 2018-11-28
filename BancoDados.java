@@ -7,13 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
 public class BancoDados
 {
-	SistemaEstacionamento estacionamento = SistemaEstacionamento.getInstance();
+	//SistemaEstacionamento estacionamento = SistemaEstacionamento.getInstance();
     private ObjectOutputStream output;
     private ObjectInputStream input;
     
@@ -53,22 +54,23 @@ public class BancoDados
         }
     }
     
-    public void readFile()
+    public ArrayList readFile()
     {
     	VeiculoEstacionado veiculoReg;
+    	ArrayList<VeiculoEstacionado> lista = new ArrayList<VeiculoEstacionado>();
     	
     	try
         {
             while(true)
             {
             	veiculoReg = (VeiculoEstacionado)input.readObject();
-            	estacionamento.lista.add(veiculoReg);
+            	lista.add(veiculoReg);
             }
         
         }
     	catch(EOFException exception)
         {
-            return;
+            return lista;
         }
     	
 		catch(ClassNotFoundException exception)
@@ -80,6 +82,7 @@ public class BancoDados
         {
             System.err.println("Erro");
         }
+		return lista;
     }
     
     
