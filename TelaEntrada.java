@@ -227,7 +227,7 @@ public class TelaEntrada extends JFrame
             	//System.out.println(d);
             	
                 SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
-                sis.EntradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote, 1);
+                sis.entradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote, 1);
             }
 
             

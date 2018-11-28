@@ -2,6 +2,9 @@ package estacionamento;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 public class SistemaEstacionamento
@@ -22,7 +25,7 @@ public class SistemaEstacionamento
             instance = new SistemaEstacionamento();
         return(instance);
     }
-
+    
     /*public BancoDados setBanco()
     {
     	BancoDados bancoDados = new BancoDados();
@@ -48,10 +51,55 @@ public class SistemaEstacionamento
         telaEstacionamento.setVisible(true);
         telaEstacionamento.setLocationRelativeTo(null);
         
+        telaEstacionamento.addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				salvarLista();
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+        
         
     }
 
-    public int EntradaVeiculo(String placa, String modelo, String tipo, String pacote, int entrada)
+    public int entradaVeiculo(String placa, String modelo, String tipo, String pacote, int entrada)
     {
     	int contCarro = 0, contMoto = 0, contCaminhonete = 0, vagaOcupada = -1, inicio = 0;
     	int fim = 0, i;
@@ -98,7 +146,7 @@ public class SistemaEstacionamento
         // MOVER PARA ONDE FECHA O PROGRAMA
         //BancoDados bancoDados = setBanco();
         //bancoDados.openWriteFile();
-        bancoDados.adicionarArquivo(veiculo);
+        //bancoDados.adicionarArquivo(veiculo);
         //bancoDados.closeFile();
         // FIM DO MOVER
         
@@ -123,6 +171,16 @@ public class SistemaEstacionamento
     
     public int getNumeroCarros(){
         return (lista.size());
+    }
+    
+    public void salvarLista()
+    {
+    	for(VeiculoEstacionado veiculoAtual : lista)
+    	{
+    		bancoDados.adicionarArquivo(veiculoAtual);
+    	}
+    	bancoDados.closeFile();
+    	
     }
     
     

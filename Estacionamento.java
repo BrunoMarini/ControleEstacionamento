@@ -7,4 +7,6 @@ public class Estacionamento {
        SistemaEstacionamento sistema = SistemaEstacionamento.getInstance();
        sistema.inicializar();
     }
+    
+    
 }

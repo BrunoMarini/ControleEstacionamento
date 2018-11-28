@@ -1,6 +1,8 @@
 package estacionamento;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowListener;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -532,6 +534,8 @@ public class FrameEstacionamento extends JFrame
         gbc.gridy = 3;
         panelPrincipal.add(panel6, gbc);
 	}
+	
+	
 	
 	private class Listener implements ActionListener
 	{
