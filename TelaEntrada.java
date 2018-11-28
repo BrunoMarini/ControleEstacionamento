@@ -6,6 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -17,8 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-public class TelaEntrada extends JFrame{
-    
+public class TelaEntrada extends JFrame
+{
     
     private JLabel titulo;
     private JLabel imagem;
@@ -29,12 +33,16 @@ public class TelaEntrada extends JFrame{
     private JLabel msgTipo;
     private JComboBox tipo;
     private JLabel pacote;
-    private JRadioButton hora;
+    private JRadioButton horaB;
     private JRadioButton mensalista;
     private JRadioButton pernoite;
     private ButtonGroup radioGroup;
     private JButton cadastrar;
     private JButton cancelar;
+    private JLabel msgData;
+    private JTextField data;
+    private JLabel msgHora;
+    private JTextField hora;
     
     private static final String[] tipos = {"", "Moto", "Carro", "Caminhonete"}; 
     int i, x;
@@ -59,7 +67,7 @@ public class TelaEntrada extends JFrame{
         }
         
         p[0][0].setLayout(new GridLayout(1, 2));
-        titulo = new JLabel("Entrada de Veículos", (int)CENTER_ALIGNMENT);
+        titulo = new JLabel("Entrada de Veiculos", (int)CENTER_ALIGNMENT);
         titulo.setFont(new Font("Century", Font.PLAIN, 35));
         imagem = new JLabel("", (int)CENTER_ALIGNMENT);
         imagem.setIcon(parada);
@@ -77,6 +85,17 @@ public class TelaEntrada extends JFrame{
         modelo = new JTextField();
         msgTipo = new JLabel("Tipo de veiculo:", (int) CENTER_ALIGNMENT);
         msgTipo.setFont(new Font("Arial", Font.PLAIN, 15));
+        
+        msgData = new JLabel("Data entrada", (int)CENTER_ALIGNMENT);
+        msgData.setFont(new Font("Arial", Font.PLAIN, 15));
+        data = new JTextField("DD/MM/AAAA");
+        data.setHorizontalAlignment(JTextField.CENTER);
+        msgHora = new JLabel("Horario de entrada", (int)CENTER_ALIGNMENT);
+        msgHora.setFont(new Font("Arial", Font.PLAIN, 15));
+        hora = new JTextField(8);
+        hora.setText("hh:mm:ss");
+        hora.setHorizontalAlignment(JTextField.CENTER);
+        
         tipo = new JComboBox(tipos);
         tipo.setMaximumRowCount(4);
         tipo.addItemListener(
@@ -106,18 +125,16 @@ public class TelaEntrada extends JFrame{
                             break;
                         }
                     }
-                });
-        
-        p[1][0].add(new JPanel());//
-        
+                });    
         p[1][0].add(msgPlaca);//
         p[1][0].add(msgModelo);//
         p[1][0].add(new JPanel());//
+        p[1][0].add(new JPanel());//
         
-        p[1][0].add(new JPanel());
         p[1][0].add(placa);
         p[1][0].add(modelo);
-        p[1][0].add(new JPanel());
+        p[1][0].add(msgHora);
+        p[1][0].add(hora);
         
         p[2][0].setLayout(new GridLayout(2, 4));
         
@@ -125,22 +142,21 @@ public class TelaEntrada extends JFrame{
         p[2][0].add(new JPanel());
         p[2][0].add(new JPanel());
         p[2][0].add(new JPanel());
-        p[2][0].add(new JPanel());
         
         p[2][0].add(msgTipo);
         p[2][0].add(tipo);
-        
-        p[2][0].add(new JPanel());
-        
+        p[2][0].add(msgData);
+        p[2][0].add(data);
         
         p[3][0].setLayout(new GridLayout(1, 1));
         
         pacote = new JLabel("Tipo de Pacote: ", (int)CENTER_ALIGNMENT);
         pacote.setFont(new Font("Century", Font.PLAIN, 25));
         
-        hora = new JRadioButton("Hora", true);
-        hora.setHorizontalAlignment((int)CENTER_ALIGNMENT);
-        hora.setFont(new Font("Arial", Font.PLAIN, 20));
+        horaB = new JRadioButton("Hora", true);
+        horaB.setHorizontalAlignment((int)CENTER_ALIGNMENT);
+        horaB.setFont(new Font("Arial", Font.PLAIN, 20));
+        tipoPacote = "Hora";
         
         mensalista = new JRadioButton("Mensalista", false);
         mensalista.setHorizontalAlignment((int)CENTER_ALIGNMENT);
@@ -154,21 +170,22 @@ public class TelaEntrada extends JFrame{
         
         p[4][0].setLayout(new GridLayout(1, 3));
         
-        p[4][0].add(hora);
-        p[4][0].add(mensalista);
-        p[4][0].add(pernoite);
-     
-        radioGroup = new ButtonGroup();
-        radioGroup.add(hora);
-        radioGroup.add(mensalista);
-        radioGroup.add(pernoite);
-        
-        hora.addItemListener(
+        /*hora.addItemListener(
             new RadioButtonHandler(0));
         mensalista.addItemListener(
             new RadioButtonHandler(1));
         pernoite.addItemListener(
-            new RadioButtonHandler(2));
+            new RadioButtonHandler(2));*/
+        
+        
+        p[4][0].add(horaB);
+        p[4][0].add(mensalista);
+        p[4][0].add(pernoite);
+        
+        radioGroup = new ButtonGroup();
+        radioGroup.add(horaB);
+        radioGroup.add(mensalista);
+        radioGroup.add(pernoite);
         
         p[5][0].setLayout(new GridLayout(1,4));
         cadastrar = new JButton("Cadastrar");
@@ -177,36 +194,18 @@ public class TelaEntrada extends JFrame{
         cancelar.addActionListener(list);
         cadastrar.addActionListener(list);
         
+
+        horaB.addActionListener(list);
+        mensalista.addActionListener(list);
+        pernoite.addActionListener(list);
+        
         p[5][0].add(cancelar);
         p[5][0].add(cadastrar);
         
     }
-    
-    private class RadioButtonHandler implements ItemListener
-    {        
-        public RadioButtonHandler(int i)
-        {
-            switch(i)
-            {
-                case 0:
-                   tipoPacote = "Hora";
-                break;
-                case 1:
-                    tipoPacote = "Mensalista";
-                break;
-                case 2:
-                    tipoPacote = "Pernoite";
-                break;
-            }
-        }
 
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-    }
-    
-    private class Listener implements ActionListener
+        
+    private class Listener implements ActionListener //TO MEXENDO AQUUIIIIIII PRA VOC� LEMBRAR BRUNO SEU IDIOTA DATA
     {
         @Override
         public void actionPerformed(ActionEvent e)
@@ -215,9 +214,35 @@ public class TelaEntrada extends JFrame{
                 dispose();
             else if(e.getSource() == cadastrar)
             {
+            	int dia, mes, ano, hora, min, seg;
+            	
+            	ano = Integer.parseInt(data.getText().substring(6, 10)); //AQUIIIIIIIIIII
+            	System.out.println(ano);
+            	
+            	//LocalDateTime d = new Date();
+            	
+            	//System.out.println(d);
+            	
                 SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
-                sis.EntradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote);
+                sis.entradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote, 1);
             }
+
+            
+            else if(e.getSource() == horaB)
+            {
+                tipoPacote = "Hora";
+            }
+            
+            else if(e.getSource() == mensalista)
+            {
+                tipoPacote = "mensalista";
+            }
+            
+            else if(e.getSource() == pernoite)
+            {
+                tipoPacote = "Pernoite";
+            }
+            
         }
     }
 }
