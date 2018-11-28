@@ -34,6 +34,7 @@ public class VeiculoEstacionado implements Serializable
     public int getVagaOcupada(){
         return(vagaOcupada);
     }
+
     
     public int getEntrada(){
     	return(entrada);

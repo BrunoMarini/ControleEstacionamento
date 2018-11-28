@@ -10,7 +10,6 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -44,7 +43,6 @@ public class TelaEntrada extends JFrame
     private JTextField data;
     private JLabel msgHora;
     private JTextField hora;
-
     
     private static final String[] tipos = {"", "Moto", "Carro", "Caminhonete"}; 
     int i, x;
@@ -63,7 +61,6 @@ public class TelaEntrada extends JFrame
         Icon carro       = new ImageIcon(getClass().getResource("carro.png"));
         Icon caminhonete = new ImageIcon(getClass().getResource("caminhonete.png"));
         
-       
         for(i = 0; i < 6; i++){
             p[i][0] = new JPanel();
             add(p[i][0]);
@@ -101,7 +98,6 @@ public class TelaEntrada extends JFrame
         
         tipo = new JComboBox(tipos);
         tipo.setMaximumRowCount(4);
-        
         tipo.addItemListener(
                 new ItemListener()
                 {
@@ -129,8 +125,7 @@ public class TelaEntrada extends JFrame
                             break;
                         }
                     }
-                });
-                
+                });    
         p[1][0].add(msgPlaca);//
         p[1][0].add(msgModelo);//
         p[1][0].add(new JPanel());//
@@ -199,6 +194,7 @@ public class TelaEntrada extends JFrame
         cancelar.addActionListener(list);
         cadastrar.addActionListener(list);
         
+
         horaB.addActionListener(list);
         mensalista.addActionListener(list);
         pernoite.addActionListener(list);
@@ -207,8 +203,9 @@ public class TelaEntrada extends JFrame
         p[5][0].add(cadastrar);
         
     }
+
         
-    private class Listener implements ActionListener //TO MEXENDO AQUUIIIIIII PRA VOCÊ LEMBRAR BRUNO SEU IDIOTA DATA
+    private class Listener implements ActionListener //TO MEXENDO AQUUIIIIIII PRA VOCï¿½ LEMBRAR BRUNO SEU IDIOTA DATA
     {
         @Override
         public void actionPerformed(ActionEvent e)

@@ -47,8 +47,7 @@ public class TelaConfiguracoes extends JFrame
     
     public TelaConfiguracoes()
     {
-        super("Configuracoes");
-        
+        super("Configuracoes");   
         setLayout(new GridLayout(4, 1));
         JPanel[][] p = new JPanel[4][1];
         

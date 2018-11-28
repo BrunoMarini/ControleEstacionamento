@@ -1,5 +1,6 @@
 package estacionamento;
 
+
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
@@ -28,7 +29,9 @@ import javax.swing.JPanel;
 
 public class FrameEstacionamento extends JFrame
 {
+
 	SistemaEstacionamento sistema = SistemaEstacionamento.getInstance();
+
 	private JPanel panel1, panel2, panel3, panel4, panel5, panel6, panelPrincipal;
 	private JLabel vagasCarro, labelPiso;
 	private JButton buttonTrocaAndar;
@@ -73,6 +76,7 @@ public class FrameEstacionamento extends JFrame
             // CRIANDO MENU
 
             menuBar = new JMenuBar();
+
 
             veiculos = new JMenu("Veiculos");
             menuBar.add(veiculos);
@@ -142,6 +146,7 @@ public class FrameEstacionamento extends JFrame
                     for(int j = 0; j < 10; j++)
                     {
                             vagasCarroP[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+
                             if (sistema.isOcupado(cont))
                             {
                                     vagasCarroP[i][j].setBackground(Color.RED);
@@ -162,6 +167,7 @@ public class FrameEstacionamento extends JFrame
                     for(int j = 0; j < 10; j++)
                     {
                             vagasCarroP[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
+
                             if (sistema.isOcupado(cont))
                             {
                                     vagasCarroP[i][j].setBackground(Color.RED);
@@ -236,7 +242,6 @@ public class FrameEstacionamento extends JFrame
                             cont++;
                     }
             }
-
             // COLOCANDO ESPACOSS EM BRANCO
             for (int j = 0; j < 10; j++)
             {
@@ -533,10 +538,8 @@ public class FrameEstacionamento extends JFrame
         gbc.gridx = 1;
         gbc.gridy = 3;
         panelPrincipal.add(panel6, gbc);
-	}
-	
-	
-	
+	}	
+
 	private class Listener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event) 

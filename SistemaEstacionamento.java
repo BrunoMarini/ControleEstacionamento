@@ -42,7 +42,6 @@ public class SistemaEstacionamento
     	
     	bancoDados.openWriteFile();
     	
-    	
         FrameEstacionamento telaEstacionamento = new FrameEstacionamento();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int height = screenSize.height;
@@ -50,7 +49,7 @@ public class SistemaEstacionamento
         telaEstacionamento.setSize(width/2, height/2);
         telaEstacionamento.setVisible(true);
         telaEstacionamento.setLocationRelativeTo(null);
-        
+       
         telaEstacionamento.addWindowListener(new WindowListener() {
 			
 			@Override
@@ -182,6 +181,5 @@ public class SistemaEstacionamento
     	bancoDados.closeFile();
     	
     }
-    
     
 }
