@@ -201,11 +201,6 @@ public class SistemaEstacionamento
     	
     	return false;
     }
-    
-    public int getNumeroCarros(){
-        return (lista.size());
-    }
-    
     public void salvarLista()
     {
     	for(VeiculoEstacionado veiculoAtual : lista)
@@ -248,7 +243,7 @@ public class SistemaEstacionamento
     	return pernoiteCaminhonte;
     }
     
-    public int getNumeroCarros(){
+    public int getNumeroVeiculos(){
         return (lista.size());
     }   
     
