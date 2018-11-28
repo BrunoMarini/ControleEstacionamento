@@ -2,8 +2,12 @@ package estacionamento;
 
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Date;
+
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -44,10 +48,14 @@ public class TelaConfiguracoes extends JFrame
     private ButtonGroup grupo;
     
     int i;
+    int aux;
+    
+    SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
     
     public TelaConfiguracoes()
     {
-        super("Configuracoes");   
+        super("Configuracoes");
+        
         setLayout(new GridLayout(4, 1));
         JPanel[][] p = new JPanel[4][1];
         
@@ -56,6 +64,8 @@ public class TelaConfiguracoes extends JFrame
             add(p[i][0]);
         }
         
+        Listener list = new Listener();
+                
         p[0][0].setLayout(new GridLayout(1, 1));
         titulo = new JLabel("Configuracoes", (int)CENTER_ALIGNMENT);
         p[0][0].add(titulo);
@@ -75,9 +85,19 @@ public class TelaConfiguracoes extends JFrame
         horaMoto = new JLabel("Preco moto", (int)CENTER_ALIGNMENT);
         horaCarro = new JLabel("Preco carro", (int)CENTER_ALIGNMENT);
         horaCaminhonete = new JLabel("Preco caminhonete", (int)CENTER_ALIGNMENT);
+        
         precoHoraMoto = new JTextField(10);
+        precoHoraMoto.setHorizontalAlignment(JTextField.CENTER);
+        precoHoraMoto.setText(Float.toString(sis.getHoraMoto()));
+        
         precoHoraCarro = new JTextField(10);
+        precoHoraCarro.setHorizontalAlignment(JTextField.CENTER);
+        precoHoraCarro.setText(Float.toString(sis.getHoraCarro()));
+        
         precoHoraCaminhonete = new JTextField(10);
+        precoHoraCaminhonete.setHorizontalAlignment(JTextField.CENTER);
+        precoHoraCaminhonete.setText(Float.toString(sis.getHoraCaminhonete()));
+        
         hora.add(horaMoto);
         hora.add(precoHoraMoto);
         hora.add(horaCarro);
@@ -101,7 +121,7 @@ public class TelaConfiguracoes extends JFrame
         bonusSim = new JRadioButton("Sim", false);
         bonusSim.setHorizontalAlignment((int)CENTER_ALIGNMENT);
         aux[0][0].add(bonusSim);
-        bonusNao = new JRadioButton("Não", true);
+        bonusNao = new JRadioButton("Nao", true);
         bonusNao.setHorizontalAlignment((int)CENTER_ALIGNMENT);
         aux[0][0].add(bonusNao);
         
@@ -117,6 +137,8 @@ public class TelaConfiguracoes extends JFrame
         tempoBonus = new JTextField(15);
         tempoBonus.setEditable(false);
         tempoBonus.setText("");
+        tempoBonus.setHorizontalAlignment(JTextField.CENTER);
+        
         aux[1][0].add(tempoBonus);
         
         bonus.add(aux[0][0]);
@@ -130,12 +152,23 @@ public class TelaConfiguracoes extends JFrame
         JPanel pernoite = new JPanel();
         pernoite.setBorder(tituloPernoite);
         pernoite.setLayout(new GridLayout(3, 2));
+        
         pernoiteMoto = new JLabel("Preco moto", (int)CENTER_ALIGNMENT);
         pernoiteCarro = new JLabel("Preco carro", (int)CENTER_ALIGNMENT);
         pernoiteCaminhonete = new JLabel("Preco caminhonete", (int)CENTER_ALIGNMENT);
+        
         precoPernoiteMoto = new JTextField(10);
+        precoPernoiteMoto.setHorizontalAlignment(JTextField.CENTER);
+        precoPernoiteMoto.setText(Float.toString(sis.getPernoiteMoto()));
+        
         precoPernoiteCarro = new JTextField(10);
+        precoPernoiteCarro.setHorizontalAlignment(JTextField.CENTER);
+        precoPernoiteCarro.setText(Float.toString(sis.getPernoiteCarro()));
+        
         precoPernoiteCaminhonete = new JTextField(10);
+        precoPernoiteCaminhonete.setHorizontalAlignment(JTextField.CENTER);
+        precoPernoiteCaminhonete.setText(Float.toString(sis.getPernoiteCaminhonete()));
+        
         pernoite.add(pernoiteMoto);
         pernoite.add(precoPernoiteMoto);
         pernoite.add(pernoiteCarro);
@@ -143,6 +176,7 @@ public class TelaConfiguracoes extends JFrame
         pernoite.add(pernoiteCaminhonete);
         pernoite.add(precoPernoiteCaminhonete);
         p[2][0].add(pernoite);
+        
         //Configurações preco pernoite
         
         //Configurações Desconto
@@ -156,26 +190,44 @@ public class TelaConfiguracoes extends JFrame
         JPanel mensalista = new JPanel();
         mensalista.setBorder(tituloMensalista);
         mensalista.setLayout(new GridLayout(3, 2));
+        
         mensalistaMoto = new JLabel("Preco moto", (int)CENTER_ALIGNMENT);
         mensalistaCarro = new JLabel("Preco carro", (int)CENTER_ALIGNMENT);
         mensalistaCaminhonete = new JLabel("Preco caminhonete", (int)CENTER_ALIGNMENT);
+        
         precoMensalistaMoto = new JTextField(10);
+        precoMensalistaMoto.setHorizontalAlignment(JTextField.CENTER);
+        precoMensalistaMoto.setText(Float.toString(sis.getMensalistaMoto()));
+        
         precoMensalistaCarro = new JTextField(10);
+        precoMensalistaCarro.setHorizontalAlignment(JTextField.CENTER);
+        precoMensalistaCarro.setText(Float.toString(sis.getMensalistaCarro()));
+        
         precoMensalistaCaminhonete = new JTextField(10);
+        precoMensalistaCaminhonete.setHorizontalAlignment(JTextField.CENTER);
+        precoMensalistaCaminhonete.setText(Float.toString(sis.getMensalistaCaminhonete()));
+        
         mensalista.add(mensalistaMoto);
         mensalista.add(precoMensalistaMoto);
         mensalista.add(mensalistaCarro);
         mensalista.add(precoMensalistaCarro);
         mensalista.add(mensalistaCaminhonete);
         mensalista.add(precoMensalistaCaminhonete);
+        
         p[3][0].add(mensalista);
+        
         //Configurações preco mensalista
         
         //Configurações Botoes
         JPanel botoes = new JPanel();
         botoes.setBorder(tituloSave);
+        
         cancelar = new JButton("Cancelar");
         confirmar = new JButton("Confirmar");
+        
+        confirmar.addActionListener(list);
+        cancelar.addActionListener(list);
+        
         botoes.add(new JPanel());
         botoes.add(cancelar);
         botoes.add(confirmar);
@@ -195,7 +247,35 @@ public class TelaConfiguracoes extends JFrame
         public void itemStateChanged(ItemEvent e)
         {
            tempoBonus.setEditable(x);
-           tempoBonus.setText("");
+           if(x)
+           {
+        	   tempoBonus.setText(Integer.toString(sis.getTempoBonus()));
+        	   aux = 1;
+           }
+           else
+           {
+        	   tempoBonus.setText("");
+        	   aux = 0;
+           }
+        }
+    }
+    
+    private class Listener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            if(e.getSource() == confirmar)
+            {
+            	sis.Configuracoes(Float.parseFloat(precoHoraCarro.getText()), Float.parseFloat(precoHoraMoto.getText()), Float.parseFloat(precoHoraCaminhonete.getText()), 
+            			Float.parseFloat(precoMensalistaCarro.getText()), Float.parseFloat(precoMensalistaMoto.getText()), Float.parseFloat(precoMensalistaCaminhonete.getText()),
+            			Float.parseFloat(precoPernoiteCarro.getText()), Float.parseFloat(precoPernoiteMoto.getText()), Float.parseFloat(precoPernoiteCaminhonete.getText()), 
+            			aux, Integer.parseInt(tempoBonus.getText()));
+            }
+            else if(e.getSource() == cancelar)
+            {
+            	dispose();
+            }
         }
     }
 }
