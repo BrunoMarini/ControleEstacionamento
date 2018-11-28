@@ -31,7 +31,7 @@ public class TelaTable extends JFrame
 //        
 //        add(p);
         
-        qtdLinhas = sis.getNumeroCarros();
+        qtdLinhas = sis.getNumeroVeiculos();
         
         data = new String[qtdLinhas][5];
         

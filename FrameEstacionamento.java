@@ -1,6 +1,9 @@
 package estacionamento;
 
+
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowListener;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -26,6 +29,9 @@ import javax.swing.JPanel;
 
 public class FrameEstacionamento extends JFrame
 {
+
+	SistemaEstacionamento sistema = SistemaEstacionamento.getInstance();
+
 	private JPanel panel1, panel2, panel3, panel4, panel5, panel6, panelPrincipal;
 	private JLabel vagasCarro, labelPiso;
 	private JButton buttonTrocaAndar;
@@ -70,6 +76,7 @@ public class FrameEstacionamento extends JFrame
             // CRIANDO MENU
 
             menuBar = new JMenuBar();
+
 
             veiculos = new JMenu("Veiculos");
             menuBar.add(veiculos);
@@ -139,13 +146,14 @@ public class FrameEstacionamento extends JFrame
                     for(int j = 0; j < 10; j++)
                     {
                             vagasCarroP[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-                            if (ocupadosPiso1[i][j] == 0)
+
+                            if (sistema.isOcupado(cont))
                             {
-                                    vagasCarroP[i][j].setBackground(Color.GREEN);
+                                    vagasCarroP[i][j].setBackground(Color.RED);
                             }
                             else
                             {
-                                    vagasCarroP[i][j].setBackground(Color.RED);
+                                    vagasCarroP[i][j].setBackground(Color.GREEN);
                             }
                             vagasCarroP[i][j].setOpaque(true);
                             vagasCarroP[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -159,13 +167,14 @@ public class FrameEstacionamento extends JFrame
                     for(int j = 0; j < 10; j++)
                     {
                             vagasCarroP[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-                            if (ocupadosPiso1[i][j] == 0)
+
+                            if (sistema.isOcupado(cont))
                             {
-                                    vagasCarroP[i][j].setBackground(Color.GREEN);
+                                    vagasCarroP[i][j].setBackground(Color.RED);
                             }
                             else
                             {
-                                    vagasCarroP[i][j].setBackground(Color.RED);
+                                    vagasCarroP[i][j].setBackground(Color.GREEN);
                             }
                             vagasCarroP[i][j].setOpaque(true);
                             vagasCarroP[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -179,13 +188,13 @@ public class FrameEstacionamento extends JFrame
                     for(int j = 0; j < 10; j++)
                     {
                             vagasCarroP[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-                            if (ocupadosPiso1[i][j] == 0)
+                            if (sistema.isOcupado(cont))
                             {
-                                    vagasCarroP[i][j].setBackground(Color.GREEN);
+                                    vagasCarroP[i][j].setBackground(Color.RED);
                             }
                             else
                             {
-                                    vagasCarroP[i][j].setBackground(Color.RED);
+                                    vagasCarroP[i][j].setBackground(Color.GREEN);
                             }
                             vagasCarroP[i][j].setOpaque(true);
                             vagasCarroP[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -199,13 +208,13 @@ public class FrameEstacionamento extends JFrame
                     for(int j = 0; j < 10; j++)
                     {
                             vagasCarroP[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-                            if (ocupadosPiso1[i][j] == 0)
+                            if (sistema.isOcupado(cont))
                             {
-                                    vagasCarroP[i][j].setBackground(Color.GREEN);
+                                    vagasCarroP[i][j].setBackground(Color.RED);
                             }
                             else
                             {
-                                    vagasCarroP[i][j].setBackground(Color.RED);
+                                    vagasCarroP[i][j].setBackground(Color.GREEN);
                             }
                             vagasCarroP[i][j].setOpaque(true);
                             vagasCarroP[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -219,13 +228,13 @@ public class FrameEstacionamento extends JFrame
                     for(int j = 0; j < 10; j++)
                     {
                             vagasCarroP[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-                            if (ocupadosPiso1[i][j] == 0)
+                            if (sistema.isOcupado(cont))
                             {
-                                    vagasCarroP[i][j].setBackground(Color.GREEN);
+                                    vagasCarroP[i][j].setBackground(Color.RED);
                             }
                             else
                             {
-                                    vagasCarroP[i][j].setBackground(Color.RED);
+                                    vagasCarroP[i][j].setBackground(Color.GREEN);
                             }
                             vagasCarroP[i][j].setOpaque(true);
                             vagasCarroP[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -233,7 +242,6 @@ public class FrameEstacionamento extends JFrame
                             cont++;
                     }
             }
-
             // COLOCANDO ESPACOSS EM BRANCO
             for (int j = 0; j < 10; j++)
             {
@@ -247,13 +255,13 @@ public class FrameEstacionamento extends JFrame
                     for(int j = 0; j < 10; j++)
                     {
                             vagasCarroP[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-                            if (ocupadosPiso1[i][j] == 0)
+                            if (sistema.isOcupado(cont))
                             {
-                                    vagasCarroP[i][j].setBackground(Color.GREEN);
+                                    vagasCarroP[i][j].setBackground(Color.RED);
                             }
                             else
                             {
-                                    vagasCarroP[i][j].setBackground(Color.RED);
+                                    vagasCarroP[i][j].setBackground(Color.GREEN);
                             }
                             vagasCarroP[i][j].setOpaque(true);
                             vagasCarroP[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -350,14 +358,14 @@ public class FrameEstacionamento extends JFrame
 		{
 			for(int j = 0; j < 10; j++)
 			{
-				vagasCarroT[i][j] = new JLabel((String.valueOf(cont) + " M"), JLabel.CENTER);
-				if (ocupadosTerreo[i][j] == 0)
+				vagasCarroT[i][j] = new JLabel((String.valueOf(cont)), JLabel.CENTER);
+				if (sistema.isOcupado(cont))
 				{
-					vagasCarroT[i][j].setBackground(Color.GREEN);
+					vagasCarroT[i][j].setBackground(Color.RED);
 				}
 				else
 				{
-					vagasCarroT[i][j].setBackground(Color.RED);
+					vagasCarroT[i][j].setBackground(Color.YELLOW);
 				}
 				vagasCarroT[i][j].setOpaque(true);
 				vagasCarroT[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -370,14 +378,14 @@ public class FrameEstacionamento extends JFrame
 		{
 			for(int j = 0; j < 10; j++)
 			{
-				vagasCarroT[i][j] = new JLabel((String.valueOf(cont) + " C"), JLabel.CENTER);
-				if (ocupadosTerreo[i][j] == 0)
+				vagasCarroT[i][j] = new JLabel((String.valueOf(cont)), JLabel.CENTER);
+				if (sistema.isOcupado(cont))
 				{
-					vagasCarroT[i][j].setBackground(Color.GREEN);
+					vagasCarroT[i][j].setBackground(Color.RED);
 				}
 				else
 				{
-					vagasCarroT[i][j].setBackground(Color.RED);
+					vagasCarroT[i][j].setBackground(Color.ORANGE);
 				}
 				vagasCarroT[i][j].setOpaque(true);
 				vagasCarroT[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -391,13 +399,13 @@ public class FrameEstacionamento extends JFrame
 			for(int j = 0; j < 10; j++)
 			{
 				vagasCarroT[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-				if (ocupadosTerreo[i][j] == 0)
+				if (sistema.isOcupado(cont))
 				{
-					vagasCarroT[i][j].setBackground(Color.GREEN);
+					vagasCarroT[i][j].setBackground(Color.RED);
 				}
 				else
 				{
-					vagasCarroT[i][j].setBackground(Color.RED);
+					vagasCarroT[i][j].setBackground(Color.GREEN);
 				}
 				vagasCarroT[i][j].setOpaque(true);
 				vagasCarroT[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -411,13 +419,13 @@ public class FrameEstacionamento extends JFrame
 			for(int j = 0; j < 10; j++)
 			{
 				vagasCarroT[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-				if (ocupadosTerreo[i][j] == 0)
+				if (sistema.isOcupado(cont))
 				{
-					vagasCarroT[i][j].setBackground(Color.GREEN);
+					vagasCarroT[i][j].setBackground(Color.RED);
 				}
 				else
 				{
-					vagasCarroT[i][j].setBackground(Color.RED);
+					vagasCarroT[i][j].setBackground(Color.GREEN);
 				}
 				vagasCarroT[i][j].setOpaque(true);
 				vagasCarroT[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -431,13 +439,13 @@ public class FrameEstacionamento extends JFrame
 			for(int j = 0; j < 10; j++)
 			{
 				vagasCarroT[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-				if (ocupadosTerreo[i][j] == 0)
+				if (sistema.isOcupado(cont))
 				{
-					vagasCarroT[i][j].setBackground(Color.GREEN);
+					vagasCarroT[i][j].setBackground(Color.RED);
 				}
 				else
 				{
-					vagasCarroT[i][j].setBackground(Color.RED);
+					vagasCarroT[i][j].setBackground(Color.GREEN);
 				}
 				vagasCarroT[i][j].setOpaque(true);
 				vagasCarroT[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -459,13 +467,13 @@ public class FrameEstacionamento extends JFrame
 			for(int j = 0; j < 10; j++)
 			{
 				vagasCarroT[i][j] = new JLabel(String.valueOf(cont), JLabel.CENTER);
-				if (ocupadosTerreo[i][j] == 0)
+				if (sistema.isOcupado(cont))
 				{
-					vagasCarroT[i][j].setBackground(Color.GREEN);
+					vagasCarroT[i][j].setBackground(Color.RED);
 				}
 				else
 				{
-					vagasCarroT[i][j].setBackground(Color.RED);
+					vagasCarroT[i][j].setBackground(Color.GREEN);
 				}
 				vagasCarroT[i][j].setOpaque(true);
 				vagasCarroT[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -530,8 +538,8 @@ public class FrameEstacionamento extends JFrame
         gbc.gridx = 1;
         gbc.gridy = 3;
         panelPrincipal.add(panel6, gbc);
-	}
-	
+	}	
+
 	private class Listener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event) 

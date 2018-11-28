@@ -4,7 +4,8 @@ public class Estacionamento {
 
     public static void main(String[] args) 
     {
-       SistemaEstacionamento sistema = new SistemaEstacionamento();
+
+       SistemaEstacionamento sistema = SistemaEstacionamento.getInstance();
        sistema.inicializar();
     }
 }
