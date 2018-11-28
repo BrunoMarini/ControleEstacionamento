@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.ParseException;
@@ -100,13 +102,38 @@ public class TelaEntrada extends JFrame
         
         msgData = new JLabel("Data entrada", (int)CENTER_ALIGNMENT);
         msgData.setFont(new Font("Arial", Font.PLAIN, 15));
+        
         data = new JTextField("DD/MM/AAAA");
+        data.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				data.setText("");
+			}
+			@Override
+			public void focusLost(FocusEvent e) {	
+				if(data.getText().equals(""))
+					data.setText("DD/MM/AAAA");
+			}
+        });
+  
         data.setHorizontalAlignment(JTextField.CENTER);
         msgHora = new JLabel("Horario de entrada", (int)CENTER_ALIGNMENT);
         msgHora.setFont(new Font("Arial", Font.PLAIN, 15));
+        
         hora = new JTextField(8);
         hora.setText("hh:mm:ss");
         hora.setHorizontalAlignment(JTextField.CENTER);
+        hora.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				hora.setText("");
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(hora.getText().equals(""))
+					hora.setText("hh:mm:ss");
+			}
+        });
         
         tipo = new JComboBox(tipos);
         tipo.setMaximumRowCount(4);
@@ -242,9 +269,7 @@ public class TelaEntrada extends JFrame
                 sis.EntradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote, d);
                 
                 dispose();
-            }
-
-            
+            }     
             else if(e.getSource() == horaB)
             {
                 tipoPacote = "Hora";
