@@ -48,6 +48,9 @@ public class TelaConfiguracoes extends JFrame
     private ButtonGroup grupo;
     
     int i;
+    int aux;
+    
+    SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
     
     public TelaConfiguracoes()
     {
@@ -62,9 +65,7 @@ public class TelaConfiguracoes extends JFrame
         }
         
         Listener list = new Listener();
-        
-        SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
-        
+                
         p[0][0].setLayout(new GridLayout(1, 1));
         titulo = new JLabel("Configuracoes", (int)CENTER_ALIGNMENT);
         p[0][0].add(titulo);
@@ -87,12 +88,15 @@ public class TelaConfiguracoes extends JFrame
         
         precoHoraMoto = new JTextField(10);
         precoHoraMoto.setHorizontalAlignment(JTextField.CENTER);
+        precoHoraMoto.setText(Float.toString(sis.getHoraMoto()));
         
         precoHoraCarro = new JTextField(10);
         precoHoraCarro.setHorizontalAlignment(JTextField.CENTER);
+        precoHoraCarro.setText(Float.toString(sis.getHoraCarro()));
         
         precoHoraCaminhonete = new JTextField(10);
         precoHoraCaminhonete.setHorizontalAlignment(JTextField.CENTER);
+        precoHoraCaminhonete.setText(Float.toString(sis.getHoraCaminhonete()));
         
         hora.add(horaMoto);
         hora.add(precoHoraMoto);
@@ -133,6 +137,8 @@ public class TelaConfiguracoes extends JFrame
         tempoBonus = new JTextField(15);
         tempoBonus.setEditable(false);
         tempoBonus.setText("");
+        tempoBonus.setHorizontalAlignment(JTextField.CENTER);
+        
         aux[1][0].add(tempoBonus);
         
         bonus.add(aux[0][0]);
@@ -146,18 +152,22 @@ public class TelaConfiguracoes extends JFrame
         JPanel pernoite = new JPanel();
         pernoite.setBorder(tituloPernoite);
         pernoite.setLayout(new GridLayout(3, 2));
+        
         pernoiteMoto = new JLabel("Preco moto", (int)CENTER_ALIGNMENT);
         pernoiteCarro = new JLabel("Preco carro", (int)CENTER_ALIGNMENT);
         pernoiteCaminhonete = new JLabel("Preco caminhonete", (int)CENTER_ALIGNMENT);
         
         precoPernoiteMoto = new JTextField(10);
         precoPernoiteMoto.setHorizontalAlignment(JTextField.CENTER);
+        precoPernoiteMoto.setText(Float.toString(sis.getPernoiteMoto()));
         
         precoPernoiteCarro = new JTextField(10);
         precoPernoiteCarro.setHorizontalAlignment(JTextField.CENTER);
+        precoPernoiteCarro.setText(Float.toString(sis.getPernoiteCarro()));
         
         precoPernoiteCaminhonete = new JTextField(10);
         precoPernoiteCaminhonete.setHorizontalAlignment(JTextField.CENTER);
+        precoPernoiteCaminhonete.setText(Float.toString(sis.getPernoiteCaminhonete()));
         
         pernoite.add(pernoiteMoto);
         pernoite.add(precoPernoiteMoto);
@@ -166,6 +176,7 @@ public class TelaConfiguracoes extends JFrame
         pernoite.add(pernoiteCaminhonete);
         pernoite.add(precoPernoiteCaminhonete);
         p[2][0].add(pernoite);
+        
         //Configurações preco pernoite
         
         //Configurações Desconto
@@ -202,7 +213,9 @@ public class TelaConfiguracoes extends JFrame
         mensalista.add(precoMensalistaCarro);
         mensalista.add(mensalistaCaminhonete);
         mensalista.add(precoMensalistaCaminhonete);
+        
         p[3][0].add(mensalista);
+        
         //Configurações preco mensalista
         
         //Configurações Botoes
@@ -234,18 +247,30 @@ public class TelaConfiguracoes extends JFrame
         public void itemStateChanged(ItemEvent e)
         {
            tempoBonus.setEditable(x);
-           tempoBonus.setText("");
+           if(x)
+           {
+        	   tempoBonus.setText(Integer.toString(sis.getTempoBonus()));
+        	   aux = 1;
+           }
+           else
+           {
+        	   tempoBonus.setText("");
+        	   aux = 0;
+           }
         }
     }
     
-    private class Listener implements ActionListener //TO MEXENDO AQUUIIIIIII PRA VOC� LEMBRAR BRUNO SEU IDIOTA DATA
+    private class Listener implements ActionListener
     {
         @Override
         public void actionPerformed(ActionEvent e)
         {
             if(e.getSource() == confirmar)
             {
-            	
+            	sis.Configuracoes(Float.parseFloat(precoHoraCarro.getText()), Float.parseFloat(precoHoraMoto.getText()), Float.parseFloat(precoHoraCaminhonete.getText()), 
+            			Float.parseFloat(precoMensalistaCarro.getText()), Float.parseFloat(precoMensalistaMoto.getText()), Float.parseFloat(precoMensalistaCaminhonete.getText()),
+            			Float.parseFloat(precoPernoiteCarro.getText()), Float.parseFloat(precoPernoiteMoto.getText()), Float.parseFloat(precoPernoiteCaminhonete.getText()), 
+            			aux, Integer.parseInt(tempoBonus.getText()));
             }
             else if(e.getSource() == cancelar)
             {

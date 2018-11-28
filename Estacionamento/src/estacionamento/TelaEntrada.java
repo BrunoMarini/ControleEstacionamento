@@ -94,9 +94,13 @@ public class TelaEntrada extends JFrame
         msgPlaca = new JLabel("Placa", (int) CENTER_ALIGNMENT);
         msgPlaca.setFont(new Font("Arial", Font.PLAIN, 15));
         placa = new JTextField();
+        placa.setHorizontalAlignment(JTextField.CENTER);
+        
         msgModelo = new JLabel("Modelo", (int)CENTER_ALIGNMENT);
         msgModelo.setFont(new Font("Arial", Font.PLAIN, 15));
         modelo = new JTextField();
+        modelo.setHorizontalAlignment(JTextField.CENTER);
+        
         msgTipo = new JLabel("Tipo de veiculo:", (int) CENTER_ALIGNMENT);
         msgTipo.setFont(new Font("Arial", Font.PLAIN, 15));
         

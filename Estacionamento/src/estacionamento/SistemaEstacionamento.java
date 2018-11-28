@@ -12,16 +12,18 @@ public class SistemaEstacionamento extends BaseDeDados
     public ArrayList<VeiculoEstacionado> lista = new ArrayList<VeiculoEstacionado>();
     
     float horaCarro = 2;
-    float horaMoto = 2;
-    float horaCaminhonete = 2;
+    float horaMoto = 1;
+    float horaCaminhonete = 3;
     
-    float mensalistaCarro = 50;
+    float mensalistaCarro = 51;
     float mensalistaMoto = 50;
-    float mensalistaCaminhonete = 50;
+    float mensalistaCaminhonete = 52;
     
-    float pernoiteCarro = 15;
+    float pernoiteCarro = 16;
     float pernoiteMoto = 15;
-    float pernoiteCaminhonte = 15;
+    float pernoiteCaminhonte = 17;
+    
+    int tempoBonus = 0;
     
     public static SistemaEstacionamento getInstance()
     {
@@ -54,7 +56,8 @@ public class SistemaEstacionamento extends BaseDeDados
         lista.add(veiculo);
     }
     
-    public void Configuracoes(float hcar, float hm, float hcam, float mcar, float mm, float mcam, float pcar, float pm, float pcam)
+    public void Configuracoes(float hcar, float hm, float hcam, float mcar, float mm, float mcam, 
+							  float pcar, float pm, float pcam, int valida, int tempo)
     {
     	horaCarro = hcar;
         horaMoto = hm;
@@ -67,26 +70,29 @@ public class SistemaEstacionamento extends BaseDeDados
         pernoiteCarro = pcar;
         pernoiteMoto = pm;
         pernoiteCaminhonte = pcam;
+        
+       if(valida == 1)
+    	   tempoBonus = tempo;
     }
     
     public float getHoraCarro(){
     	return horaCarro;
     }
     public float getHoraMoto(){
-    	return horaCarro;
+    	return horaMoto;
     }
     public float getHoraCaminhonete(){
-    	return horaCarro;
+    	return horaCaminhonete;
     }
     
     public float getMensalistaCarro(){
     	return mensalistaCarro;
     }
     public float getMensalistaMoto(){
-    	return mensalistaCarro;
+    	return mensalistaMoto;
     }
     public float getMensalistaCaminhonete(){
-    	return mensalistaCarro;
+    	return mensalistaCaminhonete;
     }
     
     public float getPernoiteCarro(){
@@ -101,5 +107,9 @@ public class SistemaEstacionamento extends BaseDeDados
     
     public int getNumeroCarros(){
         return (lista.size());
-    }    
+    }   
+    
+    public int getTempoBonus(){
+    	return (tempoBonus);
+    }
 }
