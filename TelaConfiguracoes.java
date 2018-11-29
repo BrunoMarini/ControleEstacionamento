@@ -136,8 +136,8 @@ public class TelaConfiguracoes extends JFrame
         
         tempoBonus = new JTextField(15);
         tempoBonus.setEditable(false);
-        tempoBonus.setText("");
         tempoBonus.setHorizontalAlignment(JTextField.CENTER);
+        tempoBonus.setText(Integer.toString(sis.getTempoBonus()));
         
         aux[1][0].add(tempoBonus);
         
@@ -254,7 +254,7 @@ public class TelaConfiguracoes extends JFrame
            }
            else
            {
-        	   tempoBonus.setText("");
+        	   tempoBonus.setText(Integer.toString(sis.getTempoBonus()));
         	   aux = 0;
            }
         }
