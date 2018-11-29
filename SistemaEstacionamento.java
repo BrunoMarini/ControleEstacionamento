@@ -6,6 +6,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SistemaEstacionamento
 {   
@@ -13,7 +14,22 @@ public class SistemaEstacionamento
     public ArrayList<VeiculoEstacionado> lista;
     
     BancoDados bancoDados = new BancoDados();
+    BancoDados bancoSaida = new BancoDados();
     
+	float horaCarro = 2;
+    float horaMoto = 1;
+    float horaCaminhonete = 3;
+    
+    float mensalistaCarro = 51;
+    float mensalistaMoto = 50;
+    float mensalistaCaminhonete = 52;
+    
+    float pernoiteCarro = 16;
+    float pernoiteMoto = 15;
+    float pernoiteCaminhonte = 17;
+    
+    int tempoBonus = 0;
+	
     private SistemaEstacionamento()
     {            
         
@@ -36,11 +52,12 @@ public class SistemaEstacionamento
     public void inicializar()
     {
     	//BancoDados bancoDados = setBanco();	
-    	bancoDados.openReadFile();
+    	bancoDados.openReadFile("banco.ser");
     	lista = bancoDados.readFile();
     	bancoDados.closeFile();
     	
-    	bancoDados.openWriteFile();
+    	bancoDados.openWriteFile("banco.ser");
+    	bancoSaida.openWriteFile("dataSaida.ser");
     	
         FrameEstacionamento telaEstacionamento = new FrameEstacionamento();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -98,7 +115,7 @@ public class SistemaEstacionamento
         
     }
 
-    public int entradaVeiculo(String placa, String modelo, String tipo, String pacote, int entrada)
+    public int entradaVeiculo(String placa, String modelo, String tipo, String pacote, Date d)
     {
     	int contCarro = 0, contMoto = 0, contCaminhonete = 0, vagaOcupada = -1, inicio = 0;
     	int fim = 0, i;
@@ -139,7 +156,7 @@ public class SistemaEstacionamento
 			return -1;
 		}
     	 
-        VeiculoEstacionado veiculo = new VeiculoEstacionado(placa, modelo, pacote, vagaOcupada, entrada);
+        VeiculoEstacionado veiculo = new VeiculoEstacionado(placa, modelo, pacote, vagaOcupada, d);
         lista.add(veiculo);  
         
         // MOVER PARA ONDE FECHA O PROGRAMA
@@ -151,6 +168,25 @@ public class SistemaEstacionamento
         
         return vagaOcupada;
         
+    }
+	
+	public void Configuracoes(float hcar, float hm, float hcam, float mcar, float mm, float mcam, 
+							  float pcar, float pm, float pcam, int valida, int tempo)
+    {
+    	horaCarro = hcar;
+        horaMoto = hm;
+        horaCaminhonete = hcam;
+        
+        mensalistaCarro = mcar;
+        mensalistaMoto = mm;
+        mensalistaCaminhonete = mcam;
+        
+        pernoiteCarro = pcar;
+        pernoiteMoto = pm;
+        pernoiteCaminhonte = pcam;
+        
+       if(valida == 1)
+    	   tempoBonus = tempo;
     }
 
     public boolean isOcupado(int vagaTeste)
@@ -167,11 +203,6 @@ public class SistemaEstacionamento
     	
     	return false;
     }
-    
-    public int getNumeroCarros(){
-        return (lista.size());
-    }
-    
     public void salvarLista()
     {
     	for(VeiculoEstacionado veiculoAtual : lista)
@@ -181,5 +212,61 @@ public class SistemaEstacionamento
     	bancoDados.closeFile();
     	
     }
+	
+    public void saidaVeiculo(int vagaOcupada, Date dataSaida, float valor)
+    {
+    	bancoSaida.adicionarArquivo(new VeiculoSaida(dataSaida, valor));
+    	
+    	for(VeiculoEstacionado veiculoAutal : lista)
+    	{
+    		if (veiculoAutal.getVagaOcupada() == vagaOcupada)
+    			lista.remove( lista.indexOf(veiculoAutal) );
+    	}
+    	
+    }
     
+    
+    
+    
+    
+	//DE ACORDO COM O JEFF GEEETS
+	
+	public float getHoraCarro(){
+    	return horaCarro;
+    }
+    public float getHoraMoto(){
+    	return horaMoto;
+    }
+    public float getHoraCaminhonete(){
+    	return horaCaminhonete;
+    }
+    
+    public float getMensalistaCarro(){
+    	return mensalistaCarro;
+    }
+    public float getMensalistaMoto(){
+    	return mensalistaMoto;
+    }
+    public float getMensalistaCaminhonete(){
+    	return mensalistaCaminhonete;
+    }
+    
+    public float getPernoiteCarro(){
+    	return pernoiteCarro;
+    }
+    public float getPernoiteMoto(){
+    	return pernoiteMoto;
+    }
+    public float getPernoiteCaminhonete(){
+    	return pernoiteCaminhonte;
+    }
+    
+    public int getNumeroVeiculos(){
+        return (lista.size());
+    }   
+    
+    public int getTempoBonus(){
+    	return (tempoBonus);
+    }
+    //DE ACORDO COM O JEFF GEEETS
 }

@@ -3,6 +3,9 @@ package estacionamento;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,6 +17,7 @@ import javax.swing.border.LineBorder;
 
 public class TelaSaida extends JFrame
 {
+	private SistemaEstacionamento sistema = SistemaEstacionamento.getInstance();
     private JLabel titulo;
     private JTextField placaVeiculo;
     private JTextField modeloVeiculo;
@@ -122,5 +126,33 @@ public class TelaSaida extends JFrame
         confirmar = new JButton("Confirmar");
         p[8][0].add(cancelar);
         p[8][0].add(confirmar);
+        
+        
+        
+    }
+    
+    public class Listener implements ActionListener
+    {
+
+		@Override
+		public void actionPerformed(ActionEvent event) 
+		{
+			if(event.getSource() == cancelar)
+			{
+				dispose();
+			}
+			else if (event.getSource() == confirmar)
+			{
+				//sistema.saidaVeiculo(, dataSaida, valor);
+				
+				
+			}
+			
+			else if (event.getSource() == verifica)
+			{
+				//dataEntrada.setText();
+			}
+		}
+    	
     }
 }

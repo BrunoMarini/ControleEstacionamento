@@ -18,11 +18,11 @@ public class BancoDados
     private ObjectOutputStream output;
     private ObjectInputStream input;
     
-    public void openWriteFile()
+    public void openWriteFile(String nomeArquivo)
     {
         try
         {          
-            output = new ObjectOutputStream(new FileOutputStream("banco.ser"));
+            output = new ObjectOutputStream(new FileOutputStream(nomeArquivo));
         }
         catch(IOException ioException)
         {
@@ -30,11 +30,11 @@ public class BancoDados
         }
     }
     
-    public void openReadFile()
+    public void openReadFile(String nomeArquivo)
     {
     	try
         {          
-            input = new ObjectInputStream(new FileInputStream("banco.ser"));
+            input = new ObjectInputStream(new FileInputStream(nomeArquivo));
         }
         catch(IOException ioException)
         {
@@ -43,6 +43,18 @@ public class BancoDados
     }
     
     public void adicionarArquivo(VeiculoEstacionado veiculoReg)
+    {
+        try
+        {
+            output.writeObject(veiculoReg);
+            
+        }catch(IOException ioException)
+        {
+            System.err.println("Erro ao escrever no arquivo");
+        }
+    }
+    
+    public void adicionarArquivo(VeiculoSaida veiculoReg) // CONTROLA ARQUIVO DE SAIDA DE VEICULOS
     {
         try
         {
@@ -85,6 +97,36 @@ public class BancoDados
 		return lista;
     }
     
+    public ArrayList readFileDatasSaida()
+    {
+    	 ArrayList<VeiculoSaida> lista = new ArrayList<VeiculoSaida>();
+    	 VeiculoSaida veiculoAtual;
+    	 
+    	 try
+    	 {
+    		 while(true)
+    		 {
+    			 veiculoAtual = (VeiculoSaida)input.readObject();
+    			 lista.add(veiculoAtual);
+    		 }	 
+    	 }
+    	 catch(EOFException exception)
+         {
+             return lista;
+         }
+     	
+ 		catch(ClassNotFoundException exception)
+ 		{
+ 		    System.err.println("Erro");
+ 		}
+     	
+         catch(IOException exception)
+         {
+             System.err.println("Erro");
+         }    	 
+    	 
+    	 return lista;
+    }
     
     public void closeFile()
     {
