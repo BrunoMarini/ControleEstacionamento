@@ -5,7 +5,9 @@ import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class SistemaEstacionamento
 {   
@@ -222,9 +224,54 @@ public class SistemaEstacionamento
     	{
     		if (v.getPlaca().equals(placa))
     		{
-    			return(data);
+    			return(v.getData());
     		}
     	}
+    	return(null);
+    }
+    
+    public Date converteMili(Date entrou, Date saiu)
+    {
+    	long x;
+    	
+    	x = saiu.getTime() - entrou.getTime();
+    	
+    	//int seg = (int) (x / 1000) % 60;
+        //int min = (int) ((x / (1000 * 60)) % 60);
+        //int hor = (int) ((x / (1000 * 60 * 60)) % 24);
+        //int dia = (int) (x / (1000 * 60 * 60 * 24));
+        
+    	Calendar calendar = Calendar.getInstance();
+    	calendar.setTimeInMillis(x + 10800000);
+    	    			
+    	int ano = calendar.get(Calendar.YEAR) - 1970;
+    	int mes = calendar.get(Calendar.MONTH);
+    	int dia = calendar.get(Calendar.DAY_OF_MONTH);
+    	int hora = calendar.get(Calendar.HOUR);
+        int min = calendar.get(Calendar.MINUTE);
+        int seg = calendar.get(Calendar.SECOND);
+    	
+        //System.out.println(dia+"/"+mes+"/"+ano+" "+hora+":"+min+":"+seg);
+    	
+    	return (new Date(ano, mes, dia, hora, min, seg));
+    }
+    
+    public float calculaCusto(Date tempo, String pacote, String tipo)
+    {
+    	int ano, mes, dia, hora, min;
+    	
+    	ano = tempo.getYear();
+    	mes = tempo.getMonth();
+    	dia = tempo.getDay() - 1;
+    	hora = tempo.getHours();
+    	min = tempo.getMinutes();
+    	
+    	System.out.println(dia+"/"+mes+"/"+ano+"   "+hora+":"+min);
+    	return ano;
+//    	if(pacote.equals("Hora"))
+//    	{
+//    		//(tempo.getYear()
+//    	}
     }
     
 	//DE ACORDO COM O JEFF GEEETS
