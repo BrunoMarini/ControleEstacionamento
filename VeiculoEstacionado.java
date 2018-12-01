@@ -9,7 +9,6 @@ public class VeiculoEstacionado implements Serializable
     private String modelo;
     private String pacote;
     private int vagaOcupada;
-    private int entrada;
     private Date data;
     
     public VeiculoEstacionado(String placa, String modelo, String pacote, int vagaOcupada, java.util.Date d)
@@ -18,7 +17,6 @@ public class VeiculoEstacionado implements Serializable
         this.modelo = modelo;
         this.pacote = pacote;
         this.vagaOcupada = vagaOcupada;
-        this.entrada = entrada;
         this.data = (Date) d;
     }
     
@@ -38,11 +36,7 @@ public class VeiculoEstacionado implements Serializable
         return(vagaOcupada);
     }
     
-    public int getEntrada(){
-    	return(entrada);
-    }
-    
     public Date getData(){
-    	return(data);
+    	return((Date)data);
     }
 }

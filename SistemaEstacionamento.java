@@ -2,7 +2,6 @@ package estacionamento;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ public class SistemaEstacionamento
     public ArrayList<VeiculoEstacionado> lista;
     
     BancoDados bancoDados = new BancoDados();
+    BancoDados bancoSaida = new BancoDados();
     
 	float horaCarro = 2;
     float horaMoto = 1;
@@ -27,35 +27,28 @@ public class SistemaEstacionamento
     float pernoiteMoto = 15;
     float pernoiteCaminhonte = 17;
     
+    private Date data = new Date();
+    
     int tempoBonus = 0;
 	
-    private SistemaEstacionamento()
-    {            
-        
-    }
-    
     public static SistemaEstacionamento getInstance()
     {
         if(instance == null)
             instance = new SistemaEstacionamento();
         return(instance);
-    }
-    
-    /*public BancoDados setBanco()
-    {
-    	BancoDados bancoDados = new BancoDados();
-    	return bancoDados;
-    }*/
-    
+    }    
     
     public void inicializar()
     {
-    	//BancoDados bancoDados = setBanco();	
-    	bancoDados.openReadFile();
+    	bancoDados.openReadFile("banco.ser");
+    	bancoSaida.openReadFile("dataSaida.ser");
+    	
     	lista = bancoDados.readFile();
+    	
     	bancoDados.closeFile();
     	
-    	bancoDados.openWriteFile();
+    	bancoDados.openWriteFile("banco.ser");
+    	bancoSaida.openWriteFile("dataSaida.ser");
     	
         FrameEstacionamento telaEstacionamento = new FrameEstacionamento();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -211,35 +204,58 @@ public class SistemaEstacionamento
     	
     }
 	
+    public void saidaVeiculo(int vagaOcupada, Date dataSaida, float valor)
+    {
+    	bancoSaida.adicionarArquivo(new VeiculoSaida(dataSaida, valor));
+    	
+    	for(VeiculoEstacionado veiculoAutal : lista)
+    	{
+    		if (veiculoAutal.getVagaOcupada() == vagaOcupada)
+    			lista.remove( lista.indexOf(veiculoAutal) );
+    	}
+    	
+    }    
+    
+    public Date getDataEntrada(String placa)
+    {
+    	for(VeiculoEstacionado v : lista)
+    	{
+    		if (v.getPlaca().equals(placa))
+    		{
+    			return(data);
+    		}
+    	}
+    }
+    
 	//DE ACORDO COM O JEFF GEEETS
 	
-	public float getHoraCarro(){
+	public float getCustoHoraCarro(){
     	return horaCarro;
     }
-    public float getHoraMoto(){
+    public float getCustoHoraMoto(){
     	return horaMoto;
     }
-    public float getHoraCaminhonete(){
+    public float getCustoHoraCaminhonete(){
     	return horaCaminhonete;
     }
     
-    public float getMensalistaCarro(){
+    public float getCustoMensalistaCarro(){
     	return mensalistaCarro;
     }
-    public float getMensalistaMoto(){
+    public float getCustoMensalistaMoto(){
     	return mensalistaMoto;
     }
-    public float getMensalistaCaminhonete(){
+    public float getCustoMensalistaCaminhonete(){
     	return mensalistaCaminhonete;
     }
     
-    public float getPernoiteCarro(){
+    public float getCustoPernoiteCarro(){
     	return pernoiteCarro;
     }
-    public float getPernoiteMoto(){
+    public float getCustoPernoiteMoto(){
     	return pernoiteMoto;
     }
-    public float getPernoiteCaminhonete(){
+    public float getCustoPernoiteCaminhonete(){
     	return pernoiteCaminhonte;
     }
     

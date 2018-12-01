@@ -3,6 +3,12 @@ package estacionamento;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.Date;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,6 +20,7 @@ import javax.swing.border.LineBorder;
 
 public class TelaSaida extends JFrame
 {
+	private SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
     private JLabel titulo;
     private JTextField placaVeiculo;
     private JTextField modeloVeiculo;
@@ -32,7 +39,13 @@ public class TelaSaida extends JFrame
     private JButton confirmar;
     private JLabel placa;
     private JLabel modelo;
+    private JTextField leHoraSaida;
+    private JLabel msgHoraSaida;
+    private JTextField leDataSaida;
     
+    private Date permanencia;
+    private float valor;
+    private int vagaOcupada;
     int i;
     
     public TelaSaida()
@@ -46,20 +59,55 @@ public class TelaSaida extends JFrame
             add(p[i][0]);
         }
         
+        Listener list = new Listener();
+        
         p[0][0].setLayout(new GridLayout(1, 1));
         titulo = new JLabel("Retirada de veiculo", (int)CENTER_ALIGNMENT);
         titulo.setFont(new Font("Century", Font.PLAIN, 35));
         p[0][0].add(titulo);
         
         p[1][0].setLayout(new GridLayout(2, 3));
-        p[1][0].add(new JPanel());
-        p[1][0].add(new JPanel());
-        p[1][0].add(new JPanel());
+        msgHoraSaida = new JLabel("Hora saida", (int)CENTER_ALIGNMENT);
+        msgHoraSaida.setFont(new Font("Arial", Font.PLAIN, 16));
+        
+        leHoraSaida = new JTextField("hh:mm:ss");
+        leHoraSaida.setHorizontalAlignment(JTextField.CENTER);
+        leHoraSaida.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				leHoraSaida.setText("");
+			}
+			@Override
+			public void focusLost(FocusEvent e) {	
+				if(leHoraSaida.getText().equals(""))
+					leHoraSaida.setText("hh:mm:ss");
+			}
+        });
+        
+        p[1][0].add(msgHoraSaida);
+        p[1][0].add(leHoraSaida);
+        
+        leDataSaida = new JTextField("DD/MM/AAAA");
+        leDataSaida.setHorizontalAlignment(JTextField.CENTER);
+        leDataSaida.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				leDataSaida.setText("");
+			}
+			@Override
+			public void focusLost(FocusEvent e) {	
+				if(leDataSaida.getText().equals(""))
+					leDataSaida.setText("DD/MM/AAAA");
+			}
+        });
+        
+        p[1][0].add(leDataSaida);
         msgPlaca = new JLabel("Digite o codigo", (int)CENTER_ALIGNMENT);
         msgPlaca.setFont(new Font("Arial", Font.PLAIN, 16));
         codigo = new JTextField();
         codigo.setHorizontalAlignment(JTextField.CENTER);
         verifica = new JButton("Verificar");
+        verifica.addActionListener(list);
         p[1][0].add(msgPlaca);
         p[1][0].add(codigo);
         p[1][0].add(verifica);
@@ -102,7 +150,9 @@ public class TelaSaida extends JFrame
         
         p[6][0].setLayout(new GridLayout(1, 2));
         placa = new JLabel("Placa", (int)CENTER_ALIGNMENT);
+        placa.setFont(new Font("Arial", Font.PLAIN, 16));
         modelo = new JLabel("Modelo", (int)CENTER_ALIGNMENT);
+        modelo.setFont(new Font("Arial", Font.PLAIN, 16));
         p[6][0].add(placa);
         p[6][0].add(modelo);
         
@@ -122,5 +172,57 @@ public class TelaSaida extends JFrame
         confirmar = new JButton("Confirmar");
         p[8][0].add(cancelar);
         p[8][0].add(confirmar);
+        
+        
+        
+    }
+    
+    public class Listener implements ActionListener
+    {
+		@Override
+		public void actionPerformed(ActionEvent event) 
+		{
+			if(event.getSource() == cancelar)
+			{
+				dispose();
+			}
+			else if (event.getSource() == confirmar)
+			{
+				dispose();
+			}
+			else if (event.getSource() == verifica)
+			{	
+				int dia, mes, ano, hora, min, seg;
+				
+            	ano = Integer.parseInt(leDataSaida.getText().substring(6, 10));
+            	mes = Integer.parseInt(leDataSaida.getText().substring(3, 5));
+            	dia = Integer.parseInt(leDataSaida.getText().substring(0, 2));
+            	
+            	hora = Integer.parseInt(leHoraSaida.getText().substring(0, 2));
+            	min = Integer.parseInt(leHoraSaida.getText().substring(3, 5));
+            	seg = Integer.parseInt(leHoraSaida.getText().substring(6, 8)); 
+				
+            	Date data = new Date(ano - 1900, mes - 1, dia, hora, min, seg);
+
+				for(VeiculoEstacionado v : sis.lista)
+				{					
+					if(v.getPlaca().equals(codigo.getText()))
+					{
+						permanencia = new Date();
+						permanencia = sis.getDataEntrada(codigo.getText());
+						
+						
+						placaVeiculo.setText(v.getPlaca());
+						modeloVeiculo.setText(v.getModelo());
+						dataEntrada.setText(v.getData().toString());
+						dataSaida.setText(data.toString());
+						tempo.setText("");
+						custo.setText("");
+					}
+						
+				}
+			}
+		}
+    	
     }
 }

@@ -88,15 +88,15 @@ public class TelaConfiguracoes extends JFrame
         
         precoHoraMoto = new JTextField(10);
         precoHoraMoto.setHorizontalAlignment(JTextField.CENTER);
-        precoHoraMoto.setText(Float.toString(sis.getHoraMoto()));
+        precoHoraMoto.setText(Float.toString(sis.getCustoHoraMoto()));
         
         precoHoraCarro = new JTextField(10);
         precoHoraCarro.setHorizontalAlignment(JTextField.CENTER);
-        precoHoraCarro.setText(Float.toString(sis.getHoraCarro()));
+        precoHoraCarro.setText(Float.toString(sis.getCustoHoraCarro()));
         
         precoHoraCaminhonete = new JTextField(10);
         precoHoraCaminhonete.setHorizontalAlignment(JTextField.CENTER);
-        precoHoraCaminhonete.setText(Float.toString(sis.getHoraCaminhonete()));
+        precoHoraCaminhonete.setText(Float.toString(sis.getCustoHoraCaminhonete()));
         
         hora.add(horaMoto);
         hora.add(precoHoraMoto);
@@ -136,8 +136,8 @@ public class TelaConfiguracoes extends JFrame
         
         tempoBonus = new JTextField(15);
         tempoBonus.setEditable(false);
-        tempoBonus.setText("");
         tempoBonus.setHorizontalAlignment(JTextField.CENTER);
+        tempoBonus.setText(Integer.toString(sis.getTempoBonus()));
         
         aux[1][0].add(tempoBonus);
         
@@ -159,15 +159,15 @@ public class TelaConfiguracoes extends JFrame
         
         precoPernoiteMoto = new JTextField(10);
         precoPernoiteMoto.setHorizontalAlignment(JTextField.CENTER);
-        precoPernoiteMoto.setText(Float.toString(sis.getPernoiteMoto()));
+        precoPernoiteMoto.setText(Float.toString(sis.getCustoPernoiteMoto()));
         
         precoPernoiteCarro = new JTextField(10);
         precoPernoiteCarro.setHorizontalAlignment(JTextField.CENTER);
-        precoPernoiteCarro.setText(Float.toString(sis.getPernoiteCarro()));
+        precoPernoiteCarro.setText(Float.toString(sis.getCustoPernoiteCarro()));
         
         precoPernoiteCaminhonete = new JTextField(10);
         precoPernoiteCaminhonete.setHorizontalAlignment(JTextField.CENTER);
-        precoPernoiteCaminhonete.setText(Float.toString(sis.getPernoiteCaminhonete()));
+        precoPernoiteCaminhonete.setText(Float.toString(sis.getCustoPernoiteCaminhonete()));
         
         pernoite.add(pernoiteMoto);
         pernoite.add(precoPernoiteMoto);
@@ -197,15 +197,15 @@ public class TelaConfiguracoes extends JFrame
         
         precoMensalistaMoto = new JTextField(10);
         precoMensalistaMoto.setHorizontalAlignment(JTextField.CENTER);
-        precoMensalistaMoto.setText(Float.toString(sis.getMensalistaMoto()));
+        precoMensalistaMoto.setText(Float.toString(sis.getCustoMensalistaMoto()));
         
         precoMensalistaCarro = new JTextField(10);
         precoMensalistaCarro.setHorizontalAlignment(JTextField.CENTER);
-        precoMensalistaCarro.setText(Float.toString(sis.getMensalistaCarro()));
+        precoMensalistaCarro.setText(Float.toString(sis.getCustoMensalistaCarro()));
         
         precoMensalistaCaminhonete = new JTextField(10);
         precoMensalistaCaminhonete.setHorizontalAlignment(JTextField.CENTER);
-        precoMensalistaCaminhonete.setText(Float.toString(sis.getMensalistaCaminhonete()));
+        precoMensalistaCaminhonete.setText(Float.toString(sis.getCustoMensalistaCaminhonete()));
         
         mensalista.add(mensalistaMoto);
         mensalista.add(precoMensalistaMoto);
@@ -254,7 +254,7 @@ public class TelaConfiguracoes extends JFrame
            }
            else
            {
-        	   tempoBonus.setText("");
+        	   tempoBonus.setText(Integer.toString(sis.getTempoBonus()));
         	   aux = 0;
            }
         }

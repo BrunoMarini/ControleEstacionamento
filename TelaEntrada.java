@@ -270,6 +270,7 @@ public class TelaEntrada extends JFrame
             	Date d = new Date(ano - 1900, mes - 1, dia, hor, min, seg);
             	
                 SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
+                System.out.println(placa.getText()+modelo.getText()+tipoVeiculo+tipoPacote+d);
                 sis.entradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote, d);
                 
                 dispose();

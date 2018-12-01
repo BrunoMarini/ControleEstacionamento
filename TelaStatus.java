@@ -1,11 +1,15 @@
 package estacionamento;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,7 +35,12 @@ public class TelaStatus extends JFrame
     private JTextField motosEstacionados;
     private JTextField caminhonetesEstacionados;
     private JButton checar;
-    private JLabel icone;
+    private JLabel msgDataEntrada;
+    private JLabel msgDataSaida;
+    private JTextField dataEntrada;
+    private JTextField dataSaida;
+    private JButton verificar;
+    private JTextField resultado;
     
     int i;
     
@@ -48,13 +57,15 @@ public class TelaStatus extends JFrame
         TitledBorder tituloVagas = new TitledBorder("Vagas Ocupadas");
         TitledBorder tituloEstacionados = new TitledBorder("Estacionados");
         TitledBorder tituloPacotes = new TitledBorder("Pacotes Selecionados");
+        TitledBorder tituloLucro = new TitledBorder("Lucro por tempo");
         
         Listener list = new Listener();
         
-        Icon parada      = new ImageIcon(getClass().getResource("p.png"));
+        Icon parada = new ImageIcon(getClass().getResource("p.png"));
         
         p[0][0].setLayout(new GridLayout(1, 1));
         title = new JLabel("Status do Estacionamento", (int)CENTER_ALIGNMENT);
+        title.setFont(new Font("Century", Font.PLAIN, 35));
         p[0][0].add(title);
         
         p[1][0].setLayout(new GridLayout(1, 2));
@@ -114,10 +125,49 @@ public class TelaStatus extends JFrame
         pacotes.add(estacionadosMensalista);
  
         p[2][0].add(pacotes);
-        icone = new JLabel("", (int)CENTER_ALIGNMENT);
-        icone.setIcon(parada);
         
-        p[2][0].add(icone);
+        JPanel lucro = new JPanel();
+        lucro.setLayout(new GridLayout(3, 2));        
+        lucro.setBorder(tituloLucro);
+        lucro.add(msgDataEntrada = new JLabel("Data Entrada", (int)CENTER_ALIGNMENT));
+        dataEntrada = new JTextField("dd/mm/aaaa");
+        dataEntrada.setHorizontalAlignment(JTextField.CENTER);
+        dataEntrada.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				dataEntrada.setText("");
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(dataEntrada.getText().equals(""))
+					dataEntrada.setText("dd/mm/aaaa");
+			}
+        });
+        lucro.add(dataEntrada);
+        lucro.add(msgDataSaida = new JLabel("Data Saida", (int)CENTER_ALIGNMENT));
+        dataSaida = new JTextField("dd/mm/aaaa");
+        dataSaida.setHorizontalAlignment(JTextField.CENTER);
+        dataSaida.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				dataSaida.setText("");
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(dataSaida.getText().equals(""))
+					dataSaida.setText("dd/mm/aaaa");
+			}
+        });
+        lucro.add(dataSaida);
+        lucro.add(verificar = new JButton("Verificar"));
+        resultado = new JTextField();
+        resultado.setHorizontalAlignment(JTextField.CENTER);
+        resultado.setEditable(false);
+        lucro.add(resultado);
+        
+        p[2][0].add(lucro);
+        
+        
     }
     
     private class Listener implements ActionListener

@@ -14,35 +14,52 @@ import java.util.logging.Logger;
 
 public class BancoDados
 {
-	//SistemaEstacionamento estacionamento = SistemaEstacionamento.getInstance();
     private ObjectOutputStream output;
     private ObjectInputStream input;
+    //private String nomeArquivo;
     
-    public void openWriteFile()
+    public void openWriteFile(String nomeArquivo)
     {
         try
         {          
-            output = new ObjectOutputStream(new FileOutputStream("banco.ser"));
+            output = new ObjectOutputStream(new FileOutputStream(nomeArquivo));
         }
         catch(IOException ioException)
         {
              System.out.println("Erro ao tentar abrir o arquivo");
+             
         }
     }
     
-    public void openReadFile()
+    public void openReadFile(String nomeArquivo)
     {
     	try
         {          
-            input = new ObjectInputStream(new FileInputStream("banco.ser"));
+            input = new ObjectInputStream(new FileInputStream(nomeArquivo));
         }
         catch(IOException ioException)
         {
              System.out.println("Erro ao tentar abrir o arquivo");
+             this.openWriteFile(nomeArquivo);
+             this.closeFile();
+             this.openReadFile(nomeArquivo);
+             System.out.println("Arquivo criado com sucesso!");
         }
     }
     
     public void adicionarArquivo(VeiculoEstacionado veiculoReg)
+    {
+        try
+        {
+            output.writeObject(veiculoReg);
+            
+        }catch(IOException ioException)
+        {
+            System.err.println("Erro ao escrever no arquivo");
+        }
+    }
+    
+    public void adicionarArquivo(VeiculoSaida veiculoReg) // CONTROLA ARQUIVO DE SAIDA DE VEICULOS
     {
         try
         {
@@ -75,16 +92,47 @@ public class BancoDados
     	
 		catch(ClassNotFoundException exception)
 		{
-		    System.err.println("Erro");
+		    System.err.println("Erro" + exception);
 		}
     	
         catch(IOException exception)
         {
-            System.err.println("Erro");
+            System.err.println("Erro" + exception);
         }
+    	
 		return lista;
     }
     
+    public ArrayList readFileDatasSaida()
+    {
+    	 ArrayList<VeiculoSaida> lista = new ArrayList<VeiculoSaida>();
+    	 VeiculoSaida veiculoAtual;
+    	 
+    	 try
+    	 {
+    		 while(true)
+    		 {
+    			 veiculoAtual = (VeiculoSaida)input.readObject();
+    			 lista.add(veiculoAtual);
+    		 }	 
+    	 }
+    	 catch(EOFException exception)
+         {
+             return lista;
+         }
+     	
+ 		catch(ClassNotFoundException exception)
+ 		{
+ 		    System.err.println("Erro");
+ 		}
+     	
+         catch(IOException exception)
+         {
+             System.err.println("Erro");
+         }    	 
+    	 
+    	 return lista;
+    }
     
     public void closeFile()
     {
