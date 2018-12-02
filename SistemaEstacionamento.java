@@ -141,7 +141,7 @@ public class SistemaEstacionamento
 		});
     }
 
-    public int entradaVeiculo(String placa, String modelo, String tipo, String pacote, LocalDateTime d)
+    public int entradaVeiculo(String placa, String modelo, String tipo, String pacote, LocalDateTime d) throws VagaLotadaException
     {
     	int contCarro = 0, contMoto = 0, contCaminhonete = 0, vagaOcupada = -1, inicio = 0;
     	int fim = 0, i;
@@ -179,18 +179,11 @@ public class SistemaEstacionamento
     	}
 		else
 		{
-			return -1;
+			throw new VagaLotadaException();
 		}
     	
         VeiculoEstacionado veiculo = new VeiculoEstacionado(placa, modelo, pacote, tipo, vagaOcupada, d);
-        listaDados.add(veiculo);  
-        
-        // MOVER PARA ONDE FECHA O PROGRAMA
-        //BancoDados bancoDados = setBanco();
-        //bancoDados.openWriteFile();
-        //bancoDados.adicionarArquivo(veiculo);
-        //bancoDados.closeFile();
-        // FIM DO MOVER
+        listaDados.add(veiculo);
         
         telaEstacionamento.dispose();
         instanciaTelaEstacionamento();
@@ -354,6 +347,21 @@ public class SistemaEstacionamento
 //    	
 //    	return (new Date(ano, mes, dia, hora, min, seg));
 //    }
+    
+    public String switchVeiculo(int x) throws TipoVeiculoException
+    {
+    	switch (x)
+    	{
+    		case 1:
+    			return("Moto");
+    		case 2:
+    			return("Carro");
+    		case 3:
+    			return("Caminhonete");
+			default:
+				throw new TipoVeiculoException();				
+    	}
+	}
     
     //HORA
     public int getAnoEstacionado(LocalDateTime entrada, LocalDateTime saida){

@@ -48,6 +48,7 @@ public class TelaEntrada extends JFrame
     private JLabel msgHora;
     private JTextField hora;
 
+    SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
     
     private static final String[] tipos = {"", "Moto", "Carro", "Caminhonete"}; 
     int i, x;
@@ -142,7 +143,8 @@ public class TelaEntrada extends JFrame
                     public void itemStateChanged(ItemEvent e)
                     {
                         if(e.getStateChange() == ItemEvent.SELECTED)
-                            x = tipo.getSelectedIndex();
+                            
+                        	x = tipo.getSelectedIndex();
                         
                         switch(x){
                             case 0:
@@ -150,15 +152,12 @@ public class TelaEntrada extends JFrame
                             break;
                             case 1:
                                 imagem.setIcon(moto);
-                                tipoVeiculo = "Moto";
                             break;
                             case 2:
                                 imagem.setIcon(carro);
-                                tipoVeiculo = "Carro";
                             break;
                             case 3:
                                 imagem.setIcon(caminhonete);
-                                tipoVeiculo = "Caminhonete";
                             break;
                         }
                     }
@@ -254,10 +253,8 @@ public class TelaEntrada extends JFrame
 	            	min = Integer.parseInt(hora.getText().substring(3, 5));
 	            	
 	            	LocalDateTime d = LocalDateTime.of(ano, mes, dia, hor, min);
-	            	
-	                SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
 	                
-	                sis.entradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote, d);
+	                sis.entradaVeiculo(placa.getText(), modelo.getText(), sis.switchVeiculo(x), tipoPacote, d);
 	                
 	                dispose();
             	}
@@ -272,6 +269,14 @@ public class TelaEntrada extends JFrame
             	catch(StringIndexOutOfBoundsException exception)
             	{
             		JOptionPane.showMessageDialog(null, "Valores inseridos invalidos\nFormato data (HH:MM) e (dd/mm/aaaa)", "Erro", JOptionPane.INFORMATION_MESSAGE);
+            	}
+            	catch(VagaLotadaException exception)
+            	{
+            		JOptionPane.showMessageDialog(null,  "Nao a mais vagas para esse tipo de veiculo", "Erro", JOptionPane.INFORMATION_MESSAGE);
+            	}
+            	catch(TipoVeiculoException exception)
+            	{
+            		JOptionPane.showMessageDialog(null,  "Tipo de Veiculo Invalido", "Erro", JOptionPane.INFORMATION_MESSAGE);
             	}
             	
             }     
