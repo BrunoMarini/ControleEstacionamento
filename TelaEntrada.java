@@ -242,14 +242,14 @@ public class TelaEntrada extends JFrame
                 dispose();
             else if(e.getSource() == cadastrar)
             {
-            	int dia, mes, ano, hor, min, seg;
+            	int dia, mes, ano, hor, min;
             	
             	try{
             	
-	            	ano = Integer.parseInt(data.getText().substring(7, 10));
-	            	mes = Integer.parseInt(data.getText().substring(4, 5));
-	            	dia = Integer.parseInt(data.getText().substring(1, 2));
-	            	
+	            	ano = Integer.parseInt(data.getText().substring(6, 10));
+	            	mes = Integer.parseInt(data.getText().substring(3, 5));
+	            	dia = Integer.parseInt(data.getText().substring(0, 2));
+
 	            	hor = Integer.parseInt(hora.getText().substring(0, 2));
 	            	min = Integer.parseInt(hora.getText().substring(3, 5));
 	            	

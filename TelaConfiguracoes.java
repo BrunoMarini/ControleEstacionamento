@@ -1,5 +1,6 @@
 package estacionamento;
 
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -68,6 +70,7 @@ public class TelaConfiguracoes extends JFrame
                 
         p[0][0].setLayout(new GridLayout(1, 1));
         titulo = new JLabel("Configuracoes", (int)CENTER_ALIGNMENT);
+        titulo.setFont(new Font("Century", Font.PLAIN, 35));
         p[0][0].add(titulo);
         
         TitledBorder tituloHora = new TitledBorder("Configuracoes Hora");
@@ -265,6 +268,8 @@ public class TelaConfiguracoes extends JFrame
         @Override
         public void actionPerformed(ActionEvent e)
         {
+        	try{
+        	
             if(e.getSource() == confirmar)
             {
             	sis.Configuracoes(Float.parseFloat(precoHoraCarro.getText()), Float.parseFloat(precoHoraMoto.getText()), Float.parseFloat(precoHoraCaminhonete.getText()), 
@@ -277,6 +282,11 @@ public class TelaConfiguracoes extends JFrame
             {
             	dispose();
             }
+            
+        	}catch(NumberFormatException excep)
+        	{
+        		JOptionPane.showMessageDialog(null, "Todos os campos aguardam valores reais", "Erro", JOptionPane.INFORMATION_MESSAGE);
+        	}
         }
     }
 }

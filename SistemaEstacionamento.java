@@ -51,7 +51,7 @@ public class SistemaEstacionamento
     	
     	listaDados = bancoDados.readFile();    	
     	listaSaida = bancoSaida.readFileDatasSaida();
-    		
+    	
 		Configuracoes config = bancoConfig.readFileConfiguracoes();
 		
 		if(bancoConfig.existiaArquivo() && config != null)
@@ -271,9 +271,9 @@ public class SistemaEstacionamento
     	{
     		bancoDados.adicionarArquivo(veiculoAtual);
     	}
-    	for(VeiculoSaida veiculoAtual : listaSaida)
+    	for(VeiculoSaida v : listaSaida)
     	{
-    		bancoSaida.adicionarArquivo(veiculoAtual);
+    		bancoSaida.adicionarArquivo(v);
     	}
     	
     	Configuracoes config = new Configuracoes(horaCarro, horaMoto, horaCaminhonete, mensalistaCarro, mensalistaMoto, mensalistaCaminhonete, 
@@ -287,10 +287,11 @@ public class SistemaEstacionamento
     	
     }
 	
-    public void saidaVeiculo(int vagaOcupada, LocalDateTime dataSaida, float valor)
+    public void saidaVeiculo(int vagaOcupada, LocalDateTime dataSaida, float valor) throws VeiculoNaoEncontradoException
     {
     	int aux;
-    	
+    	boolean encontrou = false;
+  
     	listaSaida.add(new VeiculoSaida(dataSaida, valor));
     	
     	for(VeiculoEstacionado veiculoAtual : listaDados)
@@ -299,9 +300,14 @@ public class SistemaEstacionamento
     		{
     			aux = listaDados.indexOf(veiculoAtual);
     			listaDados.remove(aux);
+    			encontrou = true;
     			break;
     		}
     	}	
+    	
+    	if(!encontrou)
+    		throw new VeiculoNaoEncontradoException();
+    	
     	telaEstacionamento.dispose();
     	instanciaTelaEstacionamento();
     }    
@@ -498,12 +504,14 @@ public class SistemaEstacionamento
     }
     
     public int getVeiculosPeriodo(LocalDateTime entrada, LocalDateTime saida){
+    	
     	int count = 0;
     	
     	for(VeiculoSaida s : listaSaida)
     	{
-    		if(s.getData().isAfter(entrada) && s.getData().isBefore(saida))
-    			count++;
+    		if(s != null)
+    			if(s.getData().isAfter(entrada) && s.getData().isBefore(saida))
+    				count++;
     	}
     	
     	return (count);

@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
@@ -210,6 +211,8 @@ public class TelaStatus extends JFrame
                 
                 int dia, mes, ano;
         		
+                try{
+                
             	ano = Integer.parseInt(dataEntrada.getText().substring(6, 10));
             	mes = Integer.parseInt(dataEntrada.getText().substring(3, 5));
             	dia = Integer.parseInt(dataEntrada.getText().substring(0, 2)); 
@@ -225,9 +228,21 @@ public class TelaStatus extends JFrame
                 qtdVeiculos  = sis.getVeiculosPeriodo(entrada, saida);
                 lucroPeriodo = sis.getValorPeriodo(entrada, saida);
                 
-
-                
                 resultado.setText(qtdVeiculos + " Veiculos " + lucroPeriodo + " Lucro");
+                
+                }
+                catch(NumberFormatException exception)
+            	{
+            		JOptionPane.showMessageDialog(null, "Valores inseridos invalidos\nFormato data (HH:MM) e (dd/mm/aaaa)", "Erro", JOptionPane.INFORMATION_MESSAGE);
+            	}
+            	catch(DateTimeException exception)
+            	{
+            		JOptionPane.showMessageDialog(null, "Valores inseridos invalidos\nFormato data (HH:MM) e (dd/mm/aaaa)", "Erro", JOptionPane.INFORMATION_MESSAGE);
+            	}
+            	catch(StringIndexOutOfBoundsException exception)
+            	{
+            		JOptionPane.showMessageDialog(null, "Valores inseridos invalidos\nFormato data (HH:MM) e (dd/mm/aaaa)", "Erro", JOptionPane.INFORMATION_MESSAGE);
+            	}
             }
         }
     }

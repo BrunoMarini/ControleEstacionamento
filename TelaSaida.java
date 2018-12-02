@@ -12,6 +12,7 @@ import java.time.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -179,23 +180,32 @@ public class TelaSaida extends JFrame
         
     }
     
-    public class Listener implements ActionListener
+    public class Listener implements ActionListener	
     {
 		@Override
 		public void actionPerformed(ActionEvent event) 
-		{
+		{	
 			if(event.getSource() == cancelar)
 			{
 				dispose();
 			}
 			else if (event.getSource() == confirmar)
 			{
-				sis.saidaVeiculo(vagaOcupada, saiu, valor);
-				dispose();
+				try
+				{
+					sis.saidaVeiculo(vagaOcupada, saiu, valor);
+					dispose();
+				}
+				catch(VeiculoNaoEncontradoException e)
+				{
+            		JOptionPane.showMessageDialog(null, "Veiculo nao encontrado", "Erro", JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 			else if (event.getSource() == verifica)
 			{	
 				int dia, mes, ano, hora, min;
+				
+				try{
 				
             	ano = Integer.parseInt(leDataSaida.getText().substring(6, 10));
             	mes = Integer.parseInt(leDataSaida.getText().substring(3, 5));
@@ -233,6 +243,19 @@ public class TelaSaida extends JFrame
 					}
 						
 				}
+				}
+				catch(NumberFormatException exception)
+            	{
+            		JOptionPane.showMessageDialog(null, "Valores inseridos invalidos\nFormato data (HH:MM) e (dd/mm/aaaa)", "Erro", JOptionPane.INFORMATION_MESSAGE);
+            	}
+            	catch(DateTimeException exception)
+            	{
+            		JOptionPane.showMessageDialog(null, "Valores inseridos invalidos\nFormato data (HH:MM) e (dd/mm/aaaa)", "Erro", JOptionPane.INFORMATION_MESSAGE);
+            	}
+            	catch(StringIndexOutOfBoundsException exception)
+            	{
+            		JOptionPane.showMessageDialog(null, "Valores inseridos invalidos\nFormato data (HH:MM) e (dd/mm/aaaa)", "Erro", JOptionPane.INFORMATION_MESSAGE);
+            	}
 			}
 		}
     	
