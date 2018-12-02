@@ -8,14 +8,16 @@ public class VeiculoEstacionado implements Serializable
     private String placa;
     private String modelo;
     private String pacote;
+    private String tipo;
     private int vagaOcupada;
     private Date data;
     
-    public VeiculoEstacionado(String placa, String modelo, String pacote, int vagaOcupada, java.util.Date d)
+    public VeiculoEstacionado(String placa, String modelo, String pacote, String tipo, int vagaOcupada, Date d)
     {
         this.placa = placa;
         this.modelo = modelo;
         this.pacote = pacote;
+        this.tipo = tipo;
         this.vagaOcupada = vagaOcupada;
         this.data = (Date) d;
     }
@@ -30,6 +32,10 @@ public class VeiculoEstacionado implements Serializable
     
     public String getPacote(){
         return(pacote);
+    }
+    
+    public String getTipo(){
+    	return(tipo);
     }
     
     public int getVagaOcupada(){

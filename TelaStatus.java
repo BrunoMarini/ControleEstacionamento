@@ -47,7 +47,11 @@ public class TelaStatus extends JFrame
     public TelaStatus()
     {
         super("Status");
+        
+        SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
+        
         setLayout(new GridLayout(3, 1));
+        
         JPanel[][] p = new JPanel[3][1];
         for(i = 0; i < 3; i++){
             p[i][0] = new JPanel();
@@ -76,12 +80,15 @@ public class TelaStatus extends JFrame
         carros = new JLabel("Carros", (int)CENTER_ALIGNMENT);
         motos = new JLabel("Motos", (int)CENTER_ALIGNMENT);
         caminhonetes = new JLabel("Caminhonetes", (int)CENTER_ALIGNMENT);
-        carrosEstacionados = new JTextField(15);
+        carrosEstacionados = new JTextField(Integer.toString(sis.getCarrosEstacionados()));
+        carrosEstacionados.setHorizontalAlignment(JTextField.CENTER);
         carrosEstacionados.setEditable(false);
-        motosEstacionados = new JTextField(15);
+        motosEstacionados = new JTextField(Integer.toString(sis.getMotosEstacionados()));
         motosEstacionados.setEditable(false);
-        caminhonetesEstacionados = new JTextField(15);
+        motosEstacionados.setHorizontalAlignment(JTextField.CENTER);
+        caminhonetesEstacionados = new JTextField(Integer.toString(sis.getCaminhonetesEstacionados()));
         caminhonetesEstacionados.setEditable(false);
+        caminhonetesEstacionados.setHorizontalAlignment(JTextField.CENTER);
         
         vagas.add(motos);
         vagas.add(motosEstacionados);
@@ -110,12 +117,17 @@ public class TelaStatus extends JFrame
         hora = new JLabel("Hora", (int)CENTER_ALIGNMENT);
         mensalista = new JLabel("Mensalista", (int)CENTER_ALIGNMENT);
         pernoite = new JLabel("Pernoite", (int)CENTER_ALIGNMENT);
-        estacionadosHora = new JTextField(15);
+        estacionadosHora = new JTextField(Integer.toString(sis.getQtdPacoteHora()));
         estacionadosHora.setEditable(false);
-        estacionadosMensalista = new JTextField(15);
+        estacionadosHora.setHorizontalAlignment(JTextField.CENTER);
+        
+        estacionadosMensalista = new JTextField(Integer.toString(sis.getQtdPacoteMensalista()));
         estacionadosMensalista.setEditable(false);
-        estacionadosPernoite = new JTextField(15);
+        estacionadosMensalista.setHorizontalAlignment(JTextField.CENTER);
+        
+        estacionadosPernoite = new JTextField(Integer.toString(sis.getQtdPacotePernoite()));
         estacionadosPernoite.setEditable(false);
+        estacionadosPernoite.setHorizontalAlignment(JTextField.CENTER);
         
         pacotes.add(hora);
         pacotes.add(estacionadosHora);

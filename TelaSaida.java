@@ -43,7 +43,7 @@ public class TelaSaida extends JFrame
     private JLabel msgHoraSaida;
     private JTextField leDataSaida;
     
-    private Date entrou;
+    private Date entrou, saiu;
     private float valor;
     private int vagaOcupada;
     int i;
@@ -170,6 +170,8 @@ public class TelaSaida extends JFrame
         p[8][0].setLayout(new GridLayout(1, 2));
         cancelar = new JButton("Cancelar");
         confirmar = new JButton("Confirmar");
+        cancelar.addActionListener(list);
+        confirmar.addActionListener(list);
         p[8][0].add(cancelar);
         p[8][0].add(confirmar);
         
@@ -188,6 +190,7 @@ public class TelaSaida extends JFrame
 			}
 			else if (event.getSource() == confirmar)
 			{
+				sis.saidaVeiculo(vagaOcupada, saiu, valor);
 				dispose();
 			}
 			else if (event.getSource() == verifica)
@@ -202,10 +205,12 @@ public class TelaSaida extends JFrame
             	min = Integer.parseInt(leHoraSaida.getText().substring(3, 5));
             	seg = Integer.parseInt(leHoraSaida.getText().substring(6, 8)); 
 				
-            	Date saiu = new Date(ano - 1900, mes - 1, dia, hora, min, seg);
-            	Date permanencia = new Date();
+            	saiu = new Date(ano - 1900, mes - 1, dia, hora, min, seg);
             		
-				for(VeiculoEstacionado v : sis.lista)
+            	int diferenca;            	
+            	int dias, horas;
+            	
+				for(VeiculoEstacionado v : sis.listaDados)
 				{					
 					if(v.getPlaca().equals(codigo.getText()))
 					{
@@ -217,32 +222,20 @@ public class TelaSaida extends JFrame
 						System.out.println("Entrou: "+ entrou);
 						System.out.println("Saiu:   "+ saiu);
 						
-						permanencia = sis.converteMili(entrou, saiu);
-
-						System.out.println("PERMANENCIA: " + permanencia);
+						diferenca = (int)saiu.getTime() - (int)entrou.getTime();
 						
-						valor = sis.calculaCusto(permanencia, v.getPacote(), v.getModelo());
+						horas = sis.getHorasEstacionados(diferenca);
+						horas = horas % 24;
+						dias = horas / 24;
 						
-						StringBuilder stringBuilder = new StringBuilder();
-						stringBuilder.append((permanencia.getDay() - 1));
-						stringBuilder.append("/");
-						stringBuilder.append(permanencia.getMonth());
-						stringBuilder.append("/");
-						stringBuilder.append(permanencia.getYear());
-						stringBuilder.append("     ");
-						stringBuilder.append(permanencia.getHours());
-						stringBuilder.append(":");
-						stringBuilder.append(permanencia.getMinutes());
-						String per = (stringBuilder.toString());
+						valor = sis.calculaCusto(entrou, saiu, dias, horas, diferenca, v.getTipo(), v.getPacote());
 						
 						placaVeiculo.setText(v.getPlaca());
 						modeloVeiculo.setText(v.getModelo());
 						dataEntrada.setText(entrou.toString());
 						dataSaida.setText(saiu.toString());
-						tempo.setText(per);
+						tempo.setText(dias + " Dia(s) e "+ horas +" Hora(s)");
 						custo.setText(Float.toString(valor));
-						
-						break;
 					}
 						
 				}

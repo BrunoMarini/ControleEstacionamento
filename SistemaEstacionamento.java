@@ -5,14 +5,13 @@ import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class SistemaEstacionamento
 {   
 	private static SistemaEstacionamento instance = null;
-    public ArrayList<VeiculoEstacionado> lista;
+    public ArrayList<VeiculoEstacionado> listaDados;
+    public ArrayList<VeiculoSaida> listaSaida;
     
     BancoDados bancoDados = new BancoDados();
     BancoDados bancoSaida = new BancoDados();
@@ -27,11 +26,10 @@ public class SistemaEstacionamento
     
     float pernoiteCarro = 16;
     float pernoiteMoto = 15;
-    float pernoiteCaminhonte = 17;
-    
-    private Date data = new Date();
+    float pernoiteCaminhonete = 17;
     
     int tempoBonus = 0;
+    boolean validaTempoBonus = false;
 	
     public static SistemaEstacionamento getInstance()
     {
@@ -45,9 +43,11 @@ public class SistemaEstacionamento
     	bancoDados.openReadFile("banco.ser");
     	bancoSaida.openReadFile("dataSaida.ser");
     	
-    	lista = bancoDados.readFile();
+    	listaDados = bancoDados.readFile();    	
+    	listaSaida = bancoSaida.readFileDatasSaida();
     	
     	bancoDados.closeFile();
+    	bancoSaida.closeFile();
     	
     	bancoDados.openWriteFile("banco.ser");
     	bancoSaida.openWriteFile("dataSaida.ser");
@@ -148,9 +148,9 @@ public class SistemaEstacionamento
 		{
 			return -1;
 		}
-    	 
-        VeiculoEstacionado veiculo = new VeiculoEstacionado(placa, modelo, pacote, vagaOcupada, d);
-        lista.add(veiculo);  
+    	
+        VeiculoEstacionado veiculo = new VeiculoEstacionado(placa, modelo, pacote, tipo, vagaOcupada, d);
+        listaDados.add(veiculo);  
         
         // MOVER PARA ONDE FECHA O PROGRAMA
         //BancoDados bancoDados = setBanco();
@@ -176,16 +176,23 @@ public class SistemaEstacionamento
         
         pernoiteCarro = pcar;
         pernoiteMoto = pm;
-        pernoiteCaminhonte = pcam;
+        pernoiteCaminhonete = pcam;
         
        if(valida == 1)
+       {
     	   tempoBonus = tempo;
+    	   validaTempoBonus = true;
+       }
+       else
+       {
+    	   validaTempoBonus = false;
+       }
     }
 
     public boolean isOcupado(int vagaTeste)
     {
     	
-    	for(VeiculoEstacionado veiculoAtual : lista)
+    	for(VeiculoEstacionado veiculoAtual : listaDados)
     	{
     		if(vagaTeste == veiculoAtual.getVagaOcupada())
     		{
@@ -198,29 +205,40 @@ public class SistemaEstacionamento
     }
     public void salvarLista()
     {
-    	for(VeiculoEstacionado veiculoAtual : lista)
+    	for(VeiculoEstacionado veiculoAtual : listaDados)
     	{
     		bancoDados.adicionarArquivo(veiculoAtual);
     	}
+    	for(VeiculoSaida veiculoAtual : listaSaida)
+    	{
+    		bancoSaida.adicionarArquivo(veiculoAtual);
+    	}
     	bancoDados.closeFile();
+    	bancoSaida.closeFile();
     	
     }
 	
     public void saidaVeiculo(int vagaOcupada, Date dataSaida, float valor)
     {
-    	bancoSaida.adicionarArquivo(new VeiculoSaida(dataSaida, valor));
+    	int aux;
     	
-    	for(VeiculoEstacionado veiculoAutal : lista)
+    	listaSaida.add(new VeiculoSaida(dataSaida, valor));
+    	
+    	for(VeiculoEstacionado veiculoAtual : listaDados)
     	{
-    		if (veiculoAutal.getVagaOcupada() == vagaOcupada)
-    			lista.remove( lista.indexOf(veiculoAutal) );
+    		if (veiculoAtual.getVagaOcupada() == vagaOcupada)
+    		{
+    			aux = listaDados.indexOf(veiculoAtual);
+    			listaDados.remove(aux);
+    			break;
+    		}
     	}
     	
     }    
     
     public Date getDataEntrada(String placa)
     {
-    	for(VeiculoEstacionado v : lista)
+    	for(VeiculoEstacionado v : listaDados)
     	{
     		if (v.getPlaca().equals(placa))
     		{
@@ -230,88 +248,204 @@ public class SistemaEstacionamento
     	return(null);
     }
     
-    public Date converteMili(Date entrou, Date saiu)
-    {
-    	long x;
-    	
-    	x = saiu.getTime() - entrou.getTime();
-    	
-    	//int seg = (int) (x / 1000) % 60;
-        //int min = (int) ((x / (1000 * 60)) % 60);
-        //int hor = (int) ((x / (1000 * 60 * 60)) % 24);
-        //int dia = (int) (x / (1000 * 60 * 60 * 24));
-        
-    	Calendar calendar = Calendar.getInstance();
-    	calendar.setTimeInMillis(x + 10800000);
-    	    			
-    	int ano = calendar.get(Calendar.YEAR) - 1970;
-    	int mes = calendar.get(Calendar.MONTH);
-    	int dia = calendar.get(Calendar.DAY_OF_MONTH);
-    	int hora = calendar.get(Calendar.HOUR);
-        int min = calendar.get(Calendar.MINUTE);
-        int seg = calendar.get(Calendar.SECOND);
-    	
-        //System.out.println(dia+"/"+mes+"/"+ano+" "+hora+":"+min+":"+seg);
-    	
-    	return (new Date(ano, mes, dia, hora, min, seg));
+//    public Date converteMili(Date entrou, Date saiu)
+//    {
+//    	long x;
+//    	
+//    	x = saiu.getTime() - entrou.getTime();
+//    	
+//    	//int seg = (int) (x / 1000) % 60;
+//        //int min = (int) ((x / (1000 * 60)) % 60);
+//        //int hor = (int) ((x / (1000 * 60 * 60)) % 24);
+//        //int dia = (int) (x / (1000 * 60 * 60 * 24));
+//        
+//    	Calendar calendar = Calendar.getInstance();
+//    	calendar.setTimeInMillis(x + 10800000);
+//    	    			
+//    	int ano = calendar.get(Calendar.YEAR) - 1970;
+//    	int mes = calendar.get(Calendar.MONTH);
+//    	//int dia = calendar.get(Calendar.DAY_OF_MONTH);
+//    	int hora = calendar.get(Calendar.HOUR);
+//        int min = calendar.get(Calendar.MINUTE);
+//        int seg = calendar.get(Calendar.SECOND);
+//    	
+//        //System.out.println(dia+"/"+mes+"/"+ano+" "+hora+":"+min+":"+seg);
+//    	
+//    	int dia;
+//    	dia = (int)x / 86400000;
+//    	
+//    	System.out.println(dia);
+//    	
+//    	return (new Date(ano, mes, dia, hora, min, seg));
+//    }
+    
+    //HORA
+    
+    public int getHorasEstacionados(int diferenca){
+    	return (diferenca / 3600000);
     }
     
-    public float calculaCusto(Date tempo, String pacote, String tipo)
+    public float calculaCusto(Date entrada, Date saida, int dias, int horas, int total, String tipo, String pacote)
     {
-    	int ano, mes, dia, hora, min;
+    	int minutos = total / (1000 * 60);
+    	int aux;
+    	System.out.println(tipo+"  "+pacote);
+    	if(pacote.equals("Hora")) //Se pacote hora
+    	{
+    		if(horas == 0) //Se ficou < 1 hora
+    		{	
+    			if(validaTempoBonus && minutos <= tempoBonus) //Se tem tempo bonus e se ficou < tempo bonus
+    				return(0);
+    			else
+    			{
+    				return(getCusto(tipo, pacote) * 1);
+    			}
+    		}
+    		else
+    		{
+    			return(getCusto(tipo, pacote) * horas);
+    		}
+    	}
+    	else if(pacote.equals("Mensalista"))
+    	{
+    		System.out.println("Entrou Moto");
+    		if(dias <= 31)
+    		{
+    			return(getCusto(tipo, pacote) * 1);
+    		}
+    		else
+    		{
+    			aux = dias % 31;
+    			if(aux != 0)
+    				return(getCusto(tipo, pacote) * ((dias / 31) + 1));
+    			else 
+    				return(getCusto(tipo, pacote) * (dias / 31));
+    				
+    		}
+    	}
+    	else if(pacote.equals("Pernoite"))
+    	{
+			if(saida.getHours() < 7)
+			{
+				return(getCusto(tipo, pacote) * 1);
+			}
+			else
+			{
+				if(dias == 0)
+				{
+					return(getCusto(tipo, pacote) + (getCusto(tipo, "Hora") * (saida.getHours() - 7)));
+				}
+				else
+				{
+					return(getCusto(tipo, "Hora") * horas);
+				}
+			}
+    	}
     	
-    	ano = tempo.getYear();
-    	mes = tempo.getMonth();
-    	dia = tempo.getDay() - 1;
-    	hora = tempo.getHours();
-    	min = tempo.getMinutes();
-    	
-    	System.out.println(dia+"/"+mes+"/"+ano+"   "+hora+":"+min);
-    	return ano;
-//    	if(pacote.equals("Hora"))
-//    	{
-//    		//(tempo.getYear()
-//    	}
+    	return(-1);
     }
     
 	//DE ACORDO COM O JEFF GEEETS
 	
-	public float getCustoHoraCarro(){
-    	return horaCarro;
+    public int getCarrosEstacionados(){
+    	int cont = 0;
+    	for(VeiculoEstacionado v : listaDados)
+    		if(v.getTipo().equals("Carro"))
+    			cont++;
+    	return cont;
     }
-    public float getCustoHoraMoto(){
-    	return horaMoto;
-    }
-    public float getCustoHoraCaminhonete(){
-    	return horaCaminhonete;
-    }
-    
-    public float getCustoMensalistaCarro(){
-    	return mensalistaCarro;
-    }
-    public float getCustoMensalistaMoto(){
-    	return mensalistaMoto;
-    }
-    public float getCustoMensalistaCaminhonete(){
-    	return mensalistaCaminhonete;
+    public int getMotosEstacionados(){
+    	int cont = 0;
+    	for(VeiculoEstacionado v : listaDados)
+    		if(v.getTipo().equals("Moto"))
+    			cont++;
+    	return cont;
     }
     
-    public float getCustoPernoiteCarro(){
-    	return pernoiteCarro;
+    public int getCaminhonetesEstacionados(){
+    	int cont = 0;
+    	for(VeiculoEstacionado v : listaDados)
+    		if(v.getTipo().equals("Caminhonete"))
+    			cont++;
+    	return cont;
     }
-    public float getCustoPernoiteMoto(){
-    	return pernoiteMoto;
+    
+    public int getQtdPacoteHora(){
+    	int cont = 0;
+    	for(VeiculoEstacionado v : listaDados)
+    		if(v.getPacote().equals("Hora"))
+    			cont++;
+    	return cont;
     }
-    public float getCustoPernoiteCaminhonete(){
-    	return pernoiteCaminhonte;
+    
+    public int getQtdPacoteMensalista(){
+    	int cont = 0;
+    	for(VeiculoEstacionado v : listaDados)
+    		if(v.getPacote().equals("Mensalista"))
+    			cont++;
+    	return cont;
+    }
+    
+    public int getQtdPacotePernoite(){
+    	int cont = 0;
+    	for(VeiculoEstacionado v : listaDados)
+    		if(v.getPacote().equals("Pernoite"))
+    			cont++;
+    	return cont;
+    }
+    
+    public int getTempoBonus(){
+    	return(tempoBonus);
     }
     
     public int getNumeroVeiculos(){
-        return (lista.size());
-    }   
-    
-    public int getTempoBonus(){
-    	return (tempoBonus);
+    	return(listaDados.size());
     }
+    
+    public float getCusto(String tipo, String pacote)
+    {   
+    	if(tipo.equals("Carro"))
+    	{
+    		if(pacote.equals("Hora"))
+    		{
+    			return(horaCarro);
+    		}
+			else if(pacote.equals("Mensalista"))
+			{
+				return(mensalistaCarro);
+			}
+    		else if(pacote.equals("Pernoite"))
+			{
+    			return(pernoiteCarro);
+			}
+    	}
+    	else if(tipo.equals("Moto"))
+    	{
+    		if(pacote.equals("Hora"))
+    		{
+    			return(horaMoto);
+    		}
+			else if(pacote.equals("Mensalista"))
+			{
+				return(mensalistaMoto);
+			}
+    		else if(pacote.equals("Pernoite"))
+			{
+    			return(pernoiteMoto);
+			}
+    	}
+    	else if(tipo.equals("Caminhonete"))
+    	{
+    		if(pacote.equals("Hora"))
+    			return(horaCaminhonete);
+    		else if(pacote.equals("Mensalista"))
+    			return(mensalistaCaminhonete);
+    		else if(pacote.equals("Pernoite"))
+    			return(pernoiteCaminhonete);
+    	}
+    	
+    	return(-1);
+    }
+	
     //DE ACORDO COM O JEFF GEEETS
 }

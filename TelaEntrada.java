@@ -282,7 +282,7 @@ public class TelaEntrada extends JFrame
             
             else if(e.getSource() == mensalista)
             {
-                tipoPacote = "mensalista";
+                tipoPacote = "Mensalista";
             }
             
             else if(e.getSource() == pernoite)

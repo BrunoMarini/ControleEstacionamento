@@ -8,12 +8,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class BancoDados
 {
+	boolean existia;
     private ObjectOutputStream output;
     private ObjectInputStream input;
     //private String nomeArquivo;
@@ -44,6 +43,7 @@ public class BancoDados
              this.closeFile();
              this.openReadFile(nomeArquivo);
              System.out.println("Arquivo criado com sucesso!");
+             existia = false;
         }
     }
     
@@ -151,5 +151,9 @@ public class BancoDados
         {
             System.err.println("Erro ao tentar fechar o arquivo");
         }
+    }
+    
+    public boolean existiaArquivo(){
+    	return(existia);
     }
 }

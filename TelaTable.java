@@ -1,5 +1,6 @@
 package estacionamento;
 
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
@@ -7,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class TelaTable extends JFrame
 {
@@ -37,7 +39,7 @@ public class TelaTable extends JFrame
         
         i = 0;    
         
-        for(VeiculoEstacionado v : sis.lista)
+        for(VeiculoEstacionado v : sis.listaDados)
         {
         	//System.out.println(v.getData());
         	        	 
@@ -54,12 +56,24 @@ public class TelaTable extends JFrame
         table.setEnabled(false);
         table.setMaximumSize(this.getSize());
         table.createScrollPaneForTable(table);
-        
+        table.setDefaultRenderer(Object.class, new CellRenderer());
         
         add(table);
         
         js = new JScrollPane(table);
         add(js);
 
+    }
+    
+    public class CellRenderer extends DefaultTableCellRenderer {
+    	public CellRenderer() {
+    		super();
+    	}
+    	public Component getTableCellRendererComponent(JTable table, Object value,
+    			boolean isSelected, boolean hasFocus, int row, int column) {
+    		this.setHorizontalAlignment(CENTER);
+    		return super.getTableCellRendererComponent(table, value, isSelected,
+    				hasFocus, row, column);
+    	}
     }
 }
