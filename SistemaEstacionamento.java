@@ -5,9 +5,9 @@ import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
 
-import javax.swing.SwingUtilities;
 
 public class SistemaEstacionamento
 {   
@@ -54,29 +54,33 @@ public class SistemaEstacionamento
     		
 		Configuracoes config = bancoConfig.readFileConfiguracoes();
 		
-		horaCarro = config.getHoraCarro();
-	    horaMoto = config.getHoraMoto();
-	    horaCaminhonete = config.getHoraCaminhonete();
-	    
-	    mensalistaCarro = config.getMensalistaCarro();
-	    mensalistaMoto = config.getMensalistaMoto();
-	    mensalistaCaminhonete = config.getMensalistaCaminhonete();
-	    
-	    pernoiteCarro = config.getPernoiteCarro();
-	    pernoiteMoto = config.getPernoiteMoto();
-	    pernoiteCaminhonete = config.getPernoiteCaminhonete();
-	    
-	    tempoBonus = config.getTempoBonus();
-	    validaTempoBonus = config.isValida();
-    	
-    	bancoDados.closeFile();
-    	bancoSaida.closeFile();
-    	bancoConfig.closeFile();
-    	
-    	bancoConfig.openWriteFile("configuracoes.ser");
-    	bancoDados.openWriteFile("banco.ser");
-    	bancoSaida.openWriteFile("dataSaida.ser");
-    	
+		if(bancoConfig.existiaArquivo() && config != null)
+		{
+			horaCarro = config.getHoraCarro();
+		    horaMoto = config.getHoraMoto();
+		    horaCaminhonete = config.getHoraCaminhonete();
+		    
+		    mensalistaCarro = config.getMensalistaCarro();
+		    mensalistaMoto = config.getMensalistaMoto();
+		    mensalistaCaminhonete = config.getMensalistaCaminhonete();
+		    
+		    pernoiteCarro = config.getPernoiteCarro();
+		    pernoiteMoto = config.getPernoiteMoto();
+		    pernoiteCaminhonete = config.getPernoiteCaminhonete();
+		    
+		    tempoBonus = config.getTempoBonus();
+		    validaTempoBonus = config.isValida();
+			
+			bancoDados.closeFile();
+			bancoSaida.closeFile();
+			bancoConfig.closeFile();
+		
+		}
+			
+		bancoConfig.openWriteFile("configuracoes.ser");
+		bancoDados.openWriteFile("banco.ser");
+		bancoSaida.openWriteFile("dataSaida.ser");
+	
         instanciaTelaEstacionamento();
          
     }
@@ -137,7 +141,7 @@ public class SistemaEstacionamento
 		});
     }
 
-    public int entradaVeiculo(String placa, String modelo, String tipo, String pacote, Date d)
+    public int entradaVeiculo(String placa, String modelo, String tipo, String pacote, LocalDateTime d)
     {
     	int contCarro = 0, contMoto = 0, contCaminhonete = 0, vagaOcupada = -1, inicio = 0;
     	int fim = 0, i;
@@ -221,6 +225,31 @@ public class SistemaEstacionamento
        }
     }
 
+//	public void LocalDateTimeDiff (LocalDateTime entrada, LocalDateTime saida)
+//	{
+//        LocalDateTime fromTemp = LocalDateTime.from(entrada);
+//        long years = fromTemp.until(saida, ChronoUnit.YEARS);
+//        fromTemp = fromTemp.plusYears(years);
+//
+//        long months = fromTemp.until(saida, ChronoUnit.MONTHS);
+//        fromTemp = fromTemp.plusMonths(months);
+//
+//        long days = fromTemp.until(saida, ChronoUnit.DAYS);
+//        fromTemp = fromTemp.plusDays(days);
+//
+//        long hours = fromTemp.until(saida, ChronoUnit.HOURS);
+//        fromTemp = fromTemp.plusHours(hours);
+//
+//        long minutes = fromTemp.until(saida, ChronoUnit.MINUTES);
+//        fromTemp = fromTemp.plusMinutes(minutes);
+//
+//        System.out.println("From = " + entrada);
+//        System.out.println("To   = " + saida);
+//        System.out.printf("The difference is %s years, %s months, %s days, " +
+//                        "%s hours, %s minutes, %s seconds, %s millis",
+//                years, months, days, hours, minutes);
+//}
+	
     public boolean isOcupado(int vagaTeste)
     {
     	
@@ -235,6 +264,7 @@ public class SistemaEstacionamento
     	
     	return false;
     }
+    
     public void salvarLista()
     {
     	for(VeiculoEstacionado veiculoAtual : listaDados)
@@ -257,7 +287,7 @@ public class SistemaEstacionamento
     	
     }
 	
-    public void saidaVeiculo(int vagaOcupada, Date dataSaida, float valor)
+    public void saidaVeiculo(int vagaOcupada, LocalDateTime dataSaida, float valor)
     {
     	int aux;
     	
@@ -276,7 +306,7 @@ public class SistemaEstacionamento
     	instanciaTelaEstacionamento();
     }    
     
-    public Date getDataEntrada(String placa)
+    public LocalDateTime getDataEntrada(String placa)
     {
     	for(VeiculoEstacionado v : listaDados)
     	{
@@ -320,21 +350,99 @@ public class SistemaEstacionamento
 //    }
     
     //HORA
-    
-    public int getHorasEstacionados(int diferenca){
-    	return (diferenca / 3600000);
+    public int getAnoEstacionado(LocalDateTime entrada, LocalDateTime saida){
+    	LocalDateTime fromTemp = LocalDateTime.from(entrada);
+        long ano = fromTemp.until(saida, ChronoUnit.YEARS);
+        fromTemp = fromTemp.plusYears(ano);
+        
+        return((int)ano);
     }
     
-    public float calculaCusto(Date entrada, Date saida, int dias, int horas, int total, String tipo, String pacote)
+    public int getMesEstacionado(LocalDateTime entrada, LocalDateTime saida){
+    	LocalDateTime fromTemp = LocalDateTime.from(entrada);
+        long ano = fromTemp.until(saida, ChronoUnit.YEARS);
+        fromTemp = fromTemp.plusYears(ano);
+
+        long mes = fromTemp.until(saida, ChronoUnit.MONTHS);
+        fromTemp = fromTemp.plusMonths(mes);
+        
+        return((int)mes);
+    }
+    
+    public int getDiasEstacionado(LocalDateTime entrada, LocalDateTime saida){
+    	LocalDateTime fromTemp = LocalDateTime.from(entrada);
+        long ano = fromTemp.until(saida, ChronoUnit.YEARS);
+        fromTemp = fromTemp.plusYears(ano);
+
+        long mes = fromTemp.until(saida, ChronoUnit.MONTHS);
+        fromTemp = fromTemp.plusMonths(mes);
+
+        long dia = fromTemp.until(saida, ChronoUnit.DAYS);
+        fromTemp = fromTemp.plusDays(dia);
+        
+        return((int)dia);
+    }
+    
+    public int getHorasEstacionado(LocalDateTime entrada, LocalDateTime saida){
+    	LocalDateTime fromTemp = LocalDateTime.from(entrada);
+        long ano = fromTemp.until(saida, ChronoUnit.YEARS);
+        fromTemp = fromTemp.plusYears(ano);
+
+        long mes = fromTemp.until(saida, ChronoUnit.MONTHS);
+        fromTemp = fromTemp.plusMonths(mes);
+
+        long dia = fromTemp.until(saida, ChronoUnit.DAYS);
+        fromTemp = fromTemp.plusDays(dia);
+
+        long hora = fromTemp.until(saida, ChronoUnit.HOURS);
+        fromTemp = fromTemp.plusHours(hora);
+        
+        return((int)hora);
+    }
+    
+    public int getMinEstacionado(LocalDateTime entrada, LocalDateTime saida){
+    	LocalDateTime fromTemp = LocalDateTime.from(entrada);
+        long ano = fromTemp.until(saida, ChronoUnit.YEARS);
+        fromTemp = fromTemp.plusYears(ano);
+
+        long mes = fromTemp.until(saida, ChronoUnit.MONTHS);
+        fromTemp = fromTemp.plusMonths(mes);
+
+        long dia = fromTemp.until(saida, ChronoUnit.DAYS);
+        fromTemp = fromTemp.plusDays(dia);
+
+        long hora = fromTemp.until(saida, ChronoUnit.HOURS);
+        fromTemp = fromTemp.plusHours(hora);
+
+        long min = fromTemp.until(saida, ChronoUnit.MINUTES);
+        fromTemp = fromTemp.plusMinutes(min);
+        
+        return((int)min);
+    }
+    
+    public float calculaCusto(LocalDateTime entrada, LocalDateTime saida, String tipo, String pacote)
     {
-    	int minutos = total / (1000 * 60);
-    	int aux;
+    	LocalDateTime fromTemp = LocalDateTime.from(entrada);
+        long ano = fromTemp.until(saida, ChronoUnit.YEARS);
+        fromTemp = fromTemp.plusYears(ano);
+
+        long mes = fromTemp.until(saida, ChronoUnit.MONTHS);
+        fromTemp = fromTemp.plusMonths(mes);
+
+        long dia = fromTemp.until(saida, ChronoUnit.DAYS);
+        fromTemp = fromTemp.plusDays(dia);
+
+        long hora = fromTemp.until(saida, ChronoUnit.HOURS);
+        fromTemp = fromTemp.plusHours(hora);
+
+        long min = fromTemp.until(saida, ChronoUnit.MINUTES);
+        fromTemp = fromTemp.plusMinutes(min);
     	
     	if(pacote.equals("Hora")) //Se pacote hora
     	{
-    		if(horas == 0) //Se ficou < 1 hora
+    		if(hora == 0) //Se ficou < 1 hora
     		{	
-    			if(validaTempoBonus && minutos <= tempoBonus) //Se tem tempo bonus e se ficou < tempo bonus
+    			if(validaTempoBonus && min <= tempoBonus) //Se tem tempo bonus e se ficou < tempo bonus
     				return(0);
     			else
     			{
@@ -343,44 +451,43 @@ public class SistemaEstacionamento
     		}
     		else
     		{
-    			return(getCusto(tipo, pacote) * (horas + (24 * dias)));
+    			return(getCusto(tipo, pacote) * ((12 * 31 * 24 * ano) + (31 * 24 * mes) + (24 * dia) + hora));
     		}
     	}
     	else if(pacote.equals("Mensalista"))
     	{
-    		if(dias <= 31)
+    		if(dia <= 31)
     		{
     			return(getCusto(tipo, pacote) * 1);
     		}
     		else
     		{
-    			aux = dias % 31;
+    			int aux = (int)dia % 31;
     			if(aux != 0)
-    				return(getCusto(tipo, pacote) * ((dias / 31) + 1));
+    				return(getCusto(tipo, pacote) * ((dia / 31) + 1));
     			else 
-    				return(getCusto(tipo, pacote) * (dias / 31));
+    				return(getCusto(tipo, pacote) * (dia / 31));
     				
     		}
     	}
     	else if(pacote.equals("Pernoite"))
     	{
-			if(saida.getHours() < 7)
+			if(saida.getHour() < 7)
 			{
 				return(getCusto(tipo, pacote) * 1);
 			}
 			else
 			{
-				if(dias == 0)
+				if(dia == 0)
 				{
-					return(getCusto(tipo, pacote) + (getCusto(tipo, "Hora") * (saida.getHours() - 7)));
+					return(getCusto(tipo, pacote) + (getCusto(tipo, "Hora") * ((saida.getHour() - 7) + (24 * dia) + (31 * 24 * mes) + (12 * 31 * 24 * ano))));
 				}
 				else
 				{
-					return(getCusto(tipo, "Hora") * horas);
+					return(getCusto(tipo, "Hora") * hora);
 				}
 			}
     	}
-    	
     	return(-1);
     }
     
@@ -389,24 +496,25 @@ public class SistemaEstacionamento
     public boolean getValidaTempoBonus(){
     	return(validaTempoBonus);
     }
-    public int getVeiculosPeriodo(long entrada, long saida){
+    
+    public int getVeiculosPeriodo(LocalDateTime entrada, LocalDateTime saida){
     	int count = 0;
     	
     	for(VeiculoSaida s : listaSaida)
     	{
-    		if(s.getData().getTime() > entrada && s.getData().getTime() < saida)
+    		if(s.getData().isAfter(entrada) && s.getData().isBefore(saida))
     			count++;
     	}
     	
     	return (count);
     }
     
-    public float getValorPeriodo(long entrada, long saida){
+    public float getValorPeriodo(LocalDateTime entrada, LocalDateTime saida){
     	float count = 0;
     	
     	for(VeiculoSaida s : listaSaida)
     	{
-    		if(s.getData().getTime() > entrada && s.getData().getTime() < saida)
+    		if(s.getData().isAfter(entrada) && s.getData().isBefore(saida))
     			count += s.getValor();
     	}
     	
@@ -420,6 +528,7 @@ public class SistemaEstacionamento
     			cont++;
     	return cont;
     }
+    
     public int getMotosEstacionados(){
     	int cont = 0;
     	for(VeiculoEstacionado v : listaDados)

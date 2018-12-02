@@ -10,7 +10,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.*;
 import java.util.TimeZone;
 
 import javax.swing.ButtonGroup;
@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -60,15 +61,7 @@ public class TelaEntrada extends JFrame
         setLayout(new GridLayout(6, 1));
         JPanel[][] p = new JPanel[6][1];
         
-        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        try {
-			Date date = isoFormat.parse("2010-05-23T09:01:02");
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			//e1.printStackTrace();
-		}
-        
+       
         Icon parada      = new ImageIcon(getClass().getResource("p.png"));
         Icon moto        = new ImageIcon(getClass().getResource("moto.png"));
         Icon carro       = new ImageIcon(getClass().getResource("carro.png"));
@@ -125,7 +118,7 @@ public class TelaEntrada extends JFrame
         msgHora.setFont(new Font("Arial", Font.PLAIN, 15));
         
         hora = new JTextField(8);
-        hora.setText("hh:mm:ss");
+        hora.setText("hh:mm");
         hora.setHorizontalAlignment(JTextField.CENTER);
         hora.addFocusListener(new FocusListener() {
 			@Override
@@ -135,7 +128,7 @@ public class TelaEntrada extends JFrame
 			@Override
 			public void focusLost(FocusEvent e) {
 				if(hora.getText().equals(""))
-					hora.setText("hh:mm:ss");
+					hora.setText("hh:mm");
 			}
         });
         
@@ -251,29 +244,36 @@ public class TelaEntrada extends JFrame
             {
             	int dia, mes, ano, hor, min, seg;
             	
-            	ano = Integer.parseInt(data.getText().substring(6, 10));
-            	mes = Integer.parseInt(data.getText().substring(3, 5));
-            	dia = Integer.parseInt(data.getText().substring(0, 2));
+            	try{
             	
-            	hor = Integer.parseInt(hora.getText().substring(0, 2));
-            	min = Integer.parseInt(hora.getText().substring(3, 5));
-            	seg = Integer.parseInt(hora.getText().substring(6, 8)); 	
-          
-//            	Parameters:
-//            		year the year minus 1900.
-//            		month the month between 0-11.
-//            		date the day of the month between 1-31.
-//            		hrs the hours between 0-23.
-//            		min the minutes between 0-59.
-//            		sec the seconds between 0-59.
-//            	
-            	Date d = new Date(ano - 1900, mes - 1, dia, hor, min, seg);
+	            	ano = Integer.parseInt(data.getText().substring(7, 10));
+	            	mes = Integer.parseInt(data.getText().substring(4, 5));
+	            	dia = Integer.parseInt(data.getText().substring(1, 2));
+	            	
+	            	hor = Integer.parseInt(hora.getText().substring(0, 2));
+	            	min = Integer.parseInt(hora.getText().substring(3, 5));
+	            	
+	            	LocalDateTime d = LocalDateTime.of(ano, mes, dia, hor, min);
+	            	
+	                SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
+	                
+	                sis.entradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote, d);
+	                
+	                dispose();
+            	}
+            	catch(NumberFormatException exception)
+            	{
+            		JOptionPane.showMessageDialog(null, "Valores inseridos invalidos\nFormato data (HH:MM) e (dd/mm/aaaa)", "Erro", JOptionPane.INFORMATION_MESSAGE);
+            	}
+            	catch(DateTimeException exception)
+            	{
+            		JOptionPane.showMessageDialog(null, "Valores inseridos invalidos\nFormato data (HH:MM) e (dd/mm/aaaa)", "Erro", JOptionPane.INFORMATION_MESSAGE);
+            	}
+            	catch(StringIndexOutOfBoundsException exception)
+            	{
+            		JOptionPane.showMessageDialog(null, "Valores inseridos invalidos\nFormato data (HH:MM) e (dd/mm/aaaa)", "Erro", JOptionPane.INFORMATION_MESSAGE);
+            	}
             	
-                SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
-                
-                sis.entradaVeiculo(placa.getText(), modelo.getText(), tipoVeiculo, tipoPacote, d);
-                
-                dispose();
             }     
             else if(e.getSource() == horaB)
             {

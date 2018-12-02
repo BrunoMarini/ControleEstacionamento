@@ -1,20 +1,20 @@
 package estacionamento;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.*;
 
 public class VeiculoSaida implements Serializable{
 	
-	private Date dataSaida;
+	private LocalDateTime dataSaida;
 	private float valor;
 	
-	public VeiculoSaida(Date dataSaida, float valor)
+	public VeiculoSaida(LocalDateTime dataSaida, float valor)
 	{
 		this.dataSaida = dataSaida;
 		this.valor = valor;
 	}
 	
-	public Date getData(){
+	public LocalDateTime getData(){
 		return(dataSaida);
 	}
 	

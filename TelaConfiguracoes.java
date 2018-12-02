@@ -129,8 +129,6 @@ public class TelaConfiguracoes extends JFrame
         grupo.add(bonusSim);
         grupo.add(bonusNao);
         
-        System.out.println("TEMPO" + sis.getValidaTempoBonus());
-        
          bonusSim.addItemListener(
             new TelaConfiguracoes.RadioButtonHandler(true));
         bonusNao.addItemListener(

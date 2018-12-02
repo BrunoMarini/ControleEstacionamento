@@ -1,7 +1,7 @@
 package estacionamento;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.*;
 
 public class VeiculoEstacionado implements Serializable
 {
@@ -10,16 +10,16 @@ public class VeiculoEstacionado implements Serializable
     private String pacote;
     private String tipo;
     private int vagaOcupada;
-    private Date data;
+    private LocalDateTime data;
     
-    public VeiculoEstacionado(String placa, String modelo, String pacote, String tipo, int vagaOcupada, Date d)
+    public VeiculoEstacionado(String placa, String modelo, String pacote, String tipo, int vagaOcupada, LocalDateTime d)
     {
         this.placa = placa;
         this.modelo = modelo;
         this.pacote = pacote;
         this.tipo = tipo;
         this.vagaOcupada = vagaOcupada;
-        this.data = (Date) d;
+        this.data = d;
     }
     
     public String getPlaca(){
@@ -42,7 +42,7 @@ public class VeiculoEstacionado implements Serializable
         return(vagaOcupada);
     }
     
-    public Date getData(){
-    	return((Date)data);
+    public LocalDateTime getData(){
+    	return(data);
     }
 }

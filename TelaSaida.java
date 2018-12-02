@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.util.Date;
+import java.time.*;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -43,7 +43,7 @@ public class TelaSaida extends JFrame
     private JLabel msgHoraSaida;
     private JTextField leDataSaida;
     
-    private Date entrou, saiu;
+    private LocalDateTime entrou, saiu;
     private float valor;
     private int vagaOcupada;
     int i;
@@ -70,7 +70,7 @@ public class TelaSaida extends JFrame
         msgHoraSaida = new JLabel("Hora/Data saida", (int)CENTER_ALIGNMENT);
         msgHoraSaida.setFont(new Font("Arial", Font.PLAIN, 16));
         
-        leHoraSaida = new JTextField("hh:mm:ss");
+        leHoraSaida = new JTextField("hh:mm");
         leHoraSaida.setHorizontalAlignment(JTextField.CENTER);
         leHoraSaida.addFocusListener(new FocusListener() {
 			@Override
@@ -80,7 +80,7 @@ public class TelaSaida extends JFrame
 			@Override
 			public void focusLost(FocusEvent e) {	
 				if(leHoraSaida.getText().equals(""))
-					leHoraSaida.setText("hh:mm:ss");
+					leHoraSaida.setText("hh:mm");
 			}
         });
         
@@ -195,7 +195,7 @@ public class TelaSaida extends JFrame
 			}
 			else if (event.getSource() == verifica)
 			{	
-				int dia, mes, ano, hora, min, seg;
+				int dia, mes, ano, hora, min;
 				
             	ano = Integer.parseInt(leDataSaida.getText().substring(6, 10));
             	mes = Integer.parseInt(leDataSaida.getText().substring(3, 5));
@@ -203,12 +203,8 @@ public class TelaSaida extends JFrame
             	
             	hora = Integer.parseInt(leHoraSaida.getText().substring(0, 2));
             	min = Integer.parseInt(leHoraSaida.getText().substring(3, 5));
-            	seg = Integer.parseInt(leHoraSaida.getText().substring(6, 8)); 
 				
-            	saiu = new Date(ano - 1900, mes - 1, dia, hora, min, seg);
-            		
-            	int diferenca;            	
-            	int dias, horas;
+            	saiu = LocalDateTime.of(ano, mes, dia, hora, min);
             	
 				for(VeiculoEstacionado v : sis.listaDados)
 				{					
@@ -216,25 +212,23 @@ public class TelaSaida extends JFrame
 					{
 						vagaOcupada = v.getVagaOcupada();
 						
-						entrou = new Date();
 						entrou = sis.getDataEntrada(codigo.getText());
 						
-						System.out.println("Entrou: "+ entrou);
-						System.out.println("Saiu:   "+ saiu);
+						valor = sis.calculaCusto(entrou, saiu, v.getTipo(), v.getPacote());
 						
-						diferenca = (int)saiu.getTime() - (int)entrou.getTime();
-						
-						horas = sis.getHorasEstacionados(diferenca);
-						horas = horas % 24;
-						dias = horas / 24;
-						
-						valor = sis.calculaCusto(entrou, saiu, dias, horas, diferenca, v.getTipo(), v.getPacote());
+						String aux = Integer.toString(sis.getDiasEstacionado(entrou, saiu)) +" Dia(s) "+ 
+									 Integer.toString(sis.getMesEstacionado(entrou, saiu)) + " Mese(s) "+
+									 Integer.toString(sis.getAnoEstacionado(entrou, saiu)) +" Ano(s) "+
+									 Integer.toString(sis.getHorasEstacionado(entrou, saiu)) +" Hora(s) "+
+									 Integer.toString(sis.getMinEstacionado(entrou, saiu)) +" Minuto(s) ";
+									 
+														; 
 						
 						placaVeiculo.setText(v.getPlaca());
 						modeloVeiculo.setText(v.getModelo());
 						dataEntrada.setText(entrou.toString());
 						dataSaida.setText(saiu.toString());
-						tempo.setText(dias + " Dia(s) e "+ horas +" Hora(s)");
+						tempo.setText(aux);
 						custo.setText(Float.toString(valor));
 					}
 						

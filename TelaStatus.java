@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.util.Date;
+import java.time.*;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -208,30 +208,22 @@ public class TelaStatus extends JFrame
             	int qtdVeiculos;
                 float lucroPeriodo;
                 
-                int dia, mes, ano, hora, min, seg;
+                int dia, mes, ano;
         		
             	ano = Integer.parseInt(dataEntrada.getText().substring(6, 10));
             	mes = Integer.parseInt(dataEntrada.getText().substring(3, 5));
-            	dia = Integer.parseInt(dataEntrada.getText().substring(0, 2));
+            	dia = Integer.parseInt(dataEntrada.getText().substring(0, 2)); 
             	
-            	hora = Integer.parseInt(dataEntrada.getText().substring(0, 2));
-            	min = Integer.parseInt(dataEntrada.getText().substring(3, 5));
-            	seg = Integer.parseInt(dataEntrada.getText().substring(6, 8)); 
-            	
-            	Date entrada = new Date(ano, mes, dia, hora, min, seg);
+            	LocalDateTime entrada = LocalDateTime.of(ano, mes, dia, 0, 0);
             	
             	ano = Integer.parseInt(dataSaida.getText().substring(6, 10));
             	mes = Integer.parseInt(dataSaida.getText().substring(3, 5));
             	dia = Integer.parseInt(dataSaida.getText().substring(0, 2));
-            	
-            	hora = Integer.parseInt(dataSaida.getText().substring(0, 2));
-            	min = Integer.parseInt(dataSaida.getText().substring(3, 5));
-            	seg = Integer.parseInt(dataSaida.getText().substring(6, 8)); 
                 
-            	Date saida = new Date(ano, mes, dia, hora, min, seg);
+            	LocalDateTime saida = LocalDateTime.of(ano, mes, dia, 0, 0);
             	
-                qtdVeiculos  = sis.getVeiculosPeriodo(entrada.getTime(), saida.getTime());
-                lucroPeriodo = sis.getValorPeriodo(entrada.getTime(), saida.getTime());
+                qtdVeiculos  = sis.getVeiculosPeriodo(entrada, saida);
+                lucroPeriodo = sis.getValorPeriodo(entrada, saida);
                 
 
                 

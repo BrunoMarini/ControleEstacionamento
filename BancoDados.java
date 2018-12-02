@@ -35,6 +35,7 @@ public class BancoDados
     	try
         {          
             input = new ObjectInputStream(new FileInputStream(nomeArquivo));
+            existia = true;
         }
         catch(IOException ioException)
         {
