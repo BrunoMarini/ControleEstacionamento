@@ -118,10 +118,10 @@ public class TelaConfiguracoes extends JFrame
         
         aux[0][0].setLayout(new GridLayout(1, 2));
         
-        bonusSim = new JRadioButton("Sim", false);
+        bonusSim = new JRadioButton("Sim", sis.getValidaTempoBonus());
         bonusSim.setHorizontalAlignment((int)CENTER_ALIGNMENT);
         aux[0][0].add(bonusSim);
-        bonusNao = new JRadioButton("Nao", true);
+        bonusNao = new JRadioButton("Nao", !sis.getValidaTempoBonus());
         bonusNao.setHorizontalAlignment((int)CENTER_ALIGNMENT);
         aux[0][0].add(bonusNao);
         
@@ -129,13 +129,15 @@ public class TelaConfiguracoes extends JFrame
         grupo.add(bonusSim);
         grupo.add(bonusNao);
         
+        System.out.println("TEMPO" + sis.getValidaTempoBonus());
+        
          bonusSim.addItemListener(
             new TelaConfiguracoes.RadioButtonHandler(true));
         bonusNao.addItemListener(
             new TelaConfiguracoes.RadioButtonHandler(false));
         
         tempoBonus = new JTextField(15);
-        tempoBonus.setEditable(false);
+        tempoBonus.setEditable(sis.getValidaTempoBonus());
         tempoBonus.setHorizontalAlignment(JTextField.CENTER);
         tempoBonus.setText(Integer.toString(sis.getTempoBonus()));
         
@@ -271,6 +273,7 @@ public class TelaConfiguracoes extends JFrame
             			Float.parseFloat(precoMensalistaCarro.getText()), Float.parseFloat(precoMensalistaMoto.getText()), Float.parseFloat(precoMensalistaCaminhonete.getText()),
             			Float.parseFloat(precoPernoiteCarro.getText()), Float.parseFloat(precoPernoiteMoto.getText()), Float.parseFloat(precoPernoiteCaminhonete.getText()), 
             			aux, Integer.parseInt(tempoBonus.getText()));
+            	dispose();
             }
             else if(e.getSource() == cancelar)
             {

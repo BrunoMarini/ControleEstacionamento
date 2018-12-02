@@ -7,6 +7,8 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.SwingUtilities;
+
 public class SistemaEstacionamento
 {   
 	private static SistemaEstacionamento instance = null;
@@ -15,6 +17,9 @@ public class SistemaEstacionamento
     
     BancoDados bancoDados = new BancoDados();
     BancoDados bancoSaida = new BancoDados();
+    BancoDados bancoConfig = new BancoDados();
+    
+    FrameEstacionamento telaEstacionamento;
     
 	float horaCarro = 2;
     float horaMoto = 1;
@@ -42,17 +47,43 @@ public class SistemaEstacionamento
     {
     	bancoDados.openReadFile("banco.ser");
     	bancoSaida.openReadFile("dataSaida.ser");
+    	bancoConfig.openReadFile("configuracoes.ser");
     	
     	listaDados = bancoDados.readFile();    	
     	listaSaida = bancoSaida.readFileDatasSaida();
+    		
+		Configuracoes config = bancoConfig.readFileConfiguracoes();
+		
+		horaCarro = config.getHoraCarro();
+	    horaMoto = config.getHoraMoto();
+	    horaCaminhonete = config.getHoraCaminhonete();
+	    
+	    mensalistaCarro = config.getMensalistaCarro();
+	    mensalistaMoto = config.getMensalistaMoto();
+	    mensalistaCaminhonete = config.getMensalistaCaminhonete();
+	    
+	    pernoiteCarro = config.getPernoiteCarro();
+	    pernoiteMoto = config.getPernoiteMoto();
+	    pernoiteCaminhonete = config.getPernoiteCaminhonete();
+	    
+	    tempoBonus = config.getTempoBonus();
+	    validaTempoBonus = config.isValida();
     	
     	bancoDados.closeFile();
     	bancoSaida.closeFile();
+    	bancoConfig.closeFile();
     	
+    	bancoConfig.openWriteFile("configuracoes.ser");
     	bancoDados.openWriteFile("banco.ser");
     	bancoSaida.openWriteFile("dataSaida.ser");
     	
-        FrameEstacionamento telaEstacionamento = new FrameEstacionamento();
+        instanciaTelaEstacionamento();
+         
+    }
+    
+    public void instanciaTelaEstacionamento()
+    {
+    	telaEstacionamento = new FrameEstacionamento();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int height = screenSize.height;
         int width = screenSize.width;
@@ -104,8 +135,6 @@ public class SistemaEstacionamento
 				
 			}
 		});
-        
-        
     }
 
     public int entradaVeiculo(String placa, String modelo, String tipo, String pacote, Date d)
@@ -158,6 +187,9 @@ public class SistemaEstacionamento
         //bancoDados.adicionarArquivo(veiculo);
         //bancoDados.closeFile();
         // FIM DO MOVER
+        
+        telaEstacionamento.dispose();
+        instanciaTelaEstacionamento();
         
         return vagaOcupada;
         
@@ -213,6 +245,13 @@ public class SistemaEstacionamento
     	{
     		bancoSaida.adicionarArquivo(veiculoAtual);
     	}
+    	
+    	Configuracoes config = new Configuracoes(horaCarro, horaMoto, horaCaminhonete, mensalistaCarro, mensalistaMoto, mensalistaCaminhonete, 
+    																pernoiteCarro, pernoiteMoto, pernoiteCaminhonete, tempoBonus, validaTempoBonus);
+    		
+    	bancoConfig.adicionarArquivo(config);
+    	
+    	bancoConfig.closeFile();
     	bancoDados.closeFile();
     	bancoSaida.closeFile();
     	
@@ -232,8 +271,9 @@ public class SistemaEstacionamento
     			listaDados.remove(aux);
     			break;
     		}
-    	}
-    	
+    	}	
+    	telaEstacionamento.dispose();
+    	instanciaTelaEstacionamento();
     }    
     
     public Date getDataEntrada(String placa)
@@ -289,7 +329,7 @@ public class SistemaEstacionamento
     {
     	int minutos = total / (1000 * 60);
     	int aux;
-    	System.out.println(tipo+"  "+pacote);
+    	
     	if(pacote.equals("Hora")) //Se pacote hora
     	{
     		if(horas == 0) //Se ficou < 1 hora
@@ -303,12 +343,11 @@ public class SistemaEstacionamento
     		}
     		else
     		{
-    			return(getCusto(tipo, pacote) * horas);
+    			return(getCusto(tipo, pacote) * (horas + (24 * dias)));
     		}
     	}
     	else if(pacote.equals("Mensalista"))
     	{
-    		System.out.println("Entrou Moto");
     		if(dias <= 31)
     		{
     			return(getCusto(tipo, pacote) * 1);
@@ -347,6 +386,33 @@ public class SistemaEstacionamento
     
 	//DE ACORDO COM O JEFF GEEETS
 	
+    public boolean getValidaTempoBonus(){
+    	return(validaTempoBonus);
+    }
+    public int getVeiculosPeriodo(long entrada, long saida){
+    	int count = 0;
+    	
+    	for(VeiculoSaida s : listaSaida)
+    	{
+    		if(s.getData().getTime() > entrada && s.getData().getTime() < saida)
+    			count++;
+    	}
+    	
+    	return (count);
+    }
+    
+    public float getValorPeriodo(long entrada, long saida){
+    	float count = 0;
+    	
+    	for(VeiculoSaida s : listaSaida)
+    	{
+    		if(s.getData().getTime() > entrada && s.getData().getTime() < saida)
+    			count += s.getValor();
+    	}
+    	
+    	return (count);
+    }
+    
     public int getCarrosEstacionados(){
     	int cont = 0;
     	for(VeiculoEstacionado v : listaDados)

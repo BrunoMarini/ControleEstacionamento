@@ -71,6 +71,18 @@ public class BancoDados
         }
     }
     
+    public void adicionarArquivo(Configuracoes config)
+    {
+        try
+        {
+            output.writeObject(config);
+            
+        }catch(IOException ioException)
+        {
+            System.err.println("Erro ao escrever no arquivo");
+        }
+    }
+    
     public ArrayList readFile()
     {
     	VeiculoEstacionado veiculoReg;
@@ -151,6 +163,34 @@ public class BancoDados
         {
             System.err.println("Erro ao tentar fechar o arquivo");
         }
+    }
+    
+    public Configuracoes readFileConfiguracoes()
+    {
+    	Configuracoes config = null;
+   	 
+   	 try
+   	 {
+   		 config = (Configuracoes)input.readObject();
+		 return(config);	 
+   	 }
+   	 catch(EOFException exception)
+        {
+            System.err.println(exception);
+        }
+    	
+		catch(ClassNotFoundException exception)
+		{
+		    System.err.println(exception);
+		}
+    	
+        catch(IOException exception)
+        {
+            System.err.println(exception);
+        }
+   	 
+   	 return config;    	 
+   	 
     }
     
     public boolean existiaArquivo(){

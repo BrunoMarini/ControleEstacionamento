@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class VeiculoSaida implements Serializable{
+	
 	private Date dataSaida;
 	private float valor;
 	
@@ -11,5 +12,13 @@ public class VeiculoSaida implements Serializable{
 	{
 		this.dataSaida = dataSaida;
 		this.valor = valor;
+	}
+	
+	public Date getData(){
+		return(dataSaida);
+	}
+	
+	public float getValor(){
+		return(valor);
 	}
 }

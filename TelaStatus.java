@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.Date;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -42,13 +43,13 @@ public class TelaStatus extends JFrame
     private JButton verificar;
     private JTextField resultado;
     
+    SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
+    
     int i;
     
     public TelaStatus()
     {
         super("Status");
-        
-        SistemaEstacionamento sis = SistemaEstacionamento.getInstance();
         
         setLayout(new GridLayout(3, 1));
         
@@ -172,9 +173,14 @@ public class TelaStatus extends JFrame
         });
         lucro.add(dataSaida);
         lucro.add(verificar = new JButton("Verificar"));
+        verificar.addActionListener(list);
         resultado = new JTextField();
         resultado.setHorizontalAlignment(JTextField.CENTER);
         resultado.setEditable(false);
+        
+        
+        
+        
         lucro.add(resultado);
         
         p[2][0].add(lucro);
@@ -196,6 +202,40 @@ public class TelaStatus extends JFrame
                 telaTable.setSize(width/2, height/2);
                 telaTable.setVisible(true);
                 telaTable.setLocationRelativeTo(null);
+            }
+            else if(e.getSource() == verificar)
+            {
+            	int qtdVeiculos;
+                float lucroPeriodo;
+                
+                int dia, mes, ano, hora, min, seg;
+        		
+            	ano = Integer.parseInt(dataEntrada.getText().substring(6, 10));
+            	mes = Integer.parseInt(dataEntrada.getText().substring(3, 5));
+            	dia = Integer.parseInt(dataEntrada.getText().substring(0, 2));
+            	
+            	hora = Integer.parseInt(dataEntrada.getText().substring(0, 2));
+            	min = Integer.parseInt(dataEntrada.getText().substring(3, 5));
+            	seg = Integer.parseInt(dataEntrada.getText().substring(6, 8)); 
+            	
+            	Date entrada = new Date(ano, mes, dia, hora, min, seg);
+            	
+            	ano = Integer.parseInt(dataSaida.getText().substring(6, 10));
+            	mes = Integer.parseInt(dataSaida.getText().substring(3, 5));
+            	dia = Integer.parseInt(dataSaida.getText().substring(0, 2));
+            	
+            	hora = Integer.parseInt(dataSaida.getText().substring(0, 2));
+            	min = Integer.parseInt(dataSaida.getText().substring(3, 5));
+            	seg = Integer.parseInt(dataSaida.getText().substring(6, 8)); 
+                
+            	Date saida = new Date(ano, mes, dia, hora, min, seg);
+            	
+                qtdVeiculos  = sis.getVeiculosPeriodo(entrada.getTime(), saida.getTime());
+                lucroPeriodo = sis.getValorPeriodo(entrada.getTime(), saida.getTime());
+                
+
+                
+                resultado.setText(qtdVeiculos + " Veiculos " + lucroPeriodo + " Lucro");
             }
         }
     }
