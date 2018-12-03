@@ -18,6 +18,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -457,7 +459,11 @@ public class FrameEstacionamento extends JFrame
 		// COLOCANDO ESPA�OS EM BRANCO
 		for (int j = 0; j < 10; j++)
 		{
+			
 			espacosBrancoT[0][j] = new JLabel("", JLabel.CENTER);
+			Icon nullzinho = new ImageIcon(getClass().getResource("nullp.png"));
+			espacosBrancoT[0][j].setIcon(nullzinho);
+			
 			panel5.add(espacosBrancoT[0][j]);
 		}
 		
@@ -485,7 +491,43 @@ public class FrameEstacionamento extends JFrame
 		// COLOCANDO ESPA�OS EM BRANCO
 		for (int j = 0; j < 10; j++)
 		{
-			espacosBrancoT[1][j] = new JLabel("", JLabel.CENTER);
+			if(j == 7)
+			{
+				espacosBrancoT[1][j] = new JLabel("", JLabel.CENTER);
+				Icon carrinho = new ImageIcon(getClass().getResource("carrop.png"));
+				espacosBrancoT[1][j] = new JLabel("", JLabel.CENTER);
+				espacosBrancoT[1][j].setBackground(Color.GREEN);
+				espacosBrancoT[1][j].setOpaque(true);
+				espacosBrancoT[1][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				espacosBrancoT[1][j].setIcon(carrinho);
+			}
+			else if(j == 9)
+			{
+				espacosBrancoT[1][j] = new JLabel("", JLabel.CENTER);
+				Icon caminhonetinha = new ImageIcon(getClass().getResource("caminhonetep.png"));
+				espacosBrancoT[1][j] = new JLabel("", JLabel.CENTER);
+				espacosBrancoT[1][j].setBackground(Color.ORANGE);
+				espacosBrancoT[1][j].setOpaque(true);
+				espacosBrancoT[1][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				espacosBrancoT[1][j].setIcon(caminhonetinha);
+			}
+			else if(j == 8)
+			{
+				espacosBrancoT[1][j] = new JLabel("", JLabel.CENTER);
+				Icon motinho = new ImageIcon(getClass().getResource("motop.png"));
+				espacosBrancoT[1][j] = new JLabel("", JLabel.CENTER);
+				espacosBrancoT[1][j].setBackground(Color.YELLOW);
+				espacosBrancoT[1][j].setOpaque(true);
+				espacosBrancoT[1][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				espacosBrancoT[1][j].setIcon(motinho);
+			}
+			else
+			{
+				espacosBrancoT[1][j] = new JLabel("", JLabel.CENTER);
+				Icon nullzinho = new ImageIcon(getClass().getResource("nullp.png"));
+				espacosBrancoT[1][j].setIcon(nullzinho);
+			}
+		
 			panel6.add(espacosBrancoT[1][j]);
 		}
 				
@@ -616,25 +658,4 @@ public class FrameEstacionamento extends JFrame
 			// FIM OPCOES DO MENU SUPERIOR
 		}
 	}
-        
-        public boolean Disponibilidade(String tipo){
-            //Fazer função que retorna a disponibilidade de vaga de acordo com o tipo de veiculo
-            return(false);
-        }
-                
-        public int OcuparVagaCarro()
-        {
-            //Fazer função que ocupe a vaga para o carro e retorne a posição a deixando vermelha
-            return(1);
-        }
-        public int OcuparVagaMoto()
-        {
-            //Fazer função que ocupe a vaga para a moto e retorne a posição a deixando vermelha
-            return(1);
-        } 
-        public int OcuparVagaCaminhonete()
-        {
-            //Fazer função que ocupe a vaga para a caminhonete e retorne a posição a deixando vermelha
-            return(1);
-        } 
 }
